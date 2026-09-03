@@ -1,8 +1,8 @@
 /* ==========================================
-   Rutgers Climbing Team - Global Stylesheet
+   Rutgers Climbing Team - Unified Stylesheet
    ========================================== */
 
-/* Official Rutgers Brand Color Variables */
+/* Brand Color Variables */
 :root {
   --rutgers-scarlet: #CC0033;
   --rutgers-dark-red: #8E0D18;
@@ -10,13 +10,11 @@
   --rutgers-dark-gray: #222222;
   --rutgers-black: #000000;
   --rutgers-white: #FFFFFF;
-  --rutgers-yellow: #EBB600;
-  
   --primary-color: var(--rutgers-scarlet);
   --header-height: 75px;
 }
 
-/* Global Resets */
+/* Global Reset */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -33,17 +31,31 @@ body {
   line-height: 1.6;
 }
 
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: color 0.2s ease;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* ==========================================
-   Header Component
+   1. MAIN SITE HEADER (index.html)
    ========================================== */
 header.site-header {
   position: sticky;
   top: 0;
-  left: 0;
   width: 100%;
   height: var(--header-height);
   background-color: var(--rutgers-black);
-  color: var(--rutgers-white);
   border-bottom: 4px solid var(--primary-color);
   display: flex;
   justify-content: space-between;
@@ -52,74 +64,183 @@ header.site-header {
   z-index: 1000;
 }
 
-.site-header .logo-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  color: var(--rutgers-white);
-}
-
-.site-header .logo-container h1 {
+.logo-container h1 {
   font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  color: var(--rutgers-white);
   text-transform: uppercase;
+  font-weight: 700;
 }
 
-.site-header .logo-container h1 span {
+.logo-container h1 span {
   color: var(--primary-color);
 }
 
 .site-header nav ul {
-  list-style: none;
   display: flex;
   gap: 2rem;
-  align-items: center;
-  margin: 0;
-  padding: 0;
 }
 
 .site-header nav ul li a {
   color: var(--rutgers-white);
-  text-decoration: none;
   font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: 0.03em;
-  transition: color 0.2s ease;
   text-transform: uppercase;
+  font-size: 0.95rem;
 }
 
-.site-header nav ul li a:hover,
-.site-header nav ul li a.active {
+.site-header nav ul li a:hover {
   color: var(--primary-color);
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
 }
 
 .btn-donate {
   background-color: var(--primary-color);
-  color: var(--rutgers-white);
+  color: var(--rutgers-white) !important;
   padding: 0.55rem 1.25rem;
   border-radius: 4px;
-  text-decoration: none;
   font-weight: 700;
-  font-size: 0.9rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .btn-donate:hover {
   background-color: var(--rutgers-dark-red);
-  transform: translateY(-1px);
 }
 
 /* ==========================================
-   Links Page Layout (Centered Desktop & Mobile)
+   2. MAIN SITE CONTENT (index.html)
+   ========================================== */
+.hero-section {
+  background-color: var(--rutgers-black);
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/BG_Main.jpg');
+  background-size: cover;
+  background-position: center;
+  color: var(--rutgers-white);
+  text-align: center;
+  padding: 6rem 2rem;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.who-we-are {
+  padding: 4rem 2rem;
+  background-color: var(--rutgers-white);
+}
+
+.who-we-are .container {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.who-we-are h2 {
+  font-size: 2.25rem;
+  margin-bottom: 1.5rem;
+  color: var(--rutgers-black);
+}
+
+.scarlet-r {
+  color: var(--primary-color);
+}
+
+.who-we-are p {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 3rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: var(--rutgers-dark-gray);
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+  color: var(--primary-color);
+}
+
+.card-img {
+  height: 140px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--rutgers-gray); 
+}
+
+.card-label {
+  padding: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+/* Footer (index.html) */
+.site-footer {
+  background-color: var(--rutgers-black);
+  color: var(--rutgers-white);
+  margin-top: auto;
+  border-top: 4px solid var(--primary-color);
+  padding: 3rem 2.5rem 1.5rem;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+}
+
+.footer-section h3 {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: var(--rutgers-white);
+}
+
+.footer-section p {
+  color: #bbb;
+}
+
+.footer-section ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-section ul li a {
+  color: #bbb;
+}
+
+.footer-section ul li a:hover {
+  color: var(--primary-color);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid #333;
+  color: #777;
+  font-size: 0.85rem;
+}
+
+/* ==========================================
+   3. LINKS PAGE LAYOUT (links.html)
    ========================================== */
 body.links-page-body {
   background-color: var(--rutgers-dark-red);
@@ -128,9 +249,8 @@ body.links-page-body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center; /* Centers container horizontally on all screens */
+  align-items: center;
   padding: 3rem 1.5rem;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 .links-container {
@@ -155,6 +275,8 @@ body.links-page-body {
 .profile-avatar {
   width: 110px;
   height: 110px;
+  min-width: 110px;
+  min-height: 110px;
   border-radius: 50%;
   overflow: hidden;
   border: 4px solid var(--rutgers-white);
@@ -167,6 +289,7 @@ body.links-page-body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .profile-header h1 {
@@ -197,11 +320,11 @@ body.links-page-body {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--rutgers-white);
+  color: var(--rutgers-white) !important;
   padding: 1.15rem 1.5rem;
   border-radius: 12px;
   text-align: center;
-  text-decoration: none;
+  text-decoration: none !important;
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: 0.02em;
@@ -223,7 +346,7 @@ body.links-page-body {
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   padding: 1rem;
-  text-decoration: none;
+  text-decoration: none !important;
   color: var(--rutgers-white);
   gap: 1rem;
   transition: background-color 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
@@ -287,7 +410,26 @@ body.links-page-body {
   color: var(--rutgers-dark-red);
 }
 
-main {
-  flex: 1;
-  width: 100%;
+/* Responsive Rules */
+@media (max-width: 768px) {
+  header.site-header {
+    padding: 0 1rem;
+  }
+
+  .site-header nav ul {
+    gap: 1rem;
+  }
+
+  .site-header nav ul li a {
+    font-size: 0.8rem;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
 }
