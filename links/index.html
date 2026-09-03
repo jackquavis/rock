@@ -8,61 +8,126 @@
 </head>
 <body class="links-page-body">
 
-  <div class="links-container">
+  <div class="links-container" id="links-app">
+    <!-- Profile Section (Dynamic) -->
     <div class="profile-header">
       <div class="profile-avatar">
-        <img src="assets/BG_Main.jpg" alt="Rutgers Rock Climbing Team">
+        <img id="profile-img" src="/assets/RURC_Logo.png" alt="Rutgers Rock Climbing Team">
       </div>
-      <h1>RuRockclimbing</h1>
-      <p class="profile-bio">
-        EST. 2013 | Practices: Fridays 5-8pm & Sundays 7-9pm | Use code <strong>RUROCKCLIMBING</strong> for 10% off your entire purchase at Rungne!!
-      </p>
+      <h1 id="profile-title">RuRockclimbing</h1>
+      <p class="profile-bio" id="profile-bio">Loading profile...</p>
     </div>
 
-    <div class="links-list">
-      <a href="#" class="link-button" target="_blank">
-        <span>Subscribe to my page</span>
-      </a>
-
-      <a href="https://discord.com/invite/bpG9ZYzj9s" class="link-button" target="_blank">
-        <span>Discord Link - Join for more info!</span>
-      </a>
-
-      <a href="#" class="featured-link-card" target="_blank">
-        <div class="featured-card-icon">
-          <span>RU</span>
-        </div>
-        <div class="featured-card-content">
-          <h3>Comp Team Tryouts</h3>
-          <p>Sign up form for Comp Team Tryouts 9/27</p>
-          <span class="btn-learn-more">Learn More</span>
-        </div>
-      </a>
-
-      <a href="#" class="link-button" target="_blank">
-        <span>DSE link, must register to go on trips!</span>
-      </a>
-
-      <a href="#" class="link-button" target="_blank">
-        <span>Sign up form for Comp Team Tryouts 9/27</span>
-      </a>
-
-      <a href="#" class="link-button" target="_blank">
-        <span>Rungne online store link</span>
-      </a>
+    <!-- Links List (Dynamic) -->
+    <div class="links-list" id="links-list-container">
+      <p style="text-align: center; color: rgba(255,255,255,0.7);">Loading links...</p>
     </div>
-
-    <footer class="links-footer">
-      <div class="footer-links-row">
-        <a href="#">Policy</a>
-        <span>•</span>
-        <a href="#">TOS</a>
-        <span>•</span>
-        <a href="#">Privacy Choices</a>
-      </div>
-      <p class="copyright-text">Create your own links page</p>
-    </footer>
   </div>
+
+  <script>
+    // Paste your Published Google Sheet CSV URL here
+    const sheetCSVUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS5v0bgyBhsan_cjBcKNXi0FzNs-RQmx9BFffmSEOKIib_WzD21sRJQY32iYzpOOZWAqbq_yMeUsPHG/pub?output=csv';
+
+    // Robust CSV line parser that correctly handles commas inside quotes
+    function parseCSVLine(line) {
+      const values = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        let char = line[i];
+        if (char === '"') {
+          if (inQuotes && line[i + 1] === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          values.push(current);
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      values.push(current);
+      return values.map(v => v.trim().replace(/^"(.*)"$/, '$1'));
+    }
+
+    function parseCSV(text) {
+      let lines = text.split(/\r\n|\n/);
+      let result = [];
+      if (lines.length === 0) return result;
+      
+      let headers = parseCSVLine(lines[0]);
+      
+      for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+        let currentLine = parseCSVLine(lines[i]);
+        let obj = {};
+        for (let j = 0; j < headers.length; j++) {
+          obj[headers[j]] = currentLine[j] ? currentLine[j].trim() : '';
+        }
+        result.push(obj);
+      }
+      return result;
+    }
+
+    // Fetch and render data from Google Sheet
+    fetch(sheetCSVUrl)
+      .then(response => response.text())
+      .then(csvText => {
+        const rows = parseCSV(csvText);
+        const container = document.getElementById('links-list-container');
+        container.innerHTML = '';
+
+        rows.forEach(row => {
+          const rowType = (row.type || '').toLowerCase().trim();
+
+          if (rowType === 'profile') {
+            if (row.title) {
+              document.getElementById('profile-title').textContent = row.title;
+            }
+            if (row.description) {
+              document.getElementById('profile-bio').innerHTML = row.description;
+            }
+            const customImage = row.image || row.url;
+            if (customImage && customImage.startsWith('http')) {
+              document.getElementById('profile-img').src = customImage;
+            }
+          } 
+          else if (rowType === 'featured') {
+            const card = document.createElement('a');
+            card.href = row.url || '#';
+            card.className = 'featured-link-card';
+            card.target = '_blank';
+            card.innerHTML = `
+              <div class="featured-card-icon">
+                <span>${row.icon || 'RU'}</span>
+              </div>
+              <div class="featured-card-content">
+                <h3>${row.title || ''}</h3>
+                <p>${row.description || ''}</p>
+                <span class="btn-learn-more">${row.buttonText || 'Learn More'}</span>
+              </div>
+            `;
+            container.appendChild(card);
+          } 
+          else if (rowType === 'button') {
+            const btn = document.createElement('a');
+            btn.href = row.url || '#';
+            btn.className = 'link-button';
+            btn.target = '_blank';
+            btn.innerHTML = `<span>${row.text || row.title || 'Link'}</span>`;
+            container.appendChild(btn);
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Error loading data from Google Sheet:', error);
+        document.getElementById('links-list-container').innerHTML = '<p style="text-align:center; color: #ffcccc;">Failed to load links.</p>';
+      });
+  </script>
 
 </body>
 </html>
