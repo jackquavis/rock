@@ -22,9 +22,6 @@ content:
           - name: major
             label: Major
             type: string
-          - name: bio
-            label: Bio
-            type: string
           - name: image
             label: Photo
             type: image
