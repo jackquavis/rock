@@ -1,0 +1,64 @@
+{
+  "members": [
+    {
+      "name": "Gabby Cruz",
+      "role": "President",
+      "major": "Finance",
+      "image": ""
+    },
+    {
+      "name": "Katie Sullivan",
+      "role": "Vice President",
+      "major": "Chemical Eng",
+      "image": ""
+    },
+    {
+      "name": "Francis Gamil",
+      "role": "Comp Team Captain",
+      "major": "Comp Sci",
+      "image": ""
+    },
+    {
+      "name": "Eve Kreger",
+      "role": "Rec Team Captain",
+      "major": "Nursing",
+      "image": ""
+    },
+    {
+      "name": "Pierce Jackson",
+      "role": "Head Setting",
+      "major": "Philosophy",
+      "image": ""
+    },
+    {
+      "name": "Sulayman Khan",
+      "role": "Treasurer",
+      "major": "Computer Eng",
+      "image": ""
+    },
+    {
+      "name": "Josh Lim",
+      "role": "Social Media",
+      "major": "Mechanical Eng",
+      "image": ""
+    },
+    {
+      "name": "Gabriella Keil",
+      "role": "Social Media",
+      "major": "Filmmaking",
+      "image": ""
+    },
+    {
+      "name": "Jakub Chojnowski",
+      "role": "Secretary",
+      "major": "Cybersecurity",
+      "image": ""
+    },
+    {
+      "name": "Chris Shuba",
+      "role": "Fundraising Chair",
+      "major": "Finance",
+      "image": ""
+    }
+  ]
+}

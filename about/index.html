@@ -351,7 +351,6 @@
         EXECUTIVE BOARD
       </h2>
 
-      <!-- Empty Container: Dynamically populated from Google Sheet CSV -->
       <div class="eboard-grid" id="eboard-grid">
         <div class="eboard-status">Loading E-Board Members...</div>
       </div>
@@ -497,98 +496,55 @@
     </div>
   </footer>
 
-  <!-- Script for Google Sheet Data Loading -->
+  <!-- Direct Local JSON Script -->
   <script>
-    // Paste your Published Google Sheet CSV URL here
-    const GOOGLE_SHEET_CSV_URL = 'YOUR_PUBLISHED_CSV_URL';
-
-    // CSV line parser supporting quoted strings
-    function parseCSVLine(text) {
-      const result = [];
-      let current = '';
-      let inQuotes = false;
-      for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        if (char === '"') {
-          inQuotes = !inQuotes;
-        } else if (char === ',' && !inQuotes) {
-          result.push(current.trim().replace(/^"|"$/g, ''));
-          current = '';
-        } else {
-          current += char;
-        }
-      }
-      result.push(current.trim().replace(/^"|"$/g, ''));
-      return result;
-    }
-
-    async function loadEboardFromSheet() {
+    function renderEboardCards(members) {
       const gridContainer = document.getElementById('eboard-grid');
+      gridContainer.innerHTML = '';
 
-      if (!GOOGLE_SHEET_CSV_URL || GOOGLE_SHEET_CSV_URL === 'YOUR_PUBLISHED_CSV_URL') {
-        gridContainer.innerHTML = `
-          <div class="eboard-status" style="color: #cc0033;">
-            Please replace 'YOUR_PUBLISHED_CSV_URL' in the script with your published Google Sheet CSV link.
-          </div>`;
+      if (!members || members.length === 0) {
+        gridContainer.innerHTML = '<div class="eboard-status">No E-Board members found.</div>';
         return;
       }
 
+      members.forEach(member => {
+        if (!member.name) return;
+
+        const card = document.createElement('div');
+        card.className = 'eboard-card';
+
+        const imageContent = member.image
+          ? `<img src="${member.image}" alt="${member.name}">`
+          : `<div class="eboard-placeholder">Image Placeholder</div>`;
+
+        card.innerHTML = `
+          ${imageContent}
+          <div class="eboard-name">${member.name}</div>
+          <div class="eboard-overlay">
+            <div class="eboard-role">${member.role || ''}</div>
+            ${member.major ? `<div class="eboard-major">${member.major}</div>` : ''}
+          </div>
+        `;
+
+        gridContainer.appendChild(card);
+      });
+    }
+
+    async function loadEboardData() {
       try {
-        const response = await fetch(GOOGLE_SHEET_CSV_URL);
-        if (!response.ok) throw new Error(`HTTP error status: ${response.status}`);
-
-        const csvText = await response.text();
-        const lines = csvText.trim().split(/\r?\n/);
-
-        if (lines.length < 2) {
-          gridContainer.innerHTML = `<div class="eboard-status">No member data found in the spreadsheet.</div>`;
-          return;
-        }
-
-        const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase());
-
-        const members = lines.slice(1).map(line => {
-          const values = parseCSVLine(line);
-          const member = {};
-          headers.forEach((header, index) => {
-            member[header] = values[index] || '';
-          });
-          return member;
-        });
-
-        gridContainer.innerHTML = ''; // Clear loading indicator
-
-        members.forEach(member => {
-          if (!member.name) return;
-
-          const card = document.createElement('div');
-          card.className = 'eboard-card';
-
-          const imageContent = member.image
-            ? `<img src="${member.image}" alt="${member.name}">`
-            : `<div class="eboard-placeholder">Image Placeholder</div>`;
-
-          card.innerHTML = `
-            ${imageContent}
-            <div class="eboard-name">${member.name}</div>
-            <div class="eboard-overlay">
-              <div class="eboard-role">${member.role || ''}</div>
-              <div class="eboard-major">${member.major || ''}</div>
-            </div>
-          `;
-
-          gridContainer.appendChild(card);
-        });
+        const response = await fetch('/data/eboard.json');
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        
+        const data = await response.json();
+        renderEboardCards(data.members || []);
       } catch (error) {
-        console.error('Error fetching E-Board Google Sheet:', error);
-        gridContainer.innerHTML = `
-          <div class="eboard-status" style="color: #cc0033;">
-            Failed to load E-Board members from Google Sheet. Check the CSV link and permissions.
-          </div>`;
+        console.error('Error loading eboard JSON:', error);
+        document.getElementById('eboard-grid').innerHTML = 
+          '<div class="eboard-status">Failed to load E-Board members.</div>';
       }
     }
 
-    loadEboardFromSheet();
+    loadEboardData();
   </script>
 </body>
 </html>
