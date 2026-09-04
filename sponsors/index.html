@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sponsors - Rutgers Climbing Team</title>
   <link rel="stylesheet" href="/style.css">
+  <style>
+    .sponsor-status {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.1rem;
+    }
+  </style>
 </head>
 <body style="background-color: #151515; color: #ffffff; margin: 0; font-family: system-ui, -apple-system, sans-serif;">
 
@@ -39,33 +48,8 @@
   <main style="padding: 2rem 0 6rem;">
     <div class="container" style="max-width: 1100px; margin: 0 auto; padding: 0 1.5rem;">
       
-      <div class="sponsors-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
-        
-        <div class="sponsor-card" style="background-color: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 0 !important; padding: 2.5rem 2rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 260px;">
-          <div style="background-color: #ffffff; padding: 1.5rem 2rem; width: 80%; display: flex; align-items: center; justify-content: center; border-radius: 0 !important; margin-bottom: 1.5rem;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png" alt="Rúngne Logo" style="display: none;">
-            <span style="color: #000000; font-size: 2.2rem; font-weight: 900; letter-spacing: -0.03em; font-family: serif;">Rúngne</span>
-          </div>
-          <div>
-            <span style="display: inline-block; background-color: rgba(204, 0, 51, 0.15); color: #cc0033; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.35rem 0.85rem; border-radius: 0 !important; margin-bottom: 0.75rem;">
-              Official Sponsor
-            </span>
-            <p style="font-size: 0.95rem; color: rgba(255, 255, 255, 0.7); margin: 0;">Providing premium apparel and gear designed specifically for high-performance climbing.</p>
-          </div>
-        </div>
-
-        <div class="sponsor-card" style="background-color: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 0 !important; padding: 2.5rem 2rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 260px;">
-          <div style="background-color: #000000; border: 1px solid #333; padding: 1.5rem 2rem; width: 80%; display: flex; align-items: center; justify-content: center; border-radius: 0 !important; margin-bottom: 1.5rem;">
-            <span style="color: #ffffff; font-size: 2.2rem; font-weight: 900; letter-spacing: -0.02em;">tuff.</span>
-          </div>
-          <div>
-            <span style="display: inline-block; background-color: rgba(204, 0, 51, 0.15); color: #cc0033; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.35rem 0.85rem; border-radius: 0 !important; margin-bottom: 0.75rem;">
-              Official Sponsor
-            </span>
-            <p style="font-size: 0.95rem; color: rgba(255, 255, 255, 0.7); margin: 0;">Durable gear and chalk products built to withstand intense training and outdoor routes.</p>
-          </div>
-        </div>
-
+      <div class="sponsors-grid" id="sponsors-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
+        <div class="sponsor-status">Loading Sponsors...</div>
       </div>
 
       <div style="background-color: #1e1e1e; border-left: 4px solid #cc0033; border-radius: 0 !important; padding: 3rem 2.5rem; text-align: center;">
@@ -116,6 +100,72 @@
       <p>&copy; 2026 Rutgers Climbing Team. All rights reserved.</p>
     </div>
   </footer>
+
+  <script>
+    function renderSponsorCards(sponsors) {
+      const gridContainer = document.getElementById('sponsors-grid');
+      gridContainer.innerHTML = '';
+
+      if (!sponsors || sponsors.length === 0) {
+        gridContainer.innerHTML = '<div class="sponsor-status">No sponsors found.</div>';
+        return;
+      }
+
+      sponsors.forEach(sponsor => {
+        if (!sponsor.name) return;
+
+        const card = document.createElement('div');
+        card.className = 'sponsor-card';
+        card.style.cssText = 'background-color: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 0 !important; padding: 2.5rem 2rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 280px;';
+
+        const bgColor = sponsor.color || '#ffffff';
+        const textColor = sponsor.text_color || '#000000';
+
+        // Logo image vs text fallback
+        const logoContent = sponsor.logo
+          ? `<img src="${sponsor.logo}" alt="${sponsor.name}" style="max-height: 50px; max-width: 100%; object-fit: contain;">`
+          : `<span style="color: ${textColor}; font-size: 1.8rem; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase;">${sponsor.name}</span>`;
+
+        // Discount code component (only renders if discount_code is present)
+        const discountContent = sponsor.discount_code
+          ? `<div style="font-size: 0.85rem; color: #ffffff; background-color: rgba(204, 0, 51, 0.15); border: 1px dashed #cc0033; padding: 0.4rem 0.75rem; display: inline-block; margin-top: 0.85rem;">
+               Use code <strong style="color: #ffffff; letter-spacing: 0.05em;">${sponsor.discount_code}</strong> for 10% off
+             </div>`
+          : '';
+
+        card.innerHTML = `
+          <div style="background-color: ${bgColor}; border: 1px solid #333; padding: 1.5rem 2rem; width: 80%; display: flex; align-items: center; justify-content: center; border-radius: 0 !important; margin-bottom: 1.5rem; min-height: 80px;">
+            ${logoContent}
+          </div>
+          <div>
+            <span style="display: inline-block; background-color: rgba(204, 0, 51, 0.15); color: #cc0033; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.35rem 0.85rem; border-radius: 0 !important; margin-bottom: 0.75rem;">
+              Official Sponsor
+            </span>
+            <p style="font-size: 0.95rem; color: rgba(255, 255, 255, 0.7); margin: 0;">${sponsor.description || ''}</p>
+            ${discountContent}
+          </div>
+        `;
+
+        gridContainer.appendChild(card);
+      });
+    }
+
+    async function loadSponsorsData() {
+      try {
+        const response = await fetch('/data/sponsors.json');
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        
+        const data = await response.json();
+        renderSponsorCards(data.sponsors || []);
+      } catch (error) {
+        console.error('Error loading sponsors JSON:', error);
+        document.getElementById('sponsors-grid').innerHTML = 
+          '<div class="sponsor-status">Failed to load sponsors.</div>';
+      }
+    }
+
+    loadSponsorsData();
+  </script>
 
 </body>
 </html>
