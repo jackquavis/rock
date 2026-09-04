@@ -49,6 +49,28 @@ content:
             label: Photo (Optional)
             type: image
 
+  - name: gallery_data
+    label: Gallery Photos
+    type: file
+    path: data/gallery.json
+    fields:
+      - name: photos
+        label: Photo List
+        type: object
+        list: true
+        labelKey: description
+        fields:
+          - name: image
+            label: Photo Image
+            type: image
+            required: true
+          - name: description
+            label: Short Description (Optional)
+            type: string
+          - name: category
+            label: Category (Optional - Hidden on Frontend)
+            type: string
+
   - name: links_data
     label: Links Page Data
     type: file
