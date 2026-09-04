@@ -1,0 +1,56 @@
+media:
+  input: assets
+  output: /assets
+
+content:
+  - name: eboard_data
+    label: Executive Board Data
+    type: file
+    path: data/eboard.json
+    fields:
+      - name: members
+        label: Members
+        type: object
+        list: true
+        fields:
+          - name: name
+            label: Name
+            type: string
+          - name: role
+            label: Role
+            type: string
+          - name: major
+            label: Major
+            type: string
+          - name: bio
+            label: Bio
+            type: string
+          - name: image
+            label: Photo
+            type: image
+
+  - name: links_data
+    label: Links Page Data
+    type: file
+    path: data/links.json
+    fields:
+      - name: links
+        label: Links List
+        type: object
+        list: true
+        fields:
+          - name: type
+            label: Type
+            type: string
+          - name: title
+            label: Title
+            type: string
+          - name: url
+            label: URL
+            type: string
+          - name: text
+            label: Text
+            type: string
+          - name: description
+            label: Description
+            type: string
