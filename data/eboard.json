@@ -3,62 +3,52 @@
     {
       "name": "Gabby Cruz",
       "role": "President",
-      "major": "Finance",
-      "image": ""
+      "major": "Finance test"
     },
     {
       "name": "Katie Sullivan",
       "role": "Vice President",
-      "major": "Chemical Eng",
-      "image": ""
+      "major": "Chemical Eng"
     },
     {
       "name": "Francis Gamil",
       "role": "Comp Team Captain",
-      "major": "Comp Sci",
-      "image": ""
+      "major": "Comp Sci"
     },
     {
       "name": "Eve Kreger",
       "role": "Rec Team Captain",
-      "major": "Nursing",
-      "image": ""
+      "major": "Nursing"
     },
     {
       "name": "Pierce Jackson",
       "role": "Head Setting",
-      "major": "Philosophy",
-      "image": ""
+      "major": "Philosophy"
     },
     {
       "name": "Sulayman Khan",
       "role": "Treasurer",
-      "major": "Computer Eng",
-      "image": ""
+      "major": "Computer Eng"
     },
     {
       "name": "Josh Lim",
       "role": "Social Media",
-      "major": "Mechanical Eng",
-      "image": ""
+      "major": "Mechanical Eng"
     },
     {
       "name": "Gabriella Keil",
       "role": "Social Media",
-      "major": "Filmmaking",
-      "image": ""
+      "major": "Filmmaking"
     },
     {
       "name": "Jakub Chojnowski",
       "role": "Secretary",
-      "major": "Cybersecurity",
-      "image": ""
+      "major": "Cybersecurity"
     },
     {
       "name": "Chris Shuba",
       "role": "Fundraising Chair",
-      "major": "Finance",
-      "image": ""
+      "major": "Finance"
     }
   ]
 }
