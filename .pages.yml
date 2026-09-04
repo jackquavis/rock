@@ -10,7 +10,9 @@ content:
     fields:
       - name: members
         label: Members
-        type: list
+        type: object
+        list: true
+        labelKey: name
         fields:
           - name: name
             label: Name
@@ -32,7 +34,9 @@ content:
     fields:
       - name: links
         label: Links List
-        type: list
+        type: object
+        list: true
+        labelKey: title
         fields:
           - name: type
             label: Type
@@ -57,7 +61,9 @@ content:
     fields:
       - name: sponsors
         label: Sponsors List
-        type: list
+        type: object
+        list: true
+        labelKey: name
         fields:
           - name: name
             label: Sponsor Name

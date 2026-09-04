@@ -1,0 +1,29 @@
+{
+  "sponsors": [
+    {
+      "name": "Rúngne",
+      "color": "#ffffff",
+      "text_color": "#000000",
+      "description": "Providing premium apparel and gear designed specifically for high-performance climbing.",
+      "discount_code": "RUROCKCLIMBING"
+    },
+    {
+      "name": "tuff.",
+      "color": "#000000",
+      "text_color": "#ffffff",
+      "description": "Durable gear and chalk products built to withstand intense training and outdoor routes."
+    },
+    {
+      "name": "UNPARALLEL",
+      "color": "#000000",
+      "text_color": "#ffffff",
+      "description": "High-performance climbing shoes engineered with high-friction rubber for maximum grip and precision."
+    },
+    {
+      "name": "FRICTION LABS",
+      "color": "#ffffff",
+      "text_color": "#000000",
+      "description": "Purity-tested chalk and grip supplies engineered to keep hands dry and maximize friction on the wall."
+    }
+  ]
+}
