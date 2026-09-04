@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026-2027 Comp Team Roster - Rutgers Climbing Team</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* Base Page Styling */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #151515; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; }
+
+    /* Roster Grid & Card Styles */
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+      min-height: 250px;
+    }
+
+    .roster-card {
+      position: relative;
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    .roster-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .roster-placeholder {
+      background: #1e1e1e;
+      border: 2px dashed #333333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      width: 100%;
+      height: 100%;
+    }
+
+    .roster-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.95));
+      padding: 1.75rem 1rem 1rem;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .roster-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    .roster-major {
+      color: #cc0033;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+
+    /* Coming Soon / Empty State Container */
+    .coming-soon-box {
+      grid-column: 1 / -1;
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      border-left: 4px solid #cc0033;
+      padding: 4rem 2rem;
+      text-align: center;
+      border-radius: 4px;
+    }
+
+    .coming-soon-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+    }
+
+    .coming-soon-subtext {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 550px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Component -->
+  <header class="site-header">
+    <a href="/" class="logo-container">
+      <img src="/assets/RURC_Logo_Transparent.png" alt="Rutgers Climbing Logo" style="height: 50px; width: auto; display: block;">
+    </a>
+
+    <nav>
+      <ul>
+        <li><a href="/about">About</a></li>
+        <li><a href="/gallery">Gallery</a></li>
+        <li><a href="/sponsors">Sponsors</a></li>
+        <li><a href="/roster">Roster</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="/donate" class="btn-donate" style="border-radius: 0 !important;">Donate</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" style="position: relative; width: 100%; background-color: #151515; text-align: center; padding: 4rem 1rem 2rem;">
+    <h1 style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 0.5rem; text-shadow: 0 4px 20px rgba(0,0,0,0.85);">
+      2026–2027 COMP TEAM ROSTER
+    </h1>
+    <p style="font-size: 1.15rem; color: rgba(255, 255, 255, 0.8); max-width: 650px; margin: 0 auto; font-weight: 400; line-height: 1.6;">
+      Meet the collegiate athletes representing Rutgers University in the USA Climbing Collegiate Series.
+    </p>
+  </section>
+
+  <!-- Main Roster Section -->
+  <main style="padding: 2rem 0 6rem;">
+    <div style="max-width: 1100px; margin: 0 auto; padding: 0 1.5rem;">
+      <div class="roster-grid" id="roster-grid">
+        <div class="coming-soon-box">
+          <div class="coming-soon-title">Roster Coming Soon</div>
+          <p class="coming-soon-subtext">Tryouts and roster selections for the 2026–2027 competition season are currently underway. Check back soon for official updates!</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Component -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Rutgers Climbing Team</h3>
+        <p>Conquering problems on and off the wall at Rutgers University New Brunswick.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/gallery">Gallery</a></li>
+          <li><a href="/sponsors">Sponsors</a></li>
+          <li><a href="/roster">Roster</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="https://www.instagram.com/rurockclimbing/" target="_blank">Instagram</a></li>
+          <li><a href="https://discord.com/invite/bpG9ZYzj9s" target="_blank">Discord</a></li>
+          <li><a href="https://rutgers.campuslabs.com" target="_blank">Engage Hub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Rutgers Climbing Team. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Dynamic JSON Rendering Script -->
+  <script>
+    function renderRosterCards(members) {
+      const gridContainer = document.getElementById('roster-grid');
+      gridContainer.innerHTML = '';
+
+      // Fallback: If no members exist yet, show "Coming Soon" state
+      if (!members || members.length === 0) {
+        gridContainer.innerHTML = `
+          <div class="coming-soon-box">
+            <div class="coming-soon-title">Roster Coming Soon</div>
+            <p class="coming-soon-subtext">Tryouts and team selections for the 2026–2027 competition season are currently underway. Check back soon!</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Render athletes when added via CMS
+      members.forEach(member => {
+        if (!member.name) return;
+
+        const card = document.createElement('div');
+        card.className = 'roster-card';
+
+        const imageContent = member.image
+          ? `<img src="${member.image}" alt="${member.name}">`
+          : `<div class="roster-placeholder">Photo Coming Soon</div>`;
+
+        card.innerHTML = `
+          ${imageContent}
+          <div class="roster-info">
+            <div class="roster-name">${member.name}</div>
+            ${member.major ? `<div class="roster-major">${member.major}</div>` : ''}
+          </div>
+        `;
+
+        gridContainer.appendChild(card);
+      });
+    }
+
+    async function loadRosterData() {
+      try {
+        const response = await fetch('/data/roster.json');
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        
+        const data = await response.json();
+        renderRosterCards(data.members || []);
+      } catch (error) {
+        console.error('Error loading roster JSON:', error);
+        document.getElementById('roster-grid').innerHTML = `
+          <div class="coming-soon-box">
+            <div class="coming-soon-title">Roster Coming Soon</div>
+            <p class="coming-soon-subtext">Tryouts and team selections for the 2026–2027 competition season are currently underway. Check back soon!</p>
+          </div>
+        `;
+      }
+    }
+
+    loadRosterData();
+  </script>
+
+</body>
+</html>

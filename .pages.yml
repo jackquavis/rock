@@ -27,6 +27,28 @@ content:
             label: Photo
             type: image
 
+  - name: roster_data
+    label: 2026-2027 Roster Data
+    type: file
+    path: data/roster.json
+    fields:
+      - name: members
+        label: Team Members
+        type: object
+        list: true
+        labelKey: name
+        fields:
+          - name: name
+            label: Member Name
+            type: string
+            required: true
+          - name: major
+            label: Major
+            type: string
+          - name: image
+            label: Photo (Optional)
+            type: image
+
   - name: links_data
     label: Links Page Data
     type: file
