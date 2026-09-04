@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rutgers Climbing Team</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -24,46 +24,60 @@
     </nav>
 
     <div class="header-actions">
-      <a href="" class="btn-donate">Donate</a>
+      <a href="donate.html" class="btn-donate">Donate</a>
     </div>
   </header>
 
   <!-- Centered Hero Banner Section -->
-  <section class="hero-section">
-    <div class="hero-content">
-      <h1>THE RUTGERS CLIMBING TEAM</h1>
+  <section class="hero-section" style="position: relative; width: 100%; background-color: #151515; overflow: hidden; padding: 0;">
+    <img src="assets/BG_Main.jpg" alt="Rutgers Climbing Team" style="width: 100%; height: auto; display: block; filter: brightness(0.45);">
+    <div class="hero-content" style="position: absolute; top: 16%; left: 50%; transform: translateX(-50%); width: 95%; text-align: center;">
+      <h1 style="font-size: clamp(3.5rem, 8.5vw, 7.5rem); line-height: 1.05; font-weight: 900; letter-spacing: 0.03em;">
+        THE RUTGERS<br>CLIMBING TEAM
+      </h1>
     </div>
   </section>
 
   <!-- Main Content Area -->
   <main>
     <!-- Who We Are Section -->
-    <section class="who-we-are">
-      <div class="container">
-        <h2>WHO <span class="scarlet-r">R</span> WE?</h2>
-        <p>We climb and compete nationally under Rutgers University to support all climbers' passion for the sport. We foster a welcoming environment by facilitating a culture of teamwork, passion, and perseverance.</p>
+    <section class="who-we-are" style="background-color: #151515; color: var(--rutgers-white);">
+      <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
         
-        <div class="card-grid">
+        <h2 style="font-size: 3.5rem; color: var(--rutgers-white); margin-bottom: 1.5rem; text-transform: uppercase;">
+          WHO <span style="color: var(--rutgers-scarlet);">R</span> WE?
+        </h2>
+        
+        <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 2.5rem;">We climb and compete nationally under Rutgers University to support all climbers' passion for the sport. We foster a welcoming environment by facilitating a culture of teamwork, passion, and perseverance.</p>
+        
+        <!-- 5-Column Grid with Full Vertical Height -->
+        <div class="card-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; width: 100%;">
+          
           <a href="index.html" class="feature-card">
-            <div class="card-img" style="background-image: url('assets/BG_Main.jpg');"></div>
-            <div class="card-label">Home</div>
+            <div class="card-img" style="width: 100%; height: auto !important; aspect-ratio: 1 / 2.8; background-image: url('assets/Pierce_Tounge.jpg'); background-size: 500% auto; background-position: 0% center; background-repeat: no-repeat;"></div>
+            <div class="card-label" style="font-size: clamp(0.7rem, 1.2vw, 1rem); padding: 0.85rem 0.25rem; text-align: center;">Home</div>
           </a>
+
           <a href="about.html" class="feature-card">
-            <div class="card-img" style="background-image: url('assets/BG_Main.jpg');"></div>
-            <div class="card-label">About</div>
+            <div class="card-img" style="width: 100%; height: auto !important; aspect-ratio: 1 / 2.8; background-image: url('assets/Pierce_Tounge.jpg'); background-size: 500% auto; background-position: 25% center; background-repeat: no-repeat;"></div>
+            <div class="card-label" style="font-size: clamp(0.7rem, 1.2vw, 1rem); padding: 0.85rem 0.25rem; text-align: center;">About</div>
           </a>
+
           <a href="gallery.html" class="feature-card">
-            <div class="card-img" style="background-image: url('assets/BG_Main.jpg');"></div>
-            <div class="card-label">Gallery</div>
+            <div class="card-img" style="width: 100%; height: auto !important; aspect-ratio: 1 / 2.8; background-image: url('assets/Pierce_Tounge.jpg'); background-size: 500% auto; background-position: 50% center; background-repeat: no-repeat;"></div>
+            <div class="card-label" style="font-size: clamp(0.7rem, 1.2vw, 1rem); padding: 0.85rem 0.25rem; text-align: center;">Gallery</div>
           </a>
+
           <a href="sponsors.html" class="feature-card">
-            <div class="card-img" style="background-image: url('assets/BG_Main.jpg');"></div>
-            <div class="card-label">Sponsors</div>
+            <div class="card-img" style="width: 100%; height: auto !important; aspect-ratio: 1 / 2.8; background-image: url('assets/Pierce_Tounge.jpg'); background-size: 500% auto; background-position: 75% center; background-repeat: no-repeat;"></div>
+            <div class="card-label" style="font-size: clamp(0.7rem, 1.2vw, 1rem); padding: 0.85rem 0.25rem; text-align: center;">Sponsors</div>
           </a>
+
           <a href="roster.html" class="feature-card">
-            <div class="card-img" style="background-image: url('assets/BG_Main.jpg');"></div>
-            <div class="card-label">Roster</div>
+            <div class="card-img" style="width: 100%; height: auto !important; aspect-ratio: 1 / 2.8; background-image: url('assets/Pierce_Tounge.jpg'); background-size: 500% auto; background-position: 100% center; background-repeat: no-repeat;"></div>
+            <div class="card-label" style="font-size: clamp(0.7rem, 1.2vw, 1rem); padding: 0.85rem 0.25rem; text-align: center;">Roster</div>
           </a>
+
         </div>
       </div>
     </section>
