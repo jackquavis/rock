@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Rutgers Climbing Team</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* Base Reset & Variables */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background-color: #151515; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; }
+
+    /* Header Styling */
+    .site-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #151515; border-bottom: 1px solid #2a2a2a; }
+    .site-header nav ul { display: flex; list-style: none; gap: 1.5rem; }
+    .site-header nav a { color: #fff; text-decoration: none; font-weight: 600; }
+    .btn-donate { background: #cc0033; color: #fff; padding: 0.5rem 1.2rem; text-decoration: none; font-weight: 700; display: inline-block; }
+
+    /* Parallax Hero Section */
+    .parallax-hero {
+      position: relative;
+      width: 100%;
+      height: 65vh;
+      min-height: 450px;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(21, 21, 21, 1)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23222222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23444444" font-family="sans-serif" font-size="10">HERO PARALLAX IMAGE</text></svg>');
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Sticky Navigation Bar */
+    .sub-nav {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(21, 21, 21, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid #2a2a2a;
+      padding: 0.85rem 1rem;
+      gap: 1.5rem;
+      z-index: 80;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .sub-nav a {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+    .sub-nav a:hover { color: #cc0033; }
+
+    /* Desktop Sub-Nav Override */
+    @media (min-width: 1201px) {
+      .sub-nav {
+        position: fixed;
+        left: 2rem;
+        top: 30%;
+        width: auto;
+        background: transparent;
+        backdrop-filter: none;
+        flex-direction: column;
+        justify-content: flex-start;
+        border-bottom: none;
+        border-left: 2px solid #333;
+        padding: 0 0 0 1rem;
+        overflow-x: visible;
+      }
+    }
+
+    /* Layout Containers */
+    .content-wrapper { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 6rem; }
+    .section-block { padding-top: 4rem; }
+
+    /* Stats & Overview */
+    .stats-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: start; }
+    .stat-number { font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900; color: #ffffff; line-height: 1; border-bottom: 2px solid #cc0033; display: inline-block; padding-bottom: 0.2rem; }
+    .stat-label { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.8); margin-bottom: 1.5rem; }
+
+    /* Executive Board Grid */
+    .eboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+      min-height: 200px;
+    }
+
+    .eboard-status {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.1rem;
+    }
+
+    .eboard-card {
+      position: relative;
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    .eboard-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .eboard-placeholder {
+      background: #1e1e1e;
+      border: 2px dashed #333333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.3);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      width: 100%;
+      height: 100%;
+    }
+
+    .eboard-name {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.95));
+      padding: 1.5rem 1rem 0.75rem;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #ffffff;
+      z-index: 2;
+      transition: opacity 0.3s ease;
+    }
+
+    .eboard-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      text-align: center;
+      opacity: 0;
+      z-index: 3;
+      transition: opacity 0.3s ease;
+    }
+
+    .eboard-card:hover .eboard-overlay { opacity: 1; }
+    .eboard-card:hover .eboard-name { opacity: 0; }
+
+    .eboard-role {
+      color: #cc0033;
+      font-weight: 800;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .eboard-major {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Text Block Container Styling */
+    .text-card {
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      border-left: 4px solid #cc0033;
+      padding: 2rem;
+      border-radius: 4px;
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.75;
+    }
+
+    .text-card p {
+      margin-bottom: 1.25rem;
+    }
+
+    .text-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .sign-off {
+      margin-top: 1.5rem;
+      font-weight: 700;
+      color: #cc0033;
+      font-style: italic;
+    }
+
+    /* FAQ Accordion */
+    .faq-item { background-color: #1e1e1e; border: 1px solid #2a2a2a; margin-bottom: 0.75rem; }
+    .faq-question { padding: 1.25rem 1.5rem; font-size: 1.1rem; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; color: #ffffff; }
+    .faq-question::-webkit-details-marker { display: none; }
+    .faq-question::after { content: '+'; font-size: 1.4rem; color: #cc0033; }
+    details[open] .faq-question::after { content: '−'; }
+    .faq-answer { padding: 0 1.5rem 1.25rem 1.5rem; color: rgba(255, 255, 255, 0.8); font-size: 1rem; line-height: 1.6; border-top: 1px solid #2a2a2a; margin-top: 0.5rem; padding-top: 1rem; }
+
+    /* Footer Styling */
+    .site-footer {
+      background-color: #0d0d0d;
+      border-top: 1px solid #2a2a2a;
+      padding: 3rem 1.5rem 1.5rem;
+      margin-top: 4rem;
+    }
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .footer-section h3 {
+      color: #cc0033;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+    }
+    .footer-section p, .footer-section a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .footer-section ul { list-style: none; }
+    .footer-section li { margin-bottom: 0.5rem; }
+    .footer-section a:hover { color: #ffffff; }
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid #1a1a1a;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Component -->
+  <header class="site-header">
+    <a href="/" class="logo-container">
+      <img src="/assets/RURC_Logo_Transparent.png" alt="Rutgers Climbing Logo" style="height: 50px; width: auto; display: block;">
+    </a>
+
+    <nav>
+      <ul>
+        <li><a href="/about">About</a></li>
+        <li><a href="/gallery">Gallery</a></li>
+        <li><a href="/sponsors">Sponsors</a></li>
+        <li><a href="/roster">Roster</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="/donate" class="btn-donate" style="border-radius: 0 !important;">Donate</a>
+    </div>
+  </header>
+
+  <!-- Sticky / Side Sub Navigation -->
+  <aside class="sub-nav">
+    <a href="#about">About</a>
+    <a href="#our-team">Our Team</a>
+    <a href="#e-board">E-Board</a>
+    <a href="#history">History</a>
+    <a href="#founders">Founders</a>
+    <a href="#faq">FAQ</a>
+  </aside>
+
+  <!-- Parallax Hero -->
+  <section class="parallax-hero" id="about">
+    <div style="max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; width: 100%;">
+      <h1 style="font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 900; letter-spacing: 0.03em; text-transform: uppercase;">
+        ABOUT US
+      </h1>
+      <p style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.85); max-width: 550px;">
+        Conquering problems on and off the wall at Rutgers University New Brunswick.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Content Wrapper -->
+  <main class="content-wrapper">
+
+    <!-- Section: Our Team & Stats -->
+    <section id="our-team" class="section-block">
+      <h2 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; text-transform: uppercase; margin-bottom: 2.5rem; letter-spacing: 0.02em;">
+        OUR TEAM
+      </h2>
+
+      <div class="stats-grid">
+        <div>
+          <div>
+            <div class="stat-number">14</div>
+            <div class="stat-label">Years</div>
+          </div>
+          <div>
+            <div class="stat-number">87</div>
+            <div class="stat-label">Competitions</div>
+          </div>
+          <div>
+            <div class="stat-number">200+</div>
+            <div class="stat-label">Athletes</div>
+          </div>
+        </div>
+
+        <div style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); line-height: 1.7;">
+          <p style="margin-bottom: 1.5rem;">
+            The Rutgers Climbing Team is a club sport sponsored by Rutgers Recreation at Rutgers University New Brunswick. We compete in the USA Climbing Collegiate Mid Atlantic Series at local, regional, and national competitions. We also compete in community competitions held by gyms across the East Coast.
+          </p>
+          <p style="margin-bottom: 1.5rem;">
+            We also have a Rec team which is a more casual commitment for annual dues of $20: they run monthly trips, social events for people of all abilities and interests, and it is a great and fun way to break into climbing!
+          </p>
+          <p>
+            Comp Team membership is open to any full-time undergraduate or graduate student enrolled at Rutgers University. Members must commit to attending weekly practices on Friday and Sunday, training on their own time, attending USA Climbing competitions, and paying annual dues of $70.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Executive Board -->
+    <section id="e-board" class="section-block">
+      <h2 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; text-transform: uppercase; text-align: center; margin-bottom: 2rem;">
+        EXECUTIVE BOARD
+      </h2>
+
+      <!-- Empty Container: Dynamically populated from Google Sheet CSV -->
+      <div class="eboard-grid" id="eboard-grid">
+        <div class="eboard-status">Loading E-Board Members...</div>
+      </div>
+    </section>
+
+    <!-- Section: History -->
+    <section id="history" class="section-block">
+      <h2 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; text-transform: uppercase; margin-bottom: 2rem;">
+        HISTORY
+      </h2>
+      <div class="text-card">
+        <p>
+          In 2014, the team placed third in the CCS Northeast Region marking a strong start for Rutgers entering the climbing comp scene. The team then went on to sweep the regional title in 2017 for all three disciplines, boasting the largest and strongest team in the region. In recent years, our team has soared to new heights (no pun intended) as we have sent 3 athletes to USAC Nationals in 2023 and have had 5 athletes qualify for Nationals in the 2026 season. Over the years the Rutgers CAG rockwall has also seen immense improvements with the implementation of bouldering and in home competitions which gather 100+ competitors each semester. In the 2025/2026 season our amazing setting team has truly transformed our rockwall with the help of TUFF Climbing volumes to be a fully dynamic wall that garners 100+ visits daily.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section: Message from our Founders -->
+    <section id="founders" class="section-block">
+      <h2 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; text-transform: uppercase; margin-bottom: 2rem;">
+        MESSAGE FROM OUR FOUNDERS
+      </h2>
+      <div class="text-card">
+        <p>
+          In the fall of 2013, a group of friends who loved rock climbing founded the Rutgers Climbing Team. At the time, the climbing wall in the College Ave Gym was not very well known, especially among undergrads. Anne (President), Justin (Vice President and Risk Manager), and Alex (Treasurer) came together to sort out the paperwork: getting at least fifteen people to sign up, making an agreement with the Rock Wall, and drafting the constitution. This culminated in a meeting with Rec Sports where we laid out a rock solid case for the team and emerged victorious. Soon after, Isabel (Secretary/Social Media), Patrick (Captain), and Greg joined to get us off the ground. Yay, climbing! That fall, practices had an average about 10 people on a good day. About 8 of us went to NJ Rock Gym to compete in the Brawl that semester, making that our unofficial debut in the comp scene. At the final practice before winter break, it was very exciting to have 15 people show up!
+        </p>
+        <p>
+          The following spring, over 50 people appeared at the wall wanting to get involved. We had to scramble to get t-shirts! With help from a Mason Gross intern and a vote on possible designs, we settled on the same logo that is still in use today. We only needed 1 or 2 cars to get to our first several competitions, but by the end of the semester, coordinating 4-5 carpools was a full fledged logistic operation! We always had fun competing with other schools and celebrating afterwards when back on campus. It was exciting that by the end of the semester we were already one of the top teams in the region! We quickly established a competitive and a recreational team so that everyone could have an opportunity to learn about rock climbing.
+        </p>
+        <p>
+          Over the first few years of the Rutgers Climbing Team, many students found their way to the Rock Wall. Experienced climbers joined the team to find a like minded community, and shared their skills with others. New climbers joined to learn about the sport, and became experienced athletes by the end of the semester. Year after year, we watched the “new” climbers become experienced leaders themselves by the end of their time at Rutgers. This is the proudest tradition of the Rutgers Climbing Team. Those of us who were part of the team’s beginning have enjoyed watching it flourish, and hope it will continue to do so for many years to come.
+        </p>
+        <div class="sign-off">
+          - The Founders of the Rutgers Climbing Team
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: FAQ Accordion -->
+    <section id="faq" class="section-block">
+      <h2 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; text-transform: uppercase; margin-bottom: 2rem;">
+        FREQUENTLY ASKED QUESTIONS
+      </h2>
+
+      <div class="faq-container">
+        <details class="faq-item">
+          <summary class="faq-question">Where and when are practices?</summary>
+          <div class="faq-answer">
+            Practices take place at the Rutgers rock wall, which is located at the back of the College Avenue Gym (CAG) on Friday 5-8 pm and Sunday 7-9 pm. The first practice is free but the following practices members must pay dues. All are welcome and invited to join!
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">How do I join and pay dues?</summary>
+          <div class="faq-answer">
+            It is really simple to join, first join our DSE using this link <a href="https://rutgers.dserec.com/online/clubsports/club/35/registration" target="_blank" rel="noreferrer noopener" style="color:#cc0033;">DSE Registration</a> and pay $25 dues by your second practice. You can pay either via cash or Venmo. Our current treasurer is Sulayman Khan, whose Venmo is @SulaymanKhan1.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">Do I need any equipment?</summary>
+          <div class="faq-answer">
+            The CAG rockwall has free shoe, harness, and chalk bag rentals for students, but you can also bring your own equipment!
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">When are CAG Rockwall open hours?</summary>
+          <div class="faq-answer">
+            The CAG's open hours are from Mon-Thurs 6-10 pm and Sun 4-7 pm.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">Does CAG Rockwall only have ropes?</summary>
+          <div class="faq-answer">
+            No, there are several amazing bouldering and rope problems set by our amazing setting team!
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">What is the difference between Rec Team and Comp Team?</summary>
+          <div class="faq-answer">
+            <p style="margin-bottom: 0.5rem;">The Rutgers Comp Team is a sanctioned club sport here at the university, so we have dedicated team members that attend weekly practices, train together, and represent the University at national-level competitions with annual dues of $70.</p>
+            <p>The Rec team has a more casual commitment: they run monthly trips, social events for people of all abilities and interests and is a great and fun way to break into climbing with annual dues of $20.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">What is the time commitment?</summary>
+          <div class="faq-answer">
+            Rec team has no attendance requirement, but we encourage members to come when they can. Comp team members are expected to come to every practice in order to be reimbursed for comps and Divisionals. Comp team members are also expected to attend at least one competition and are strongly encouraged to attend Divisionals.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">What are climbing competitions?</summary>
+          <div class="faq-answer">
+            <p style="margin-bottom: 0.5rem;">There are two types of competitions: USA Climbing comps and local comps.</p>
+            <p style="margin-bottom: 0.5rem;">There are Qualifying Events (QEs), a Collegiate National Qualifying Event (CNQE), and Nationals; each level requires you to qualify for the next.</p>
+            <p>We host two local competitions each semester right here at CAG for the local community and these are very casual and community-oriented, with things like raffles, prizes, and finals for the top competitors.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">Do we bite?</summary>
+          <div class="faq-answer">
+            No.
+          </div>
+        </details>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer Component -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Rutgers Climbing Team</h3>
+        <p>Conquering problems on and off the wall at Rutgers University New Brunswick.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/gallery">Gallery</a></li>
+          <li><a href="/sponsors">Sponsors</a></li>
+          <li><a href="/roster">Roster</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="https://www.instagram.com/rurockclimbing/" target="_blank">Instagram</a></li>
+          <li><a href="https://discord.com/invite/bpG9ZYzj9s" target="_blank">Discord</a></li>
+          <li><a href="https://rutgers.campuslabs.com" target="_blank">Engage Hub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Rutgers Climbing Team. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Script for Google Sheet Data Loading -->
+  <script>
+    // Paste your Published Google Sheet CSV URL here
+    const GOOGLE_SHEET_CSV_URL = 'YOUR_PUBLISHED_CSV_URL';
+
+    // CSV line parser supporting quoted strings
+    function parseCSVLine(text) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim().replace(/^"|"$/g, ''));
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current.trim().replace(/^"|"$/g, ''));
+      return result;
+    }
+
+    async function loadEboardFromSheet() {
+      const gridContainer = document.getElementById('eboard-grid');
+
+      if (!GOOGLE_SHEET_CSV_URL || GOOGLE_SHEET_CSV_URL === 'YOUR_PUBLISHED_CSV_URL') {
+        gridContainer.innerHTML = `
+          <div class="eboard-status" style="color: #cc0033;">
+            Please replace 'YOUR_PUBLISHED_CSV_URL' in the script with your published Google Sheet CSV link.
+          </div>`;
+        return;
+      }
+
+      try {
+        const response = await fetch(GOOGLE_SHEET_CSV_URL);
+        if (!response.ok) throw new Error(`HTTP error status: ${response.status}`);
+
+        const csvText = await response.text();
+        const lines = csvText.trim().split(/\r?\n/);
+
+        if (lines.length < 2) {
+          gridContainer.innerHTML = `<div class="eboard-status">No member data found in the spreadsheet.</div>`;
+          return;
+        }
+
+        const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase());
+
+        const members = lines.slice(1).map(line => {
+          const values = parseCSVLine(line);
+          const member = {};
+          headers.forEach((header, index) => {
+            member[header] = values[index] || '';
+          });
+          return member;
+        });
+
+        gridContainer.innerHTML = ''; // Clear loading indicator
+
+        members.forEach(member => {
+          if (!member.name) return;
+
+          const card = document.createElement('div');
+          card.className = 'eboard-card';
+
+          const imageContent = member.image
+            ? `<img src="${member.image}" alt="${member.name}">`
+            : `<div class="eboard-placeholder">Image Placeholder</div>`;
+
+          card.innerHTML = `
+            ${imageContent}
+            <div class="eboard-name">${member.name}</div>
+            <div class="eboard-overlay">
+              <div class="eboard-role">${member.role || ''}</div>
+              <div class="eboard-major">${member.major || ''}</div>
+            </div>
+          `;
+
+          gridContainer.appendChild(card);
+        });
+      } catch (error) {
+        console.error('Error fetching E-Board Google Sheet:', error);
+        gridContainer.innerHTML = `
+          <div class="eboard-status" style="color: #cc0033;">
+            Failed to load E-Board members from Google Sheet. Check the CSV link and permissions.
+          </div>`;
+      }
+    }
+
+    loadEboardFromSheet();
+  </script>
+</body>
+</html>
