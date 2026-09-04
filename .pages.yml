@@ -10,8 +10,7 @@ content:
     fields:
       - name: members
         label: Members
-        type: object
-        list: true
+        type: list
         fields:
           - name: name
             label: Name
@@ -33,8 +32,7 @@ content:
     fields:
       - name: links
         label: Links List
-        type: object
-        list: true
+        type: list
         fields:
           - name: type
             label: Type
@@ -50,4 +48,36 @@ content:
             type: string
           - name: description
             label: Description
+            type: string
+
+  - name: sponsors
+    label: Sponsors
+    type: file
+    path: data/sponsors.json
+    fields:
+      - name: sponsors
+        label: Sponsors List
+        type: list
+        fields:
+          - name: name
+            label: Sponsor Name
+            type: string
+            required: true
+          - name: logo
+            label: Logo Image (Optional)
+            type: image
+          - name: color
+            label: Logo Box Background Color
+            type: color
+            default: "#ffffff"
+          - name: text_color
+            label: Logo Text Color
+            type: color
+            default: "#000000"
+          - name: description
+            label: Description
+            type: string
+            required: true
+          - name: discount_code
+            label: Discount Code (Optional)
             type: string
