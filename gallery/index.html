@@ -6,12 +6,33 @@
   <title>Gallery - Rutgers Climbing Team</title>
   <link rel="stylesheet" href="/style.css">
   <style>
+    /* Hero Section Pure Black Background */
+    .hero-section {
+      background-image: none !important;
+      background: #000000 !important;
+    }
+    .hero-section::before,
+    .hero-section::after {
+      display: none !important;
+    }
+
+    /* Red Accent Divider - Thinner (2px) and Wider (140px) */
+    .title-separator {
+      width: 140px;
+      height: 2px;
+      background-color: #cc0033;
+      margin: 1.25rem auto 0.5rem;
+      border-radius: 1px;
+    }
+
     .gallery-card {
       position: relative;
       aspect-ratio: 4 / 3;
-      background-color: #222222;
+      background-color: #1e1e1e;
       overflow: hidden;
       border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      cursor: pointer;
     }
 
     .gallery-card img {
@@ -23,7 +44,7 @@
     }
 
     .gallery-card:hover img {
-      transform: scale(1.03);
+      transform: scale(1.04);
     }
 
     .gallery-caption {
@@ -37,6 +58,116 @@
       font-size: 0.9rem;
       line-height: 1.4;
       pointer-events: none;
+    }
+
+    /* Lightbox Modal Overlay */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.93);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .lightbox.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 88vw;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-content img {
+      max-width: 88vw;
+      max-height: 78vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      user-select: none;
+    }
+
+    .lightbox-modal-caption {
+      margin-top: 1rem;
+      color: #ffffff;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 700px;
+      background: rgba(20, 20, 20, 0.8);
+      padding: 0.6rem 1.25rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 2.5rem;
+      cursor: pointer;
+      line-height: 1;
+      z-index: 10001;
+      transition: color 0.2s ease;
+    }
+
+    .lightbox-close:hover {
+      color: #cc0033;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 1.75rem;
+      padding: 0.75rem 1.15rem;
+      cursor: pointer;
+      border-radius: 4px;
+      z-index: 10001;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+      user-select: none;
+    }
+
+    .lightbox-nav:hover {
+      background: #cc0033;
+      border-color: #cc0033;
+    }
+
+    .lightbox-prev {
+      left: 1.5rem;
+    }
+
+    .lightbox-next {
+      right: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .lightbox-nav {
+        padding: 0.5rem 0.85rem;
+        font-size: 1.25rem;
+      }
+      .lightbox-prev { left: 0.5rem; }
+      .lightbox-next { right: 0.5rem; }
+      .lightbox-close { top: 1rem; right: 1rem; }
     }
   </style>
 </head>
@@ -61,28 +192,44 @@
     </div>
   </header>
 
-  <section class="hero-section" style="position: relative; width: 100%; background-color: #151515; text-align: center; padding: 4rem 1rem 2rem;">
-    <h1 style="font-size: clamp(3rem, 7vw, 5rem); font-weight: 900; letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 0.5rem; text-shadow: 0 4px 20px rgba(0,0,0,0.85);">
+  <section class="hero-section" style="position: relative; width: 100%; background: #000000; text-align: center; padding: 4rem 1rem 1.5rem;">
+    <h1 style="font-size: clamp(3rem, 7vw, 5rem); font-weight: 900; letter-spacing: 0.03em; text-transform: uppercase; margin: 0;">
       GALLERY
     </h1>
-    <!-- Toggleable Coming Soon Subtitle -->
-    <p id="gallery-subtitle" style="display: none; font-size: 1.5rem; color: #cc0033; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin: 0;">
+    
+    <!-- Red Accent Line -->
+    <div class="title-separator"></div>
+
+    <p id="gallery-subtitle" style="display: none; font-size: 1.25rem; color: #cc0033; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 0.75rem;">
       COMING SOON
     </p>
   </section>
 
-  <main style="background-color: #151515; color: #ffffff; min-height: 50vh; padding: 2rem 0 5rem;">
+  <main style="background-color: #151515; color: #ffffff; min-height: 40vh; padding: 1.5rem 0 5rem;">
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
       
       <p id="gallery-intro" style="text-align: center; color: rgba(255, 255, 255, 0.7); max-width: 600px; margin: 0 auto 3rem auto;">
-        <!-- Dynamic intro text -->
+        <!-- Dynamic text insertion -->
       </p>
 
       <div class="gallery-grid" id="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; width: 100%;">
-        <!-- Dynamic cards or placeholders render here -->
+        <!-- Rendered photos display here -->
       </div>
     </div>
   </main>
+
+  <!-- Zoom/Lightbox Modal -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close Lightbox">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous Photo">&#10094;</button>
+    
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="Zoomed Photo">
+      <div id="lightbox-caption" class="lightbox-modal-caption"></div>
+    </div>
+    
+    <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next Photo">&#10095;</button>
+  </div>
 
   <footer class="site-footer">
     <div class="footer-content">
@@ -114,24 +261,26 @@
   </footer>
 
   <script>
-    function showComingSoonState() {
+    let galleryPhotos = [];
+    let currentPhotoIndex = 0;
+
+    function formatImagePath(path) {
+      if (!path) return '';
+      if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+        return path;
+      }
+      const cleanPath = path.replace(/^\/+/, '');
+      return '/' + cleanPath;
+    }
+
+    function showEmptyState() {
       const grid = document.getElementById('gallery-grid');
       const subtitle = document.getElementById('gallery-subtitle');
       const intro = document.getElementById('gallery-intro');
 
       subtitle.style.display = 'block';
       intro.textContent = "We're currently uploading photo highlights from our latest competitions and outdoor trips. Check back soon for updates!";
-
-      const placeholderSvg = `
-        <div class="photo-placeholder" style="aspect-ratio: 4 / 3; background-color: #222222; border: 2px dashed rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.25);">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="3" width="18" height="18"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21 15 16 10 5 21"/>
-          </svg>
-        </div>
-      `;
-      grid.innerHTML = placeholderSvg.repeat(6);
+      grid.innerHTML = '';
     }
 
     function renderGallery(photos) {
@@ -139,35 +288,107 @@
       const subtitle = document.getElementById('gallery-subtitle');
       const intro = document.getElementById('gallery-intro');
 
-      // Filter to items with valid images
-      const validPhotos = (photos || []).filter(p => p && p.image);
+      galleryPhotos = (photos || []).filter(p => p && p.image);
 
-      if (validPhotos.length === 0) {
-        showComingSoonState();
+      if (galleryPhotos.length === 0) {
+        showEmptyState();
         return;
       }
 
-      // Hide "COMING SOON" & placeholders when images exist
       subtitle.style.display = 'none';
       intro.textContent = 'Highlights from our competitions, outdoor trips, and team events.';
       grid.innerHTML = '';
 
-      validPhotos.forEach(photo => {
+      galleryPhotos.forEach((photo, index) => {
         const card = document.createElement('div');
         card.className = 'gallery-card';
 
+        const imageUrl = formatImagePath(photo.image);
         const captionHtml = photo.description 
           ? `<div class="gallery-caption">${photo.description}</div>`
           : '';
 
         card.innerHTML = `
-          <img src="${photo.image}" alt="${photo.description || 'Rutgers Climbing Photo'}">
+          <img src="${imageUrl}" alt="${photo.description || 'Rutgers Climbing Team'}" loading="lazy">
           ${captionHtml}
         `;
 
+        card.addEventListener('click', () => openLightbox(index));
         grid.appendChild(card);
       });
     }
+
+    function openLightbox(index) {
+      if (index < 0 || index >= galleryPhotos.length) return;
+      currentPhotoIndex = index;
+      
+      updateLightboxContent();
+
+      const lightbox = document.getElementById('lightbox');
+      lightbox.classList.add('active');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      lightbox.classList.remove('active');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function updateLightboxContent() {
+      const photo = galleryPhotos[currentPhotoIndex];
+      const img = document.getElementById('lightbox-img');
+      const caption = document.getElementById('lightbox-caption');
+
+      img.src = formatImagePath(photo.image);
+      img.alt = photo.description || 'Rutgers Climbing Photo';
+
+      if (photo.description) {
+        caption.textContent = photo.description;
+        caption.style.display = 'block';
+      } else {
+        caption.style.display = 'none';
+      }
+    }
+
+    function nextPhoto() {
+      if (galleryPhotos.length === 0) return;
+      currentPhotoIndex = (currentPhotoIndex + 1) % galleryPhotos.length;
+      updateLightboxContent();
+    }
+
+    function prevPhoto() {
+      if (galleryPhotos.length === 0) return;
+      currentPhotoIndex = (currentPhotoIndex - 1 + galleryPhotos.length) % galleryPhotos.length;
+      updateLightboxContent();
+    }
+
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox-next').addEventListener('click', (e) => {
+      e.stopPropagation();
+      nextPhoto();
+    });
+    document.getElementById('lightbox-prev').addEventListener('click', (e) => {
+      e.stopPropagation();
+      prevPhoto();
+    });
+
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-content')) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      const lightbox = document.getElementById('lightbox');
+      if (!lightbox.classList.contains('active')) return;
+
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextPhoto();
+      if (e.key === 'ArrowLeft') prevPhoto();
+    });
 
     async function loadGalleryData() {
       try {
@@ -178,7 +399,7 @@
         renderGallery(data.photos);
       } catch (error) {
         console.error('Error loading gallery JSON:', error);
-        showComingSoonState();
+        showEmptyState();
       }
     }
 
