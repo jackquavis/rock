@@ -1,3 +1,16 @@
 {
-  "photos": []
+  "photos": [
+    {
+      "image": "/assets/IMG_1753.jpg"
+    },
+    {
+      "image": "/assets/IMG_1766.jpg"
+    },
+    {
+      "image": "/assets/IMG_2124.jpg"
+    },
+    {
+      "image": "/assets/IMG_2205.jpg"
+    }
+  ]
 }
