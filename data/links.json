@@ -3,44 +3,32 @@
     {
       "type": "profile",
       "title": "Rutgers Rock Climbing",
-      "url": "",
-      "text": "",
       "description": "EST. 2013 | Practices: Fridays 5-8pm & Sundays 7-9pm | Use code <strong>RUROCKCLIMBING</strong> for 10% off your entire purchase at Rungne!!"
     },
     {
       "type": "button",
-      "title": "",
       "url": "https://rurockclimbing.com",
-      "text": "Our Website",
-      "description": ""
+      "text": "Our Website"
     },
     {
       "type": "button",
-      "title": "",
       "url": "https://discord.com/invite/bpG9ZYzj9s",
-      "text": "Discord Link - Join for more info!",
-      "description": ""
+      "text": "Discord Link - Join for more info!"
     },
     {
       "type": "button",
-      "title": "",
       "url": "https://rutgers.dserec.com/online/clubsports",
-      "text": "DSE link - Must Register to Go on Trips!",
-      "description": ""
+      "text": "DSE link - Must Register to Go on Trips!"
     },
     {
       "type": "button",
-      "title": "",
-      "url": "https://docs.google.com/forms/d/e/1FAIpQLSdu_wJ0_p3yfzfCXDilsCa8HqSkxJDuY_fZKghQ_nQ7ytBLdg/viewform",
-      "text": "Comp Team Tryouts 9/27 - Signup Form",
-      "description": ""
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLSdjmgkXxnv-1NYnLNEc3NDelZaYtLfTq-WOLhpi3m39SsiaLA/viewform?usp=header",
+      "text": "Comp Team Tryouts 9/17 - Signup Form"
     },
     {
       "type": "button",
-      "title": "",
       "url": "https://rungne.com/",
-      "text": "Rungne Store Link",
-      "description": ""
+      "text": "Rungne Store Link"
     }
   ]
 }
