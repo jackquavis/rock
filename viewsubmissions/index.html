@@ -67,7 +67,7 @@
     }
 
     .controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
-    .controls input, .controls select { max-width: 200px; height: 42px; }
+    .controls input, .controls select { max-width: 180px; height: 42px; }
     .controls .btn, .navbar .btn { height: 42px; display: inline-flex; align-items: center; justify-content: center; padding: 0 14px; }
 
     /* COLUMN MANAGER PANEL */
@@ -109,7 +109,7 @@
     .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
     .warning-box { background: #3e1414; border: 1px solid var(--danger-red); color: #ff8a80; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 0.85rem; line-height: 1.4; }
 
-    /* BOX BASED GRADE BUILDER */
+    /* GRADE BUILDER */
     .scoring-note { font-size: 0.8rem; color: var(--gold-star); background: #2a2415; border-left: 3px solid var(--gold-star); padding: 8px 12px; margin-bottom: 15px; border-radius: 4px; line-height: 1.4; }
     .grade-box-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
     .grade-box-row { display: flex; align-items: center; gap: 8px; background: #252525; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); }
@@ -172,8 +172,18 @@
       <!-- MANAGE COLUMNS TOGGLE BUTTON -->
       <button type="button" id="manageColumnsBtn" class="btn btn-outline" onclick="toggleColumnManagement()">Manage Columns</button>
 
+      <!-- REFRESH DATA BUTTON -->
+      <button type="button" id="refreshBtn" class="btn btn-outline" title="Refresh all current data">⟳ Refresh Data</button>
+
       <input type="text" id="searchInput" placeholder="Search name, email, discord..." style="margin-left: auto;" />
       
+      <!-- DISCIPLINE FILTER -->
+      <select id="filterDiscipline">
+        <option value="ALL">All Disciplines</option>
+        <option value="Bouldering">Bouldering</option>
+        <option value="Top Rope">Top Rope</option>
+      </select>
+
       <select id="filterCategory">
         <option value="ALL">All Categories</option>
       </select>
@@ -194,17 +204,15 @@
 
     <div class="table-container">
       <table>
-        <thead id="tableHead">
-          <!-- Dynamically populated -->
-        </thead>
+        <thead id="tableHead"></thead>
         <tbody id="submissionsTable">
-          <tr><td colspan="11" style="text-align: center;">Loading submissions...</td></tr>
+          <tr><td colspan="10" style="text-align: center;">Loading submissions...</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- CREATE EVENT MODAL WITH BOX BUILDERS -->
+  <!-- CREATE EVENT MODAL -->
   <div id="newEventModal" class="modal-overlay">
     <div class="modal">
       <div class="modal-header">
@@ -213,7 +221,7 @@
       </div>
 
       <div class="scoring-note">
-        <strong>Scoring:</strong> Be sure to set appropriate point values. Points are auto-calculated upon submission.
+        <strong>Scoring:</strong> Points are auto-calculated upon submission based on these ranges.
       </div>
 
       <form id="createEventForm">
@@ -227,21 +235,15 @@
           <input type="text" id="newEventCategories" placeholder="Men, Women, Advanced / Open" required />
         </div>
 
-        <!-- BOULDERING BOX BUILDER -->
         <div class="form-group">
           <label>Bouldering Grades & Points</label>
-          <div id="boulderingBoxesContainer" class="grade-box-grid">
-            <!-- Dynamic rows -->
-          </div>
+          <div id="boulderingBoxesContainer" class="grade-box-grid"></div>
           <button type="button" class="btn btn-outline" style="font-size:0.8rem; height: auto; padding: 6px 12px;" onclick="addBoulderingBox('', '')">+ Add Bouldering Range</button>
         </div>
 
-        <!-- TOP ROPE BOX BUILDER -->
         <div class="form-group" style="margin-top: 20px;">
           <label>Top Rope Grades & Points</label>
-          <div id="topRopeBoxesContainer" class="grade-box-grid">
-            <!-- Dynamic rows -->
-          </div>
+          <div id="topRopeBoxesContainer" class="grade-box-grid"></div>
           <button type="button" class="btn btn-outline" style="font-size:0.8rem; height: auto; padding: 6px 12px;" onclick="addTopRopeBox('', '')">+ Add Top Rope Grade</button>
         </div>
 
@@ -265,16 +267,14 @@
         <h3>Manage Events & Configurations</h3>
         <button class="close-btn" onclick="closeModal('manageEventsModal')">&times;</button>
       </div>
-      <div id="eventsListContainer" style="max-height: 380px; overflow-y: auto;">
-        <!-- List populated via JS -->
-      </div>
+      <div id="eventsListContainer" style="max-height: 380px; overflow-y: auto;"></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" style="height: auto; padding: 8px 14px;" onclick="closeModal('manageEventsModal')">Close</button>
       </div>
     </div>
   </div>
 
-  <!-- SECONDARY DELETE EVENT CONFIRMATION MODAL -->
+  <!-- DELETE EVENT CONFIRMATION MODAL -->
   <div id="confirmDeleteModal" class="modal-overlay">
     <div class="modal">
       <div class="modal-header">
@@ -343,12 +343,10 @@
     let pendingDeleteEventId = null;
     let pendingDeleteSubmissionId = null;
 
-    // Column Management State
     let isManagingColumns = false;
     let hiddenColumns = new Set();
 
     const allColumns = [
-      { id: 'col-index', label: '#' },
       { id: 'col-name', label: 'Name' },
       { id: 'col-email', label: 'Email' },
       { id: 'col-discord', label: 'Discord' },
@@ -373,7 +371,6 @@
     window.openModal = (id) => document.getElementById(id).classList.add('active');
     window.closeModal = (id) => document.getElementById(id).classList.remove('active');
 
-    // COLUMN MANAGEMENT HANDLERS
     window.toggleColumnManagement = () => {
       isManagingColumns = !isManagingColumns;
       const btn = document.getElementById("manageColumnsBtn");
@@ -402,12 +399,17 @@
       openModal("lightboxModal");
     };
 
-    // DYNAMIC BOX BUILDERS
+    // REFRESH BUTTON HANDLER
+    document.getElementById("refreshBtn").addEventListener("click", async () => {
+      showToast("Refreshing data from server...", "info");
+      await initDashboard();
+      showToast("Data refreshed successfully!", "success");
+    });
+
     window.addBoulderingBox = (gradeVal = "", pointsVal = "") => {
       const container = document.getElementById("boulderingBoxesContainer");
       const row = document.createElement("div");
       row.className = "grade-box-row bouldering-row";
-      
       const cleanVal = gradeVal.toString().replace(/^V/i, "");
       row.innerHTML = `
         <div class="input-prefix-wrapper">
@@ -435,27 +437,8 @@
     function populateDefaultBoxes() {
       document.getElementById("boulderingBoxesContainer").innerHTML = "";
       document.getElementById("topRopeBoxesContainer").innerHTML = "";
-
-      const defaultBouldering = [
-        { grade: "0-2", pts: 10 },
-        { grade: "3-4", pts: 25 },
-        { grade: "5-6", pts: 50 },
-        { grade: "7-8", pts: 75 },
-        { grade: "9+", pts: 100 }
-      ];
-      defaultBouldering.forEach(item => addBoulderingBox(item.grade, item.pts));
-
-      const defaultTopRope = [
-        { grade: "5.6", pts: 5 },
-        { grade: "5.7", pts: 10 },
-        { grade: "5.8", pts: 15 },
-        { grade: "5.9", pts: 20 },
-        { grade: "5.10-", pts: 25 },
-        { grade: "5.10+", pts: 35 },
-        { grade: "5.11-", pts: 50 },
-        { grade: "5.11+", pts: 65 }
-      ];
-      defaultTopRope.forEach(item => addTopRopeBox(item.grade, item.pts));
+      [{ grade: "0-2", pts: 10 }, { grade: "3-4", pts: 25 }, { grade: "5-6", pts: 50 }, { grade: "7-8", pts: 75 }, { grade: "9+", pts: 100 }].forEach(i => addBoulderingBox(i.grade, i.pts));
+      [{ grade: "5.6", pts: 5 }, { grade: "5.7", pts: 10 }, { grade: "5.8", pts: 15 }, { grade: "5.9", pts: 20 }, { grade: "5.10-", pts: 25 }, { grade: "5.10+", pts: 35 }, { grade: "5.11-", pts: 50 }, { grade: "5.11+", pts: 65 }].forEach(i => addTopRopeBox(i.grade, i.pts));
     }
 
     onAuthStateChanged(auth, (user) => {
@@ -475,7 +458,6 @@
       const email = document.getElementById("adminEmail").value;
       const pass = document.getElementById("adminPassword").value;
       const errorBox = document.getElementById("loginError");
-
       try {
         errorBox.classList.add("hidden");
         await signInWithEmailAndPassword(auth, email, pass);
@@ -500,18 +482,15 @@
         const snapshot = await getDocs(q);
         eventsList = [];
         filterEvent.innerHTML = `<option value="ALL">All Events</option>`;
-        
         snapshot.forEach(docSnap => {
           const item = { id: docSnap.id, ...docSnap.data() };
           eventsList.push(item);
-          const activeText = item.isActive ? " (Active)" : "";
-          filterEvent.innerHTML += `<option value="${item.id}">${escapeHtml(item.name)}${activeText}</option>`;
+          filterEvent.innerHTML += `<option value="${item.id}">${escapeHtml(item.name)}${item.isActive ? " (Active)" : ""}</option>`;
         });
-
         updateCategoryFilter();
         renderManageEventsList();
       } catch (err) {
-        console.error("Error loading events:", err);
+        console.error(err);
         showToast("Error loading events", "error");
       }
     }
@@ -519,21 +498,14 @@
     function updateCategoryFilter() {
       const filterCategory = document.getElementById("filterCategory");
       const selectedEventId = document.getElementById("filterEvent").value;
-
       filterCategory.innerHTML = `<option value="ALL">All Categories</option>`;
       let categoriesSet = new Set();
-
       if (selectedEventId !== "ALL") {
         const eventItem = eventsList.find(e => e.id === selectedEventId);
-        if (eventItem && eventItem.categories) {
-          eventItem.categories.forEach(c => categoriesSet.add(c));
-        }
+        if (eventItem && eventItem.categories) eventItem.categories.forEach(c => categoriesSet.add(c));
       } else {
-        eventsList.forEach(e => {
-          if (e.categories) e.categories.forEach(c => categoriesSet.add(c));
-        });
+        eventsList.forEach(e => { if (e.categories) e.categories.forEach(c => categoriesSet.add(c)); });
       }
-
       categoriesSet.forEach(cat => {
         filterCategory.innerHTML += `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`;
       });
@@ -556,48 +528,29 @@
       const name = document.getElementById("newEventName").value.trim();
       const rawCategories = document.getElementById("newEventCategories").value.trim();
       const isActive = document.getElementById("newEventIsActive").checked;
-
-      const categoryArray = rawCategories 
-        ? rawCategories.split(',').map(c => c.trim()).filter(c => c.length > 0)
-        : ["Men", "Women"];
+      const categoryArray = rawCategories ? rawCategories.split(',').map(c => c.trim()).filter(c => c.length > 0) : ["Men", "Women"];
 
       const boulderingGrades = [];
       document.querySelectorAll("#boulderingBoxesContainer .bouldering-row").forEach(row => {
         const rawVal = row.querySelector(".bouldering-grade-val").value.trim();
         const ptsVal = parseInt(row.querySelector(".bouldering-points-val").value, 10) || 0;
-        if (rawVal) {
-          const formattedGrade = rawVal.toUpperCase().startsWith("V") ? rawVal.toUpperCase() : `V${rawVal}`;
-          boulderingGrades.push({ grade: formattedGrade, points: ptsVal });
-        }
+        if (rawVal) boulderingGrades.push({ grade: rawVal.toUpperCase().startsWith("V") ? rawVal.toUpperCase() : `V${rawVal}`, points: ptsVal });
       });
 
       const topRopeGrades = [];
       document.querySelectorAll("#topRopeBoxesContainer .top-rope-row").forEach(row => {
         const rawVal = row.querySelector(".toprope-grade-val").value.trim();
         const ptsVal = parseInt(row.querySelector(".toprope-points-val").value, 10) || 0;
-        if (rawVal) {
-          topRopeGrades.push({ grade: rawVal, points: ptsVal });
-        }
+        if (rawVal) topRopeGrades.push({ grade: rawVal, points: ptsVal });
       });
 
       try {
         if (isActive) {
           for (let ev of eventsList) {
-            if (ev.isActive) {
-              await updateDoc(doc(db, "events", ev.id), { isActive: false });
-            }
+            if (ev.isActive) await updateDoc(doc(db, "events", ev.id), { isActive: false });
           }
         }
-
-        await addDoc(collection(db, "events"), {
-          name: name,
-          categories: categoryArray,
-          boulderingGrades: boulderingGrades,
-          topRopeGrades: topRopeGrades,
-          isActive: isActive,
-          createdAt: serverTimestamp()
-        });
-
+        await addDoc(collection(db, "events"), { name, categories: categoryArray, boulderingGrades, topRopeGrades, isActive, createdAt: serverTimestamp() });
         showToast(`Event '${name}' created!`, "success");
         closeModal("newEventModal");
         await loadEvents();
@@ -613,32 +566,26 @@
         container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">No events created yet.</p>`;
         return;
       }
-
-      container.innerHTML = eventsList.map(ev => {
-        const catList = (ev.categories || []).join(", ");
-        return `
-          <div class="event-item-card">
-            <div class="event-info">
-              <div class="event-title-line">
-                <span>${escapeHtml(ev.name)}</span>
-                ${ev.isActive ? '<span class="active-badge">ACTIVE</span>' : '<span class="inactive-badge">INACTIVE</span>'}
-              </div>
-              <span class="cat-tag">Categories: ${escapeHtml(catList || 'None')}</span>
+      container.innerHTML = eventsList.map(ev => `
+        <div class="event-item-card">
+          <div class="event-info">
+            <div class="event-title-line">
+              <span>${escapeHtml(ev.name)}</span>
+              ${ev.isActive ? '<span class="active-badge">ACTIVE</span>' : '<span class="inactive-badge">INACTIVE</span>'}
             </div>
-            <div style="display:flex; gap:8px; align-items:center;">
-              ${!ev.isActive ? `<button class="btn btn-success" style="padding:4px 8px; font-size:0.75rem;" onclick="setActiveEvent('${ev.id}')">Make Active</button>` : ''}
-              <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="promptDeleteEvent('${ev.id}')">Delete</button>
-            </div>
+            <span class="cat-tag">Categories: ${escapeHtml((ev.categories || []).join(", ") || 'None')}</span>
           </div>
-        `;
-      }).join('');
+          <div style="display:flex; gap:8px; align-items:center;">
+            ${!ev.isActive ? `<button class="btn btn-success" style="padding:4px 8px; font-size:0.75rem;" onclick="setActiveEvent('${ev.id}')">Make Active</button>` : ''}
+            <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="promptDeleteEvent('${ev.id}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
     }
 
     window.setActiveEvent = async (id) => {
       try {
-        for (let ev of eventsList) {
-          await updateDoc(doc(db, "events", ev.id), { isActive: (ev.id === id) });
-        }
+        for (let ev of eventsList) await updateDoc(doc(db, "events", ev.id), { isActive: (ev.id === id) });
         showToast("Active event updated", "success");
         await loadEvents();
       } catch (err) {
@@ -650,26 +597,19 @@
     window.promptDeleteEvent = (id) => {
       const target = eventsList.find(e => e.id === id);
       if (!target) return;
-
       pendingDeleteEventId = id;
       document.getElementById("deleteTargetName").innerText = target.name;
-      const input = document.getElementById("deleteConfirmInput");
-      const btn = document.getElementById("executeDeleteBtn");
-      
-      input.value = "";
-      btn.disabled = true;
-
+      document.getElementById("deleteConfirmInput").value = "";
+      document.getElementById("executeDeleteBtn").disabled = true;
       openModal("confirmDeleteModal");
     };
 
     document.getElementById("deleteConfirmInput").addEventListener("input", (e) => {
-      const btn = document.getElementById("executeDeleteBtn");
-      btn.disabled = e.target.value.trim().toUpperCase() !== "DELETE";
+      document.getElementById("executeDeleteBtn").disabled = e.target.value.trim().toUpperCase() !== "DELETE";
     });
 
     document.getElementById("executeDeleteBtn").addEventListener("click", async () => {
       if (!pendingDeleteEventId) return;
-
       try {
         await deleteDoc(doc(db, "events", pendingDeleteEventId));
         showToast("Event deleted", "success");
@@ -684,21 +624,16 @@
 
     async function loadSubmissions() {
       const tbody = document.getElementById("submissionsTable");
-      tbody.innerHTML = `<tr><td colspan="11" style="text-align: center;">Loading submissions...</td></tr>`;
-
+      tbody.innerHTML = `<tr><td colspan="10" style="text-align: center;">Loading submissions...</td></tr>`;
       try {
         const q = query(collection(db, "submissions"), orderBy("timestamp", "desc"));
         const snapshot = await getDocs(q);
-        
         allSubmissions = [];
-        snapshot.forEach((docSnap) => {
-          allSubmissions.push({ id: docSnap.id, ...docSnap.data() });
-        });
-
+        snapshot.forEach(docSnap => allSubmissions.push({ id: docSnap.id, ...docSnap.data() }));
         renderTable();
       } catch (err) {
         console.error(err);
-        tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; color: var(--danger-red);">Error loading data.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; color: var(--danger-red);">Error loading submissions.</td></tr>`;
       }
     }
 
@@ -706,85 +641,59 @@
       const tbody = document.getElementById("submissionsTable");
       const tableHead = document.getElementById("tableHead");
       const managerPanel = document.getElementById("columnManagerPanel");
-
       const visibleColumns = allColumns.filter(col => !hiddenColumns.has(col.id));
 
-      // 1. Render Table Header (with separate remove row if managing columns)
       let headerHtml = '';
       if (isManagingColumns) {
         headerHtml += `<tr>`;
-        headerHtml += visibleColumns.map(col => `
-          <th class="${col.id}" style="text-align: center; padding: 10px 8px;">
-            <button type="button" class="remove-col-btn" onclick="hideColumn('${col.id}')">Remove</button>
-          </th>
-        `).join('');
+        headerHtml += visibleColumns.map(col => `<th class="${col.id}" style="text-align: center; padding: 10px 8px;"><button type="button" class="remove-col-btn" onclick="hideColumn('${col.id}')">Remove</button></th>`).join('');
         headerHtml += `</tr>`;
       }
-
       headerHtml += `<tr>`;
-      headerHtml += visibleColumns.map(col => `
-        <th class="${col.id}" style="${isManagingColumns ? 'text-align: center;' : ''}">${col.label}</th>
-      `).join('');
+      headerHtml += visibleColumns.map(col => `<th class="${col.id}" style="${isManagingColumns ? 'text-align: center;' : ''}">${col.label}</th>`).join('');
       headerHtml += `</tr>`;
-
       tableHead.innerHTML = headerHtml;
 
-      // 2. Render Column Manager Restoration Panel
       if (isManagingColumns) {
         managerPanel.classList.remove("hidden");
         const hiddenList = allColumns.filter(c => hiddenColumns.has(c.id));
-        if (hiddenList.length > 0) {
-          managerPanel.innerHTML = `
-            <span style="color:var(--text-muted); font-size:0.8rem; font-weight:600; text-transform:uppercase;">Hidden Columns (Click to Restore):</span>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              ${hiddenList.map(c => `<button type="button" class="hidden-col-chip" onclick="showColumn('${c.id}')">+ ${c.label}</button>`).join('')}
-            </div>
-          `;
-        } else {
-          managerPanel.innerHTML = `<span style="color:var(--text-muted); font-size:0.85rem;">All columns are visible. Click the <strong>Remove</strong> button in the row above any column header to hide it.</span>`;
-        }
+        managerPanel.innerHTML = hiddenList.length > 0 
+          ? `<span style="color:var(--text-muted); font-size:0.8rem; font-weight:600; text-transform:uppercase;">Hidden Columns (Click to Restore):</span><div style="display:flex; gap:8px; flex-wrap:wrap;">${hiddenList.map(c => `<button type="button" class="hidden-col-chip" onclick="showColumn('${c.id}')">+ ${c.label}</button>`).join('')}</div>`
+          : `<span style="color:var(--text-muted); font-size:0.85rem;">All columns are visible. Click <strong>Remove</strong> above any column header to hide it.</span>`;
       } else {
         managerPanel.classList.add("hidden");
       }
 
-      // 3. Filter & Sort Submissions
       const search = document.getElementById("searchInput").value.toLowerCase();
       const eventFilter = document.getElementById("filterEvent").value;
+      const disciplineFilter = document.getElementById("filterDiscipline").value;
       const categoryFilter = document.getElementById("filterCategory").value;
       const sortBy = document.getElementById("sortBySelect").value;
 
       let filtered = allSubmissions.filter(item => {
-        const matchesSearch = (item.fullName || "").toLowerCase().includes(search) || 
-                              (item.email || "").toLowerCase().includes(search) || 
-                              (item.discordUsername || "").toLowerCase().includes(search);
+        const matchesSearch = (item.fullName || "").toLowerCase().includes(search) || (item.email || "").toLowerCase().includes(search) || (item.discordUsername || "").toLowerCase().includes(search);
         const matchesEvent = eventFilter === "ALL" || item.eventId === eventFilter;
+        const matchesDiscipline = disciplineFilter === "ALL" || (item.discipline || "Bouldering") === disciplineFilter;
         const matchesCategory = categoryFilter === "ALL" || item.category === categoryFilter;
-        return matchesSearch && matchesEvent && matchesCategory;
+        return matchesSearch && matchesEvent && matchesDiscipline && matchesCategory;
       });
 
       filtered.sort((a, b) => {
-        const pointsA = a.totalPoints || 0;
-        const pointsB = b.totalPoints || 0;
-
-        if (sortBy === "points-desc") return pointsB - pointsA;
-        if (sortBy === "points-asc") return pointsA - pointsB;
+        const pA = a.totalPoints || 0, pB = b.totalPoints || 0;
+        if (sortBy === "points-desc") return pB - pA;
+        if (sortBy === "points-asc") return pA - pB;
         if (sortBy === "name") return (a.fullName || "").localeCompare(b.fullName || "");
         if (sortBy === "oldest") return (a.timestamp?.seconds || 0) - (b.timestamp?.seconds || 0);
         return (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
       });
 
-      const activeColCount = visibleColumns.length;
-
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="${activeColCount || 1}" style="text-align: center;">No matching submissions found.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="${visibleColumns.length || 1}" style="text-align: center;">No matching submissions found.</td></tr>`;
         return;
       }
 
-      // 4. Render Table Body Rows
-      tbody.innerHTML = filtered.map((item, index) => {
+      tbody.innerHTML = filtered.map((item) => {
         let cellsHtml = '';
-
-        if (!hiddenColumns.has('col-index')) cellsHtml += `<td class="col-index"><strong>#${index + 1}</strong></td>`;
         if (!hiddenColumns.has('col-name')) cellsHtml += `<td class="col-name">${escapeHtml(item.fullName || '')}</td>`;
         if (!hiddenColumns.has('col-email')) cellsHtml += `<td class="col-email">${escapeHtml(item.email || '')}</td>`;
         if (!hiddenColumns.has('col-discord')) cellsHtml += `<td class="col-discord">${escapeHtml(item.discordUsername || 'N/A')}</td>`;
@@ -796,12 +705,7 @@
         if (!hiddenColumns.has('col-climbs')) {
           let climbsHtml = '<span style="color:#777;">No climbs logged</span>';
           if (item.climbs && item.climbs.length > 0) {
-            climbsHtml = item.climbs.map(c => `
-              <span class="climb-tag">
-                <strong>${escapeHtml(c.grade || 'N/A')}</strong>
-                ${c.photoUrl ? `<img src="${escapeHtml(c.photoUrl)}" class="img-thumb" onclick="expandPhoto('${escapeHtml(c.photoUrl)}')" title="Expand Photo" />` : ''}
-              </span>
-            `).join('');
+            climbsHtml = item.climbs.map(c => `<span class="climb-tag"><strong>${escapeHtml(c.grade || 'N/A')}</strong>${c.photoUrl ? `<img src="${escapeHtml(c.photoUrl)}" class="img-thumb" onclick="expandPhoto('${escapeHtml(c.photoUrl)}')" title="Expand Photo" />` : ''}</span>`).join('');
           }
           cellsHtml += `<td class="col-climbs">${climbsHtml}</td>`;
         }
@@ -839,19 +743,17 @@
     });
 
     document.getElementById("searchInput").addEventListener("input", renderTable);
-    document.getElementById("filterEvent").addEventListener("change", () => {
-      updateCategoryFilter();
-      renderTable();
-    });
+    document.getElementById("filterEvent").addEventListener("change", () => { updateCategoryFilter(); renderTable(); });
+    document.getElementById("filterDiscipline").addEventListener("change", renderTable);
     document.getElementById("filterCategory").addEventListener("change", renderTable);
     document.getElementById("sortBySelect").addEventListener("change", renderTable);
 
     document.getElementById("exportBtn").addEventListener("click", () => {
       if (allSubmissions.length === 0) return showToast("No data to export!", "error");
-      let csv = "Index,Name,Email,Discord Username,Event,Discipline,Category,Total Points,Climbs Logged\n";
-      allSubmissions.forEach((item, index) => {
+      let csv = "Name,Email,Discord Username,Event,Discipline,Category,Total Points,Climbs Logged\n";
+      allSubmissions.forEach((item) => {
         const climbsStr = (item.climbs || []).map(c => `Grade: ${c.grade} (${c.photoUrl || 'No Photo'})`).join(' | ');
-        csv += `"${index + 1}","${item.fullName}","${item.email}","${item.discordUsername || ''}","${item.eventName || ''}","${item.discipline || 'Bouldering'}","${item.category}","${item.totalPoints || 0}","${climbsStr}"\n`;
+        csv += `"${item.fullName}","${item.email}","${item.discordUsername || ''}","${item.eventName || ''}","${item.discipline || 'Bouldering'}","${item.category}","${item.totalPoints || 0}","${climbsStr}"\n`;
       });
       const blob = new Blob([csv], { type: "text/csv" });
       const url = window.URL.createObjectURL(blob);
