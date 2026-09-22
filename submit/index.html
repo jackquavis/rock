@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rutgers Climbing — Tryout Scorecard</title>
+  <style>
+    :root {
+      --scarlet: #cc0033;
+      --scarlet-dark: #990026;
+      --bg-dark: #121212;
+      --card-bg: #1e1e1e;
+      --text-light: #f5f5f5;
+      --text-muted: #aaaaaa;
+      --border-color: #333333;
+      --success: #2e7d32;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-light); min-height: 100vh; padding: 20px 15px; display: flex; justify-content: center; align-items: flex-start; }
+    
+    .container { width: 100%; max-width: 550px; background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border-color); box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+    
+    .header { text-align: center; margin-bottom: 24px; border-bottom: 2px solid var(--scarlet); padding-bottom: 16px; }
+    .header h1 { font-size: 1.6rem; color: #fff; margin-bottom: 4px; }
+    .header p { color: var(--text-muted); font-size: 0.9rem; }
+
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; color: var(--text-muted); }
+    
+    input, select, textarea {
+      width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid var(--border-color);
+      border-radius: 6px; color: #fff; font-size: 1rem; transition: border-color 0.2s;
+    }
+    input[type="file"] { padding: 8px; background: #252525; cursor: pointer; font-size: 0.85rem; color: var(--text-muted); }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--scarlet); }
+
+    .climb-card {
+      background: #252525;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .climb-card-title {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: var(--scarlet);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .climb-card select { margin-bottom: 8px; }
+
+    .btn-submit {
+      width: 100%; padding: 14px; background: var(--scarlet); color: white; border: none;
+      border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.2s; margin-top: 10px;
+    }
+    .btn-submit:hover { background: var(--scarlet-dark); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .alert { padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 0.9rem; text-align: center; display: none; }
+    .alert-success { background: var(--success); color: #fff; }
+    .alert-error { background: #b71c1c; color: #fff; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>Rutgers Climbing Team</h1>
+      <p>Tryout Scorecard Submission</p>
+    </div>
+
+    <div id="alertBox" class="alert"></div>
+
+    <form id="scoreForm">
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="Jane Doe" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Rutgers Email</label>
+        <input type="email" id="email" placeholder="netid@rutgers.edu" required />
+      </div>
+
+      <div class="form-group">
+        <label for="discordUsername">Discord Username</label>
+        <input type="text" id="discordUsername" placeholder="e.g. climber_joe" required />
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" required>
+          <option value="">Select Category</option>
+          <option value="Advanced / Open">Advanced / Open</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Beginner">Beginner</option>
+        </select>
+      </div>
+
+      <hr style="border-color: var(--border-color); margin: 20px 0;" />
+
+      <label style="margin-bottom: 12px;">Top 5 Climbs Log</label>
+
+      <div id="climbsContainer">
+        <!-- 5 Climb cards generated dynamically -->
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Notes / Comments (Optional)</label>
+        <textarea id="notes" rows="2" placeholder="Any details about your climbs..."></textarea>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn-submit">Submit Scorecard</button>
+    </form>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDIIbSN2nBnpf946yLNCS9vfq41dWb-w2I",
+      authDomain: "tryouts-scoring.firebaseapp.com",
+      projectId: "tryouts-scoring",
+      storageBucket: "tryouts-scoring.firebasestorage.app",
+      messagingSenderId: "56954072644",
+      appId: "1:56954072644:web:5c95da0c0edf35be649611"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    const grades = ["VB", "V0", "V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8+"];
+
+    // Build 5 Climb Cards with Individual Image Upload Inputs
+    const climbsContainer = document.getElementById("climbsContainer");
+    for (let i = 1; i <= 5; i++) {
+      const card = document.createElement("div");
+      card.className = "climb-card";
+      card.innerHTML = `
+        <div class="climb-card-title">Climb ${i}</div>
+        <select class="climb-grade" id="grade-${i}">
+          <option value="">Select Grade</option>
+          ${grades.map(g => `<option value="${g}">${g}</option>`).join('')}
+        </select>
+        <input type="file" class="climb-file" id="file-${i}" accept="image/*" />
+      `;
+      climbsContainer.appendChild(card);
+    }
+
+    const form = document.getElementById("scoreForm");
+    const alertBox = document.getElementById("alertBox");
+    const submitBtn = document.getElementById("submitBtn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      submitBtn.disabled = true;
+      alertBox.style.display = "none";
+
+      const climbsData = [];
+
+      try {
+        for (let i = 1; i <= 5; i++) {
+          const gradeSelect = document.getElementById(`grade-${i}`);
+          const fileInput = document.getElementById(`file-${i}`);
+          const selectedGrade = gradeSelect.value;
+          const file = fileInput.files[0];
+
+          if (selectedGrade || file) {
+            let photoUrl = "";
+
+            if (file) {
+              submitBtn.innerText = `Uploading photo for Climb ${i}...`;
+              const cleanFileName = file.name.replace(/[^a-zA-Z0-9.]/g, "_");
+              const storageRef = ref(storage, `proofs/climb_${i}_${Date.now()}_${cleanFileName}`);
+              
+              await uploadBytes(storageRef, file);
+              photoUrl = await getDownloadURL(storageRef);
+            }
+
+            climbsData.push({
+              climbNumber: i,
+              grade: selectedGrade || "N/A",
+              photoUrl: photoUrl
+            });
+          }
+        }
+
+        submitBtn.innerText = "Saving scorecard...";
+
+        await addDoc(collection(db, "submissions"), {
+          fullName: document.getElementById("fullName").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          discordUsername: document.getElementById("discordUsername").value.trim(),
+          category: document.getElementById("category").value,
+          climbs: climbsData,
+          notes: document.getElementById("notes").value.trim(),
+          timestamp: serverTimestamp()
+        });
+
+        alertBox.className = "alert alert-success";
+        alertBox.innerText = "Scorecard submitted successfully!";
+        alertBox.style.display = "block";
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        alertBox.className = "alert alert-error";
+        alertBox.innerText = "Error submitting scorecard. Please check your network and Firebase rules.";
+        alertBox.style.display = "block";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit Scorecard";
+      }
+    });
+  </script>
+</body>
+</html>
