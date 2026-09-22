@@ -32,6 +32,7 @@
       width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid var(--border-color);
       border-radius: 6px; color: #fff; font-size: 1rem; transition: border-color 0.2s;
     }
+    input[readonly] { background: #1a1a1a; color: var(--text-muted); cursor: not-allowed; border-color: #2a2a2a; }
     input[type="file"] { padding: 8px; background: #252525; cursor: pointer; font-size: 0.85rem; color: var(--text-muted); }
     input:focus, select:focus, textarea:focus { outline: none; border-color: var(--scarlet); }
 
@@ -75,6 +76,12 @@
 
     <form id="scoreForm">
       <div class="form-group">
+        <label for="eventName">Current Event</label>
+        <input type="text" id="eventName" value="Loading active event..." readonly required />
+        <input type="hidden" id="eventId" />
+      </div>
+
+      <div class="form-group">
         <label for="fullName">Full Name</label>
         <input type="text" id="fullName" placeholder="Jane Doe" required />
       </div>
@@ -90,21 +97,26 @@
       </div>
 
       <div class="form-group">
+        <label for="discipline">Discipline</label>
+        <select id="discipline" required>
+          <option value="Bouldering">Bouldering (Top 5 Climbs)</option>
+          <option value="Top Rope">Top Rope (Top 3 Climbs)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label for="category">Category</label>
         <select id="category" required>
           <option value="">Select Category</option>
-          <option value="Advanced / Open">Advanced / Open</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Beginner">Beginner</option>
         </select>
       </div>
 
       <hr style="border-color: var(--border-color); margin: 20px 0;" />
 
-      <label style="margin-bottom: 12px;">Top 5 Climbs Log</label>
+      <label id="climbsHeaderTitle" style="margin-bottom: 12px;">Top Climbs Log</label>
 
       <div id="climbsContainer">
-        <!-- 5 Climb cards generated dynamically -->
+        <!-- Climb cards generated dynamically -->
       </div>
 
       <div class="form-group">
@@ -118,7 +130,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, limit, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-storage.js";
 
     const firebaseConfig = {
@@ -134,23 +146,87 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    const grades = ["VB", "V0", "V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8+"];
+    const boulderingGrades = ["VB", "V0", "V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8+"];
+    const topRopeGrades = ["5.6", "5.7", "5.8", "5.9", "5.10a", "5.10b", "5.10c", "5.10d", "5.11a", "5.11b", "5.11c", "5.11d", "5.12+"];
 
-    // Build 5 Climb Cards with Individual Image Upload Inputs
+    const eventNameInput = document.getElementById("eventName");
+    const eventIdInput = document.getElementById("eventId");
+    const categorySelect = document.getElementById("category");
+    const disciplineSelect = document.getElementById("discipline");
     const climbsContainer = document.getElementById("climbsContainer");
-    for (let i = 1; i <= 5; i++) {
-      const card = document.createElement("div");
-      card.className = "climb-card";
-      card.innerHTML = `
-        <div class="climb-card-title">Climb ${i}</div>
-        <select class="climb-grade" id="grade-${i}">
-          <option value="">Select Grade</option>
-          ${grades.map(g => `<option value="${g}">${g}</option>`).join('')}
-        </select>
-        <input type="file" class="climb-file" id="file-${i}" accept="image/*" />
-      `;
-      climbsContainer.appendChild(card);
+    const climbsHeaderTitle = document.getElementById("climbsHeaderTitle");
+
+    // Fetch active event set by admin
+    async function loadActiveEvent() {
+      try {
+        let q = query(collection(db, "events"), where("isActive", "==", true), limit(1));
+        let snapshot = await getDocs(q);
+
+        // Fallback: load the most recent event if no active flag is toggled
+        if (snapshot.empty) {
+          q = query(collection(db, "events"), orderBy("createdAt", "desc"), limit(1));
+          snapshot = await getDocs(q);
+        }
+
+        if (snapshot.empty) {
+          eventNameInput.value = "General Tryouts";
+          eventIdInput.value = "general";
+          populateCategories(["Beginner", "Intermediate", "Advanced / Open"]);
+          return;
+        }
+
+        const activeDoc = snapshot.docs[0];
+        const data = activeDoc.data();
+
+        eventNameInput.value = data.name || "General Tryouts";
+        eventIdInput.value = activeDoc.id;
+
+        const categories = (data.categories && data.categories.length > 0)
+          ? data.categories
+          : ["Beginner", "Intermediate", "Advanced / Open"];
+
+        populateCategories(categories);
+      } catch (err) {
+        console.error("Error loading active event:", err);
+        eventNameInput.value = "General Tryouts";
+        eventIdInput.value = "general";
+        populateCategories(["Beginner", "Intermediate", "Advanced / Open"]);
+      }
     }
+
+    function populateCategories(categoriesList) {
+      categorySelect.innerHTML = `<option value="">Select Category</option>`;
+      categoriesList.forEach(cat => {
+        categorySelect.innerHTML += `<option value="${cat}">${cat}</option>`;
+      });
+    }
+
+    function renderClimbCards() {
+      const discipline = disciplineSelect.value;
+      const count = discipline === "Top Rope" ? 3 : 5;
+      const gradeList = discipline === "Top Rope" ? topRopeGrades : boulderingGrades;
+
+      climbsHeaderTitle.innerText = `Top ${count} Climbs Log (${discipline})`;
+      climbsContainer.innerHTML = "";
+
+      for (let i = 1; i <= count; i++) {
+        const card = document.createElement("div");
+        card.className = "climb-card";
+        card.innerHTML = `
+          <div class="climb-card-title">Climb ${i}</div>
+          <select class="climb-grade" id="grade-${i}" required>
+            <option value="">Select Grade</option>
+            ${gradeList.map(g => `<option value="${g}">${g}</option>`).join('')}
+          </select>
+          <input type="file" class="climb-file" id="file-${i}" accept="image/*" />
+        `;
+        climbsContainer.appendChild(card);
+      }
+    }
+
+    disciplineSelect.addEventListener("change", renderClimbCards);
+    loadActiveEvent();
+    renderClimbCards();
 
     const form = document.getElementById("scoreForm");
     const alertBox = document.getElementById("alertBox");
@@ -162,42 +238,45 @@
       submitBtn.disabled = true;
       alertBox.style.display = "none";
 
+      const discipline = disciplineSelect.value;
+      const count = discipline === "Top Rope" ? 3 : 5;
       const climbsData = [];
 
       try {
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= count; i++) {
           const gradeSelect = document.getElementById(`grade-${i}`);
           const fileInput = document.getElementById(`file-${i}`);
-          const selectedGrade = gradeSelect.value;
-          const file = fileInput.files[0];
+          const selectedGrade = gradeSelect ? gradeSelect.value : "";
+          const file = fileInput && fileInput.files ? fileInput.files[0] : null;
 
-          if (selectedGrade || file) {
-            let photoUrl = "";
+          let photoUrl = "";
 
-            if (file) {
-              submitBtn.innerText = `Uploading photo for Climb ${i}...`;
-              const cleanFileName = file.name.replace(/[^a-zA-Z0-9.]/g, "_");
-              const storageRef = ref(storage, `proofs/climb_${i}_${Date.now()}_${cleanFileName}`);
-              
-              await uploadBytes(storageRef, file);
-              photoUrl = await getDownloadURL(storageRef);
-            }
-
-            climbsData.push({
-              climbNumber: i,
-              grade: selectedGrade || "N/A",
-              photoUrl: photoUrl
-            });
+          if (file) {
+            submitBtn.innerText = `Uploading photo for Climb ${i}...`;
+            const cleanFileName = file.name.replace(/[^a-zA-Z0-9.]/g, "_");
+            const storageRef = ref(storage, `proofs/climb_${i}_${Date.now()}_${cleanFileName}`);
+            
+            await uploadBytes(storageRef, file);
+            photoUrl = await getDownloadURL(storageRef);
           }
+
+          climbsData.push({
+            climbNumber: i,
+            grade: selectedGrade || "N/A",
+            photoUrl: photoUrl
+          });
         }
 
         submitBtn.innerText = "Saving scorecard...";
 
         await addDoc(collection(db, "submissions"), {
+          eventId: eventIdInput.value,
+          eventName: eventNameInput.value,
           fullName: document.getElementById("fullName").value.trim(),
           email: document.getElementById("email").value.trim(),
           discordUsername: document.getElementById("discordUsername").value.trim(),
-          category: document.getElementById("category").value,
+          discipline: discipline,
+          category: categorySelect.value,
           climbs: climbsData,
           notes: document.getElementById("notes").value.trim(),
           timestamp: serverTimestamp()
@@ -207,10 +286,12 @@
         alertBox.innerText = "Scorecard submitted successfully!";
         alertBox.style.display = "block";
         form.reset();
+        loadActiveEvent();
+        renderClimbCards();
       } catch (err) {
         console.error(err);
         alertBox.className = "alert alert-error";
-        alertBox.innerText = "Error submitting scorecard. Please check your network and Firebase rules.";
+        alertBox.innerText = "Error submitting scorecard. Please check your network and rules.";
         alertBox.style.display = "block";
       } finally {
         submitBtn.disabled = false;

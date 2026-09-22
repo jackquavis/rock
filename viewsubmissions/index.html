@@ -13,6 +13,7 @@
       --text-light: #f5f5f5;
       --text-muted: #aaaaaa;
       --border-color: #333333;
+      --active-green: #2e7d32;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
@@ -21,7 +22,7 @@
     .center-box { max-width: 400px; margin: 80px auto; background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); }
     .center-box h2 { text-align: center; margin-bottom: 20px; color: var(--scarlet); }
 
-    .wrapper { max-width: 1200px; margin: 0 auto; }
+    .wrapper { max-width: 1250px; margin: 0 auto; }
     .navbar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--scarlet); padding-bottom: 15px; margin-bottom: 25px; }
     .navbar h1 { font-size: 1.5rem; }
 
@@ -29,15 +30,18 @@
     label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
     input, select { width: 100%; padding: 10px; background: #2a2a2a; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.95rem; }
 
-    .btn { padding: 10px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn { padding: 8px 14px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
     .btn-scarlet { background: var(--scarlet); color: white; }
     .btn-scarlet:hover { background: var(--scarlet-dark); }
     .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-light); }
     .btn-outline:hover { background: #333; }
     .btn-danger { background: #b71c1c; color: white; padding: 4px 8px; font-size: 0.8rem; }
+    .btn-success { background: var(--active-green); color: white; }
 
-    .controls { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
-    .controls input, .controls select { max-width: 250px; }
+    .controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+    .controls input, .controls select { max-width: 220px; }
+
+    .active-badge { display: inline-block; background: var(--active-green); color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 6px; }
 
     .table-container { background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
@@ -68,7 +72,7 @@
         <label for="adminPassword">Password</label>
         <input type="password" id="adminPassword" required />
       </div>
-      <button type="submit" class="btn btn-scarlet" style="width: 100%;">Sign In</button>
+      <button type="submit" class="btn btn-scarlet" style="width: 100%; padding: 12px;">Sign In</button>
     </form>
   </div>
 
@@ -83,12 +87,15 @@
     </div>
 
     <div class="controls">
-      <input type="text" id="searchInput" placeholder="Search by name, email, or discord..." />
+      <select id="filterEvent">
+        <option value="ALL">All Events</option>
+      </select>
+      <button id="setActiveBtn" class="btn btn-success">Set Selected Active</button>
+      <button id="addEventBtn" class="btn btn-scarlet">+ New Event & Categories</button>
+
+      <input type="text" id="searchInput" placeholder="Search name, email, discord..." />
       <select id="filterCategory">
         <option value="ALL">All Categories</option>
-        <option value="Advanced / Open">Advanced / Open</option>
-        <option value="Intermediate">Intermediate</option>
-        <option value="Beginner">Beginner</option>
       </select>
       <button id="exportBtn" class="btn btn-outline" style="margin-left: auto;">Export CSV</button>
     </div>
@@ -101,6 +108,8 @@
             <th>Name</th>
             <th>Email</th>
             <th>Discord</th>
+            <th>Event</th>
+            <th>Discipline</th>
             <th>Category</th>
             <th>Climbs Logged & Photos</th>
             <th>Submitted</th>
@@ -108,7 +117,7 @@
           </tr>
         </thead>
         <tbody id="submissionsTable">
-          <tr><td colspan="8" style="text-align: center;">Loading submissions...</td></tr>
+          <tr><td colspan="10" style="text-align: center;">Loading submissions...</td></tr>
         </tbody>
       </table>
     </div>
@@ -116,7 +125,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -133,13 +142,14 @@
     const auth = getAuth(app);
 
     let allSubmissions = [];
+    let eventsList = [];
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById("loginView").classList.add("hidden");
         document.getElementById("dashboardView").classList.remove("hidden");
         document.getElementById("userEmail").innerText = user.email;
-        loadSubmissions();
+        initDashboard();
       } else {
         document.getElementById("loginView").classList.remove("hidden");
         document.getElementById("dashboardView").classList.add("hidden");
@@ -163,9 +173,115 @@
 
     document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
 
+    async function initDashboard() {
+      await loadEvents();
+      await loadSubmissions();
+    }
+
+    async function loadEvents() {
+      const filterEvent = document.getElementById("filterEvent");
+      try {
+        const q = query(collection(db, "events"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        eventsList = [];
+        filterEvent.innerHTML = `<option value="ALL">All Events</option>`;
+        
+        snapshot.forEach(docSnap => {
+          const item = { id: docSnap.id, ...docSnap.data() };
+          eventsList.push(item);
+          const activeText = item.isActive ? " (Active)" : "";
+          filterEvent.innerHTML += `<option value="${item.id}">${escapeHtml(item.name)}${activeText}</option>`;
+        });
+
+        updateCategoryFilter();
+      } catch (err) {
+        console.error("Error loading events:", err);
+      }
+    }
+
+    function updateCategoryFilter() {
+      const filterCategory = document.getElementById("filterCategory");
+      const selectedEventId = document.getElementById("filterEvent").value;
+
+      filterCategory.innerHTML = `<option value="ALL">All Categories</option>`;
+      let categoriesSet = new Set();
+
+      if (selectedEventId !== "ALL") {
+        const eventItem = eventsList.find(e => e.id === selectedEventId);
+        if (eventItem && eventItem.categories) {
+          eventItem.categories.forEach(c => categoriesSet.add(c));
+        }
+      } else {
+        eventsList.forEach(e => {
+          if (e.categories) e.categories.forEach(c => categoriesSet.add(c));
+        });
+      }
+
+      categoriesSet.forEach(cat => {
+        filterCategory.innerHTML += `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`;
+      });
+    }
+
+    // Add new event with custom backend categories
+    document.getElementById("addEventBtn").addEventListener("click", async () => {
+      const eventName = prompt("Enter Event Name (e.g., 'Fall 2026 Tryouts'):");
+      if (!eventName || !eventName.trim()) return;
+
+      const rawCategories = prompt(
+        "Enter categories separated by commas:\n(e.g., 'Men, Women' OR 'Beginner, Intermediate, Advanced')",
+        "Men, Women, Advanced / Open"
+      );
+
+      const categoryArray = rawCategories 
+        ? rawCategories.split(',').map(c => c.trim()).filter(c => c.length > 0)
+        : ["Men", "Women"];
+
+      try {
+        // Deactivate all existing events first
+        for (let ev of eventsList) {
+          if (ev.isActive) {
+            await updateDoc(doc(db, "events", ev.id), { isActive: false });
+          }
+        }
+
+        // Create new active event with custom categories
+        await addDoc(collection(db, "events"), {
+          name: eventName.trim(),
+          categories: categoryArray,
+          isActive: true,
+          createdAt: serverTimestamp()
+        });
+
+        alert(`Event '${eventName.trim()}' created and set as ACTIVE for applicants!`);
+        await loadEvents();
+      } catch (err) {
+        console.error(err);
+        alert("Failed to create event. Check browser console.");
+      }
+    });
+
+    // Toggle active event for applicants
+    document.getElementById("setActiveBtn").addEventListener("click", async () => {
+      const selectedEventId = document.getElementById("filterEvent").value;
+      if (selectedEventId === "ALL") {
+        return alert("Please select a specific event from the dropdown to make active.");
+      }
+
+      try {
+        for (let ev of eventsList) {
+          await updateDoc(doc(db, "events", ev.id), { isActive: (ev.id === selectedEventId) });
+        }
+        alert("Active event updated! Applicants will now see this event.");
+        await loadEvents();
+      } catch (err) {
+        console.error(err);
+        alert("Failed to update active status.");
+      }
+    });
+
     async function loadSubmissions() {
       const tbody = document.getElementById("submissionsTable");
-      tbody.innerHTML = `<tr><td colspan="8" style="text-align: center;">Loading submissions...</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="10" style="text-align: center;">Loading submissions...</td></tr>`;
 
       try {
         const q = query(collection(db, "submissions"), orderBy("timestamp", "desc"));
@@ -179,25 +295,27 @@
         renderTable();
       } catch (err) {
         console.error(err);
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #b71c1c;">Error loading data. Check Firestore rules.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; color: #b71c1c;">Error loading data. Check Firestore rules.</td></tr>`;
       }
     }
 
     function renderTable() {
       const tbody = document.getElementById("submissionsTable");
       const search = document.getElementById("searchInput").value.toLowerCase();
+      const eventFilter = document.getElementById("filterEvent").value;
       const categoryFilter = document.getElementById("filterCategory").value;
 
       const filtered = allSubmissions.filter(item => {
         const matchesSearch = (item.fullName || "").toLowerCase().includes(search) || 
                               (item.email || "").toLowerCase().includes(search) || 
                               (item.discordUsername || "").toLowerCase().includes(search);
+        const matchesEvent = eventFilter === "ALL" || item.eventId === eventFilter;
         const matchesCategory = categoryFilter === "ALL" || item.category === categoryFilter;
-        return matchesSearch && matchesCategory;
+        return matchesSearch && matchesEvent && matchesCategory;
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center;">No matching submissions found.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align: center;">No matching submissions found.</td></tr>`;
         return;
       }
 
@@ -219,6 +337,8 @@
             <td>${escapeHtml(item.fullName || '')}</td>
             <td>${escapeHtml(item.email || '')}</td>
             <td>${escapeHtml(item.discordUsername || 'N/A')}</td>
+            <td><strong style="color:var(--scarlet);">${escapeHtml(item.eventName || 'General Tryouts')}</strong></td>
+            <td>${escapeHtml(item.discipline || 'Bouldering')}</td>
             <td>${escapeHtml(item.category || '')}</td>
             <td>${climbsHtml}</td>
             <td>${item.timestamp ? new Date(item.timestamp.seconds * 1000).toLocaleDateString() : 'N/A'}</td>
@@ -236,14 +356,18 @@
     };
 
     document.getElementById("searchInput").addEventListener("input", renderTable);
+    document.getElementById("filterEvent").addEventListener("change", () => {
+      updateCategoryFilter();
+      renderTable();
+    });
     document.getElementById("filterCategory").addEventListener("change", renderTable);
 
     document.getElementById("exportBtn").addEventListener("click", () => {
       if (allSubmissions.length === 0) return alert("No data to export!");
-      let csv = "Index,Name,Email,Discord Username,Category,Climbs Logged\n";
+      let csv = "Index,Name,Email,Discord Username,Event,Discipline,Category,Climbs Logged\n";
       allSubmissions.forEach((item, index) => {
         const climbsStr = (item.climbs || []).map(c => `Climb ${c.climbNumber}: ${c.grade} (${c.photoUrl || 'No Photo'})`).join(' | ');
-        csv += `"${index + 1}","${item.fullName}","${item.email}","${item.discordUsername || ''}","${item.category}","${climbsStr}"\n`;
+        csv += `"${index + 1}","${item.fullName}","${item.email}","${item.discordUsername || ''}","${item.eventName || ''}","${item.discipline || 'Bouldering'}","${item.category}","${climbsStr}"\n`;
       });
       const blob = new Blob([csv], { type: "text/csv" });
       const url = window.URL.createObjectURL(blob);
@@ -254,6 +378,7 @@
     });
 
     function escapeHtml(str) {
+      if (!str) return "";
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
   </script>
