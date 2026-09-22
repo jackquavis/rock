@@ -146,8 +146,26 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    const boulderingGrades = ["VB", "V0", "V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8+"];
-    const topRopeGrades = ["5.6", "5.7", "5.8", "5.9", "5.10a", "5.10b", "5.10c", "5.10d", "5.11a", "5.11b", "5.11c", "5.11d", "5.12+"];
+    const defaultBoulderingGrades = [
+      { grade: "V0-V2", points: 10 },
+      { grade: "V3-V4", points: 25 },
+      { grade: "V5-V6", points: 50 },
+      { grade: "V7-V8", points: 75 },
+      { grade: "V9+", points: 100 }
+    ];
+
+    const defaultTopRopeGrades = [
+      { grade: "5.6", points: 5 },
+      { grade: "5.7", points: 10 },
+      { grade: "5.8", points: 15 },
+      { grade: "5.9", points: 20 },
+      { grade: "5.10a", points: 30 },
+      { grade: "5.10b", points: 35 },
+      { grade: "5.11a", points: 50 }
+    ];
+
+    let activeBoulderingGrades = defaultBoulderingGrades;
+    let activeTopRopeGrades = defaultTopRopeGrades;
 
     const eventNameInput = document.getElementById("eventName");
     const eventIdInput = document.getElementById("eventId");
@@ -156,13 +174,11 @@
     const climbsContainer = document.getElementById("climbsContainer");
     const climbsHeaderTitle = document.getElementById("climbsHeaderTitle");
 
-    // Fetch active event set by admin
     async function loadActiveEvent() {
       try {
         let q = query(collection(db, "events"), where("isActive", "==", true), limit(1));
         let snapshot = await getDocs(q);
 
-        // Fallback: load the most recent event if no active flag is toggled
         if (snapshot.empty) {
           q = query(collection(db, "events"), orderBy("createdAt", "desc"), limit(1));
           snapshot = await getDocs(q);
@@ -171,7 +187,8 @@
         if (snapshot.empty) {
           eventNameInput.value = "General Tryouts";
           eventIdInput.value = "general";
-          populateCategories(["Beginner", "Intermediate", "Advanced / Open"]);
+          populateCategories(["Men", "Women"]);
+          renderClimbCards();
           return;
         }
 
@@ -181,16 +198,18 @@
         eventNameInput.value = data.name || "General Tryouts";
         eventIdInput.value = activeDoc.id;
 
-        const categories = (data.categories && data.categories.length > 0)
-          ? data.categories
-          : ["Beginner", "Intermediate", "Advanced / Open"];
+        if (data.boulderingGrades && data.boulderingGrades.length > 0) activeBoulderingGrades = data.boulderingGrades;
+        if (data.topRopeGrades && data.topRopeGrades.length > 0) activeTopRopeGrades = data.topRopeGrades;
 
+        const categories = (data.categories && data.categories.length > 0) ? data.categories : ["Men", "Women"];
         populateCategories(categories);
+        renderClimbCards();
       } catch (err) {
         console.error("Error loading active event:", err);
         eventNameInput.value = "General Tryouts";
         eventIdInput.value = "general";
-        populateCategories(["Beginner", "Intermediate", "Advanced / Open"]);
+        populateCategories(["Men", "Women"]);
+        renderClimbCards();
       }
     }
 
@@ -204,7 +223,7 @@
     function renderClimbCards() {
       const discipline = disciplineSelect.value;
       const count = discipline === "Top Rope" ? 3 : 5;
-      const gradeList = discipline === "Top Rope" ? topRopeGrades : boulderingGrades;
+      const gradeList = discipline === "Top Rope" ? activeTopRopeGrades : activeBoulderingGrades;
 
       climbsHeaderTitle.innerText = `Top ${count} Climbs Log (${discipline})`;
       climbsContainer.innerHTML = "";
@@ -216,7 +235,7 @@
           <div class="climb-card-title">Climb ${i}</div>
           <select class="climb-grade" id="grade-${i}" required>
             <option value="">Select Grade</option>
-            ${gradeList.map(g => `<option value="${g}">${g}</option>`).join('')}
+            ${gradeList.map(g => `<option value="${g.grade}">${g.grade}</option>`).join('')}
           </select>
           <input type="file" class="climb-file" id="file-${i}" accept="image/*" />
         `;
@@ -226,7 +245,6 @@
 
     disciplineSelect.addEventListener("change", renderClimbCards);
     loadActiveEvent();
-    renderClimbCards();
 
     const form = document.getElementById("scoreForm");
     const alertBox = document.getElementById("alertBox");
@@ -240,15 +258,22 @@
 
       const discipline = disciplineSelect.value;
       const count = discipline === "Top Rope" ? 3 : 5;
+      const gradeList = discipline === "Top Rope" ? activeTopRopeGrades : activeBoulderingGrades;
       const climbsData = [];
+      let calculatedTotalPoints = 0;
 
       try {
         for (let i = 1; i <= count; i++) {
           const gradeSelect = document.getElementById(`grade-${i}`);
           const fileInput = document.getElementById(`file-${i}`);
           const selectedGrade = gradeSelect ? gradeSelect.value : "";
-          const file = fileInput && fileInput.files ? fileInput.files[0] : null;
+          
+          const matchedGradeObj = gradeList.find(g => g.grade === selectedGrade);
+          const pointsValue = matchedGradeObj ? parseInt(matchedGradeObj.points, 10) : 0;
+          
+          calculatedTotalPoints += pointsValue;
 
+          const file = fileInput && fileInput.files ? fileInput.files[0] : null;
           let photoUrl = "";
 
           if (file) {
@@ -263,6 +288,7 @@
           climbsData.push({
             climbNumber: i,
             grade: selectedGrade || "N/A",
+            points: pointsValue,
             photoUrl: photoUrl
           });
         }
@@ -278,6 +304,7 @@
           discipline: discipline,
           category: categorySelect.value,
           climbs: climbsData,
+          totalPoints: calculatedTotalPoints,
           notes: document.getElementById("notes").value.trim(),
           timestamp: serverTimestamp()
         });
@@ -287,11 +314,10 @@
         alertBox.style.display = "block";
         form.reset();
         loadActiveEvent();
-        renderClimbCards();
       } catch (err) {
         console.error(err);
         alertBox.className = "alert alert-error";
-        alertBox.innerText = "Error submitting scorecard. Please check your network and rules.";
+        alertBox.innerText = "Error submitting scorecard. Please check your network.";
         alertBox.style.display = "block";
       } finally {
         submitBtn.disabled = false;
