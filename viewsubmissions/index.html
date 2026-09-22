@@ -14,6 +14,7 @@
       --text-muted: #aaaaaa;
       --border-color: #333333;
       --active-green: #2e7d32;
+      --danger-red: #b71c1c;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
@@ -28,20 +29,26 @@
 
     .form-group { margin-bottom: 15px; }
     label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
-    input, select { width: 100%; padding: 10px; background: #2a2a2a; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.95rem; }
+    input, select, textarea { width: 100%; padding: 10px; background: #2a2a2a; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.95rem; }
+    
+    .checkbox-group { display: flex; align-items: center; gap: 8px; margin-top: 10px; cursor: pointer; }
+    .checkbox-group input { width: auto; }
 
-    .btn { padding: 8px 14px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
+    .btn { padding: 8px 14px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
     .btn-scarlet { background: var(--scarlet); color: white; }
     .btn-scarlet:hover { background: var(--scarlet-dark); }
     .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-light); }
     .btn-outline:hover { background: #333; }
-    .btn-danger { background: #b71c1c; color: white; padding: 4px 8px; font-size: 0.8rem; }
+    .btn-danger { background: var(--danger-red); color: white; }
+    .btn-danger:hover { background: #d32f2f; }
     .btn-success { background: var(--active-green); color: white; }
+    .btn-success:hover { background: #388e3c; }
 
-    .controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+    .controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
     .controls input, .controls select { max-width: 220px; }
 
-    .active-badge { display: inline-block; background: var(--active-green); color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 6px; }
+    .active-badge { display: inline-block; background: var(--active-green); color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+    .inactive-badge { display: inline-block; background: #444; color: #aaa; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; }
 
     .table-container { background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
@@ -53,16 +60,40 @@
     .img-thumb { width: 32px; height: 32px; object-fit: cover; border-radius: 4px; border: 1px solid var(--scarlet); vertical-align: middle; margin-left: 4px; }
 
     .hidden { display: none !important; }
-    .alert { padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 0.85rem; text-align: center; }
-    .alert-error { background: #b71c1c; color: #fff; }
+    
+    /* TOAST NOTIFICATIONS */
+    #toastContainer { position: fixed; top: 20px; right: 20px; z-index: 2000; }
+    .toast { background: #2a2a2a; color: #fff; padding: 12px 20px; border-radius: 8px; border-left: 4px solid var(--scarlet); box-shadow: 0 4px 12px rgba(0,0,0,0.5); margin-bottom: 10px; font-size: 0.9rem; animation: fadeIn 0.3s ease; }
+    .toast-success { border-left-color: var(--active-green); }
+    .toast-error { border-left-color: var(--danger-red); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* MODALS */
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; width: 90%; max-width: 520px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+    .modal-header h3 { font-size: 1.2rem; color: #fff; }
+    .close-btn { background: transparent; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; line-height: 1; }
+    .close-btn:hover { color: #fff; }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+    .warning-box { background: #3e1414; border: 1px solid var(--danger-red); color: #ff8a80; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 0.85rem; line-height: 1.4; }
+
+    .event-item-card { background: #252525; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .event-info { display: flex; flex-direction: column; gap: 4px; }
+    .event-title-line { display: flex; align-items: center; gap: 8px; font-weight: bold; }
+    .cat-tag { font-size: 0.75rem; color: var(--text-muted); }
   </style>
 </head>
 <body>
 
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer"></div>
+
   <!-- LOGIN VIEW -->
   <div id="loginView" class="center-box">
     <h2>Admin Login</h2>
-    <div id="loginError" class="alert alert-error hidden"></div>
+    <div id="loginError" class="warning-box hidden"></div>
     <form id="loginForm">
       <div class="form-group">
         <label for="adminEmail">Email</label>
@@ -72,7 +103,7 @@
         <label for="adminPassword">Password</label>
         <input type="password" id="adminPassword" required />
       </div>
-      <button type="submit" class="btn btn-scarlet" style="width: 100%; padding: 12px;">Sign In</button>
+      <button type="submit" class="btn btn-scarlet" style="width: 100%; padding: 12px; justify-content: center;">Sign In</button>
     </form>
   </div>
 
@@ -90,14 +121,15 @@
       <select id="filterEvent">
         <option value="ALL">All Events</option>
       </select>
-      <button id="setActiveBtn" class="btn btn-success">Set Selected Active</button>
-      <button id="addEventBtn" class="btn btn-scarlet">+ New Event & Categories</button>
+      
+      <button id="openNewEventModalBtn" class="btn btn-scarlet">+ New Event</button>
+      <button id="openManageEventsModalBtn" class="btn btn-outline">Manage Events</button>
 
-      <input type="text" id="searchInput" placeholder="Search name, email, discord..." />
+      <input type="text" id="searchInput" placeholder="Search name, email, discord..." style="margin-left: auto;" />
       <select id="filterCategory">
         <option value="ALL">All Categories</option>
       </select>
-      <button id="exportBtn" class="btn btn-outline" style="margin-left: auto;">Export CSV</button>
+      <button id="exportBtn" class="btn btn-outline">Export CSV</button>
     </div>
 
     <div class="table-container">
@@ -123,6 +155,74 @@
     </div>
   </div>
 
+  <!-- CREATE EVENT MODAL -->
+  <div id="newEventModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Create New Event</h3>
+        <button class="close-btn" onclick="closeModal('newEventModal')">&times;</button>
+      </div>
+      <form id="createEventForm">
+        <div class="form-group">
+          <label for="newEventName">Event Title</label>
+          <input type="text" id="newEventName" placeholder="e.g. Fall 2026 Tryouts" required />
+        </div>
+        <div class="form-group">
+          <label for="newEventCategories">Custom Categories (Comma Separated)</label>
+          <input type="text" id="newEventCategories" placeholder="e.g. Men, Women, Advanced / Open" required />
+          <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">
+            Examples: "Men, Women" OR "Beginner, Intermediate, Advanced"
+          </small>
+        </div>
+        <label class="checkbox-group">
+          <input type="checkbox" id="newEventIsActive" checked />
+          <span style="font-size: 0.85rem;">Set as Active Event immediately for submitters</span>
+        </label>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('newEventModal')">Cancel</button>
+          <button type="submit" class="btn btn-scarlet">Save Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MANAGE EVENTS MODAL -->
+  <div id="manageEventsModal" class="modal-overlay">
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3>Manage Events & Categories</h3>
+        <button class="close-btn" onclick="closeModal('manageEventsModal')">&times;</button>
+      </div>
+      <div id="eventsListContainer" style="max-height: 350px; overflow-y: auto;">
+        <!-- List populated via JS -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('manageEventsModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECONDARY DELETE CONFIRMATION MODAL -->
+  <div id="confirmDeleteModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 style="color: var(--danger-red);">Delete Event Confirmation</h3>
+        <button class="close-btn" onclick="closeModal('confirmDeleteModal')">&times;</button>
+      </div>
+      <div class="warning-box">
+        <strong>Warning:</strong> You are about to permanently delete <u id="deleteTargetName"></u>. This action cannot be undone.
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">
+        To confirm deletion, please type <strong style="color: #fff;">DELETE</strong> in the field below:
+      </p>
+      <input type="text" id="deleteConfirmInput" placeholder="Type DELETE" style="margin-bottom: 10px;" />
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('confirmDeleteModal')">Cancel</button>
+        <button type="button" id="executeDeleteBtn" class="btn btn-danger" disabled>Confirm & Delete</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -143,6 +243,21 @@
 
     let allSubmissions = [];
     let eventsList = [];
+    let pendingDeleteEventId = null;
+
+    // Toast Notification helper
+    function showToast(message, type = "info") {
+      const container = document.getElementById("toastContainer");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type === 'success' ? 'toast-success' : type === 'error' ? 'toast-error' : ''}`;
+      toast.innerText = message;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    // Modal Helpers
+    window.openModal = (id) => document.getElementById(id).classList.add('active');
+    window.closeModal = (id) => document.getElementById(id).classList.remove('active');
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -165,6 +280,7 @@
       try {
         errorBox.classList.add("hidden");
         await signInWithEmailAndPassword(auth, email, pass);
+        showToast("Signed in successfully", "success");
       } catch (err) {
         errorBox.innerText = "Invalid credentials. Please check your email and password.";
         errorBox.classList.remove("hidden");
@@ -194,8 +310,10 @@
         });
 
         updateCategoryFilter();
+        renderManageEventsList();
       } catch (err) {
         console.error("Error loading events:", err);
+        showToast("Error loading events from database", "error");
       }
     }
 
@@ -222,60 +340,131 @@
       });
     }
 
-    // Add new event with custom backend categories
-    document.getElementById("addEventBtn").addEventListener("click", async () => {
-      const eventName = prompt("Enter Event Name (e.g., 'Fall 2026 Tryouts'):");
-      if (!eventName || !eventName.trim()) return;
+    // Modal Triggers
+    document.getElementById("openNewEventModalBtn").addEventListener("click", () => {
+      document.getElementById("createEventForm").reset();
+      document.getElementById("newEventIsActive").checked = true;
+      openModal("newEventModal");
+    });
 
-      const rawCategories = prompt(
-        "Enter categories separated by commas:\n(e.g., 'Men, Women' OR 'Beginner, Intermediate, Advanced')",
-        "Men, Women, Advanced / Open"
-      );
+    document.getElementById("openManageEventsModalBtn").addEventListener("click", () => {
+      renderManageEventsList();
+      openModal("manageEventsModal");
+    });
+
+    // Create Event Handler
+    document.getElementById("createEventForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("newEventName").value.trim();
+      const rawCategories = document.getElementById("newEventCategories").value.trim();
+      const isActive = document.getElementById("newEventIsActive").checked;
 
       const categoryArray = rawCategories 
         ? rawCategories.split(',').map(c => c.trim()).filter(c => c.length > 0)
         : ["Men", "Women"];
 
       try {
-        // Deactivate all existing events first
-        for (let ev of eventsList) {
-          if (ev.isActive) {
-            await updateDoc(doc(db, "events", ev.id), { isActive: false });
+        if (isActive) {
+          for (let ev of eventsList) {
+            if (ev.isActive) {
+              await updateDoc(doc(db, "events", ev.id), { isActive: false });
+            }
           }
         }
 
-        // Create new active event with custom categories
         await addDoc(collection(db, "events"), {
-          name: eventName.trim(),
+          name: name,
           categories: categoryArray,
-          isActive: true,
+          isActive: isActive,
           createdAt: serverTimestamp()
         });
 
-        alert(`Event '${eventName.trim()}' created and set as ACTIVE for applicants!`);
+        showToast(`Event '${name}' created!`, "success");
+        closeModal("newEventModal");
         await loadEvents();
       } catch (err) {
         console.error(err);
-        alert("Failed to create event. Check browser console.");
+        showToast("Failed to create event. Check console permissions.", "error");
       }
     });
 
-    // Toggle active event for applicants
-    document.getElementById("setActiveBtn").addEventListener("click", async () => {
-      const selectedEventId = document.getElementById("filterEvent").value;
-      if (selectedEventId === "ALL") {
-        return alert("Please select a specific event from the dropdown to make active.");
+    // Render Event Management List inside modal
+    function renderManageEventsList() {
+      const container = document.getElementById("eventsListContainer");
+      if (eventsList.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">No events created yet.</p>`;
+        return;
       }
 
+      container.innerHTML = eventsList.map(ev => {
+        const catList = (ev.categories || []).join(", ");
+        return `
+          <div class="event-item-card">
+            <div class="event-info">
+              <div class="event-title-line">
+                <span>${escapeHtml(ev.name)}</span>
+                ${ev.isActive ? '<span class="active-badge">ACTIVE</span>' : '<span class="inactive-badge">INACTIVE</span>'}
+              </div>
+              <span class="cat-tag">Categories: ${escapeHtml(catList || 'None')}</span>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              ${!ev.isActive ? `<button class="btn btn-success" style="padding:4px 8px; font-size:0.75rem;" onclick="setActiveEvent('${ev.id}')">Make Active</button>` : ''}
+              <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="promptDeleteEvent('${ev.id}')">Delete</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Set Active Event
+    window.setActiveEvent = async (id) => {
       try {
         for (let ev of eventsList) {
-          await updateDoc(doc(db, "events", ev.id), { isActive: (ev.id === selectedEventId) });
+          await updateDoc(doc(db, "events", ev.id), { isActive: (ev.id === id) });
         }
-        alert("Active event updated! Applicants will now see this event.");
+        showToast("Active event updated for applicants", "success");
         await loadEvents();
       } catch (err) {
         console.error(err);
-        alert("Failed to update active status.");
+        showToast("Failed to update active status.", "error");
+      }
+    };
+
+    // Trigger Secondary Confirmation Delete Modal
+    window.promptDeleteEvent = (id) => {
+      const target = eventsList.find(e => e.id === id);
+      if (!target) return;
+
+      pendingDeleteEventId = id;
+      document.getElementById("deleteTargetName").innerText = target.name;
+      const input = document.getElementById("deleteConfirmInput");
+      const btn = document.getElementById("executeDeleteBtn");
+      
+      input.value = "";
+      btn.disabled = true;
+
+      openModal("confirmDeleteModal");
+    };
+
+    // Monitor confirmation input box
+    document.getElementById("deleteConfirmInput").addEventListener("input", (e) => {
+      const btn = document.getElementById("executeDeleteBtn");
+      btn.disabled = e.target.value.trim().toUpperCase() !== "DELETE";
+    });
+
+    // Execute Delete
+    document.getElementById("executeDeleteBtn").addEventListener("click", async () => {
+      if (!pendingDeleteEventId) return;
+
+      try {
+        await deleteDoc(doc(db, "events", pendingDeleteEventId));
+        showToast("Event deleted successfully", "success");
+        closeModal("confirmDeleteModal");
+        pendingDeleteEventId = null;
+        await loadEvents();
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to delete event.", "error");
       }
     });
 
@@ -295,7 +484,7 @@
         renderTable();
       } catch (err) {
         console.error(err);
-        tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; color: #b71c1c;">Error loading data. Check Firestore rules.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; color: var(--danger-red);">Error loading data. Check Firestore rules.</td></tr>`;
       }
     }
 
@@ -342,16 +531,21 @@
             <td>${escapeHtml(item.category || '')}</td>
             <td>${climbsHtml}</td>
             <td>${item.timestamp ? new Date(item.timestamp.seconds * 1000).toLocaleDateString() : 'N/A'}</td>
-            <td><button class="btn btn-danger" onclick="deleteEntry('${item.id}')">Delete</button></td>
+            <td><button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="deleteEntry('${item.id}')">Delete</button></td>
           </tr>
         `;
       }).join('');
     }
 
     window.deleteEntry = async (id) => {
-      if (confirm("Are you sure you want to delete this scorecard?")) {
-        await deleteDoc(doc(db, "submissions", id));
-        loadSubmissions();
+      if (confirm("Are you sure you want to delete this scorecard entry?")) {
+        try {
+          await deleteDoc(doc(db, "submissions", id));
+          showToast("Submission deleted", "success");
+          loadSubmissions();
+        } catch (err) {
+          showToast("Failed to delete submission.", "error");
+        }
       }
     };
 
@@ -363,7 +557,7 @@
     document.getElementById("filterCategory").addEventListener("change", renderTable);
 
     document.getElementById("exportBtn").addEventListener("click", () => {
-      if (allSubmissions.length === 0) return alert("No data to export!");
+      if (allSubmissions.length === 0) return showToast("No data to export!", "error");
       let csv = "Index,Name,Email,Discord Username,Event,Discipline,Category,Climbs Logged\n";
       allSubmissions.forEach((item, index) => {
         const climbsStr = (item.climbs || []).map(c => `Climb ${c.climbNumber}: ${c.grade} (${c.photoUrl || 'No Photo'})`).join(' | ');
