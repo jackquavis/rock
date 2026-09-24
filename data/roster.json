@@ -4,34 +4,42 @@
       "name": "Akhil Beere"
     },
     {
-      "name": "Chris Shuba"
+      "name": "Chris Shuba",
+      "image": "/assets/Chris.jpg"
     },
     {
-      "name": "Eve Kreger"
+      "name": "Eve Kreger",
+      "image": "/assets/Eve.jpg"
     },
     {
-      "name": "Francis Gamil"
+      "name": "Francis Gamil",
+      "image": "/assets/Francis.jpg"
     },
     {
-      "name": "Gabby Cruz"
+      "name": "Gabby Cruz",
+      "image": "/assets/Gabby.jpg"
     },
     {
-      "name": "Gigi Keil"
+      "name": "Gigi Keil",
+      "image": "/assets/Gigi.jpg"
     },
     {
       "name": "Flora Jeng"
     },
     {
-      "name": "Jakub Chojnowski"
+      "name": "Jakub Chojnowski",
+      "image": "/assets/Jakub.jpg"
     },
     {
       "name": "Jeremiah Wachtel"
     },
     {
-      "name": "Josh Lim"
+      "name": "Josh Lim",
+      "image": "/assets/Josh.jpg"
     },
     {
-      "name": "Katie Sullivan"
+      "name": "Katie Sullivan",
+      "image": "/assets/Katie.jpg"
     },
     {
       "name": "Maya Umylny"
@@ -40,10 +48,12 @@
       "name": "Peter Evanowski"
     },
     {
-      "name": "Pierce Jackson"
+      "name": "Pierce Jackson",
+      "image": "/assets/Pierce.jpg"
     },
     {
-      "name": "Sulayman Khan"
+      "name": "Sulayman Khan",
+      "image": "/assets/Sulayman.jpg"
     },
     {
       "name": "Ben Matsko"
