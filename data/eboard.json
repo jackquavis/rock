@@ -3,52 +3,62 @@
     {
       "name": "Gabby Cruz",
       "role": "President",
-      "major": "Finance"
+      "major": "Finance",
+      "image": "/assets/Gabby.jpg"
     },
     {
       "name": "Katie Sullivan",
       "role": "Vice President",
-      "major": "Chemical Eng"
+      "major": "Chemical Eng",
+      "image": "/assets/Katie.jpg"
     },
     {
       "name": "Francis Gamil",
       "role": "Comp Team Captain",
-      "major": "Comp Sci"
+      "major": "Comp Sci",
+      "image": "/assets/Francis.jpg"
     },
     {
       "name": "Eve Kreger",
       "role": "Rec Team Captain",
-      "major": "Nursing"
+      "major": "Nursing",
+      "image": "/assets/Eve.jpg"
     },
     {
       "name": "Pierce Jackson",
       "role": "Head Setting",
-      "major": "Philosophy"
+      "major": "Philosophy",
+      "image": "/assets/Pierce.jpg"
     },
     {
       "name": "Sulayman Khan",
       "role": "Treasurer",
-      "major": "Computer Eng"
+      "major": "Computer Eng",
+      "image": "/assets/Sulayman.jpg"
     },
     {
       "name": "Josh Lim",
       "role": "Social Media",
-      "major": "Mechanical Eng"
+      "major": "Mechanical Eng",
+      "image": "/assets/Josh.jpg"
     },
     {
       "name": "Gabriella Keil",
       "role": "Social Media",
-      "major": "Filmmaking"
+      "major": "Filmmaking",
+      "image": "/assets/Gigi.jpg"
     },
     {
       "name": "Jakub Chojnowski",
       "role": "Secretary",
-      "major": "Cybersecurity"
+      "major": "Cybersecurity",
+      "image": "/assets/Jakub.jpg"
     },
     {
       "name": "Chris Shuba",
       "role": "Fundraising Chair",
-      "major": "Finance"
+      "major": "Finance",
+      "image": "/assets/Chris.jpg"
     }
   ]
 }
