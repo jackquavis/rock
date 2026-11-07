@@ -1,0 +1,2751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rutgers Climbing — Submissions</title>
+  <link rel="icon" type="image/png" href="../assets/R.png" />
+  <style>
+    :root {
+      --scarlet: #cc0033;
+      --scarlet-hover: #e60039;
+      --scarlet-dark: #990026;
+      --scarlet-glow: rgba(204, 0, 51, 0.18);
+      --bg-dark: #0f0f12;
+      --bg-elevated: #17171c;
+      --card-bg: #1c1c22;
+      --card-hover: #23232b;
+      --input-bg: #131318;
+      --text-light: #f4f4f6;
+      --text-secondary: #c4c4cc;
+      --text-muted: #8b8b97;
+      --border-color: #2c2c35;
+      --border-subtle: #23232a;
+      --active-green: #2e7d32;
+      --active-green-text: #81c784;
+      --danger-red: #c62828;
+      --danger-red-hover: #e53935;
+      --gold-star: #ffca28;
+      --silver-medal: #cfd8dc;
+      --bronze-medal: #ffab91;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.65);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at 50% 0%, rgba(204, 0, 51, 0.08) 0%, transparent 55%);
+      color: var(--text-light);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==========================================
+       LOGIN VIEW
+       ========================================== */
+    .login-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .center-box {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      padding: 36px 32px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .login-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .login-brand img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+
+    .login-brand h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-light);
+      letter-spacing: -0.02em;
+    }
+
+    .login-brand p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ==========================================
+       LAYOUT & NAVBAR
+       ========================================== */
+    .wrapper {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px 48px;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .navbar-logo {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+    }
+
+    .navbar-title-group h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .user-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .user-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4caf50;
+      box-shadow: 0 0 6px #4caf50;
+    }
+
+    .snapshot-banner {
+      background: rgba(204, 0, 51, 0.12);
+      border: 1px solid rgba(204, 0, 51, 0.35);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .snapshot-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--scarlet);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 9px;
+      border-radius: 999px;
+      margin-right: 8px;
+    }
+
+    /* ==========================================
+       SUMMARY STATS BAR
+       ========================================== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--scarlet);
+      opacity: 0.8;
+    }
+
+    .stat-card.interactive-event-card {
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .stat-card.interactive-event-card:hover {
+      background: var(--card-hover);
+      border-color: var(--scarlet);
+      transform: translateY(-2px);
+    }
+
+    .stat-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .event-switch-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #d8dee9;
+      background: #282a36;
+      border: 1px solid #3f4354;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .stat-card.interactive-event-card:hover .event-switch-pill {
+      background: #353849;
+      border-color: #5a607a;
+      color: #ffffff;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-light);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stat-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ==========================================
+       BUTTONS & INPUTS
+       ========================================== */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0 12px;
+      height: 40px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-light);
+      font-size: 0.9rem;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--scarlet);
+      box-shadow: 0 0 0 3px var(--scarlet-glow);
+    }
+
+    textarea {
+      height: auto;
+      padding: 10px 12px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-group input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--scarlet);
+      cursor: pointer;
+    }
+
+    .btn {
+      height: 38px;
+      padding: 0 14px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      white-space: nowrap;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .btn-scarlet {
+      background: var(--scarlet);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(204, 0, 51, 0.3);
+    }
+    .btn-scarlet:hover {
+      background: var(--scarlet-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: var(--bg-elevated);
+      border-color: var(--border-color);
+      color: var(--text-secondary);
+    }
+    .btn-outline:hover {
+      background: var(--card-hover);
+      border-color: #454552;
+      color: #fff;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      padding: 0 10px;
+    }
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-light);
+    }
+
+    .btn-danger {
+      background: rgba(198, 40, 40, 0.15);
+      border-color: rgba(198, 40, 40, 0.4);
+      color: #ff8a80;
+    }
+    .btn-danger:hover {
+      background: var(--danger-red);
+      border-color: var(--danger-red);
+      color: #fff;
+    }
+
+    .btn-danger-solid {
+      background: var(--danger-red);
+      color: #fff;
+    }
+    .btn-danger-solid:hover:not(:disabled) {
+      background: var(--danger-red-hover);
+    }
+    .btn-danger-solid:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-success {
+      background: rgba(46, 125, 50, 0.2);
+      border-color: rgba(46, 125, 50, 0.5);
+      color: var(--active-green-text);
+    }
+    .btn-success:hover {
+      background: var(--active-green);
+      color: #fff;
+    }
+
+    /* ==========================================
+       TOOLBAR & FILTER BAR
+       ========================================== */
+    .toolbar-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filters-grid {
+      display: grid;
+      grid-template-columns: 2.2fr 1.1fr 1.1fr 1.2fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    @media (max-width: 1024px) {
+      .filters-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .filters-grid {
+        grid-template-columns: 1fr;
+      }
+      .wrapper {
+        padding: 0 14px 36px;
+      }
+    }
+
+    .filter-field label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .filter-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: var(--text-muted);
+      pointer-events: none;
+      font-size: 0.9rem;
+    }
+
+    .search-wrapper input {
+      padding-left: 34px;
+      padding-right: 30px;
+    }
+
+    .clear-search-btn {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 4px;
+      line-height: 1;
+    }
+    .clear-search-btn:hover {
+      color: var(--text-light);
+    }
+
+    /* ==========================================
+       COLUMN MANAGER PANEL & EDIT ICON
+       ========================================== */
+    .table-meta-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      padding: 0 2px;
+      min-height: 34px;
+    }
+
+    .icon-edit-cols-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .icon-edit-cols-btn:hover {
+      background: var(--card-hover);
+      color: #fff;
+      border-color: #454552;
+    }
+
+    .icon-edit-cols-btn.active {
+      background: var(--scarlet);
+      border-color: var(--scarlet);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(204, 0, 51, 0.4);
+    }
+
+    .column-manager-panel {
+      background: #17171f;
+      border: 1px solid var(--border-color);
+      border-left: 3px solid var(--scarlet);
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .column-manager-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .col-chip {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 5px 12px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+
+    .col-chip.visible {
+      border-color: rgba(46, 125, 50, 0.6);
+      background: rgba(46, 125, 50, 0.12);
+      color: #a5d6a7;
+    }
+    .col-chip.visible:hover {
+      border-color: var(--danger-red);
+      background: rgba(198, 40, 40, 0.15);
+      color: #ef9a9a;
+    }
+
+    .col-chip.hidden-chip {
+      border-color: var(--border-color);
+      background: #141418;
+      color: var(--text-muted);
+      opacity: 0.8;
+    }
+    .col-chip.hidden-chip:hover {
+      border-color: var(--active-green);
+      background: rgba(46, 125, 50, 0.15);
+      color: var(--active-green-text);
+      opacity: 1;
+    }
+
+    .remove-col-btn {
+      background: rgba(198, 40, 40, 0.2);
+      color: #ff8a80;
+      border: 1px solid rgba(198, 40, 40, 0.4);
+      border-radius: 4px;
+      padding: 3px 9px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      transition: 0.15s;
+    }
+    .remove-col-btn:hover {
+      background: var(--danger-red);
+      color: white;
+    }
+
+    /* ==========================================
+       BADGES & RANK / POINTS STACK
+       ========================================== */
+    .active-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(46, 125, 50, 0.2);
+      border: 1px solid rgba(46, 125, 50, 0.5);
+      color: var(--active-green-text);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .viewing-badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(204, 0, 51, 0.18);
+      border: 1px solid rgba(204, 0, 51, 0.45);
+      color: #ff8099;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .inactive-badge {
+      display: inline-flex;
+      align-items: center;
+      background: #25252e;
+      color: var(--text-muted);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .rank-points-stack {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      min-width: 68px;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: #23232c;
+      color: var(--text-secondary);
+    }
+    .rank-1 {
+      background: rgba(255, 202, 40, 0.18);
+      color: var(--gold-star);
+      border: 1px solid rgba(255, 202, 40, 0.45);
+    }
+    .rank-2 {
+      background: rgba(207, 216, 220, 0.16);
+      color: var(--silver-medal);
+      border: 1px solid rgba(207, 216, 220, 0.4);
+    }
+    .rank-3 {
+      background: rgba(255, 171, 145, 0.16);
+      color: var(--bronze-medal);
+      border: 1px solid rgba(255, 171, 145, 0.4);
+    }
+
+    .points-badge-btn {
+      background: rgba(255, 202, 40, 0.1);
+      color: var(--gold-star);
+      border: 1px solid rgba(255, 202, 40, 0.3);
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-size: 0.76rem;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .points-badge-btn:hover {
+      background: rgba(255, 202, 40, 0.22);
+      border-color: var(--gold-star);
+      transform: translateY(-1px);
+    }
+
+    .discipline-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .discipline-bouldering {
+      background: rgba(204, 0, 51, 0.14);
+      color: #ff8099;
+      border: 1px solid rgba(204, 0, 51, 0.3);
+    }
+    .discipline-toprope {
+      background: rgba(33, 150, 243, 0.14);
+      color: #90caf9;
+      border: 1px solid rgba(33, 150, 243, 0.3);
+    }
+
+    .category-pill {
+      display: inline-block;
+      background: #25252f;
+      color: var(--text-secondary);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      border: 1px solid var(--border-color);
+    }
+
+    /* ==========================================
+       SUBMISSIONS TABLE
+       ========================================== */
+    .table-container {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    th {
+      background: #16161b;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    th.col-rank, td.col-rank {
+      text-align: center;
+      width: 95px;
+    }
+
+    th.col-action, td.col-action {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    th.sortable {
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+    th.sortable:hover {
+      color: var(--text-light);
+    }
+
+    tbody tr {
+      transition: background-color 0.12s ease;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: var(--card-hover);
+    }
+
+    .name-cell-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .athlete-name-text {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-light);
+    }
+
+    .btn-info-inline {
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 5px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .btn-info-inline:hover {
+      background: var(--card-hover);
+      color: #fff;
+      border-color: #4f5263;
+    }
+
+    .climbs-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .climb-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #141419;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      border: 1px solid var(--border-color);
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .climb-tag.has-photo {
+      cursor: pointer;
+    }
+    .climb-tag.has-photo:hover {
+      border-color: var(--scarlet);
+      background: #1b1b22;
+      transform: translateY(-1px);
+    }
+
+    .img-thumb {
+      width: 28px;
+      height: 28px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid var(--scarlet);
+      cursor: pointer;
+    }
+
+    .row-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .btn-info-icon {
+      height: 30px;
+      padding: 0 10px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s;
+    }
+    .btn-info-icon:hover {
+      background: var(--card-hover);
+      color: #fff;
+      border-color: #4a4a58;
+    }
+
+    .empty-state {
+      padding: 48px 20px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .empty-state h4 {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .empty-state p {
+      font-size: 0.85rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ==========================================
+       TOAST NOTIFICATIONS
+       ========================================== */
+    #toastContainer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: #23232c;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--scarlet);
+      box-shadow: var(--shadow-md);
+      font-size: 0.875rem;
+      font-weight: 500;
+      animation: fadeIn 0.25s ease;
+    }
+    .toast-success { border-left-color: #4caf50; }
+    .toast-error { border-left-color: var(--danger-red-hover); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================
+       MODALS
+       ========================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 640px;
+      padding: 26px;
+      box-shadow: var(--shadow-lg);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 14px;
+    }
+
+    .modal-header h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .close-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .warning-box {
+      background: rgba(198, 40, 40, 0.14);
+      border: 1px solid rgba(198, 40, 40, 0.45);
+      color: #ff8a80;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+
+    /* INFO & BREAKDOWN DETAILS */
+    .detail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      gap: 12px;
+    }
+
+    .detail-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .detail-value {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      word-break: break-all;
+    }
+
+    .notes-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+    }
+
+    .breakdown-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      background: rgba(255, 202, 40, 0.1);
+      border: 1px solid rgba(255, 202, 40, 0.35);
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      color: var(--gold-star);
+      margin-top: 6px;
+    }
+
+    /* GRADE BUILDER */
+    .scoring-note {
+      font-size: 0.82rem;
+      color: var(--gold-star);
+      background: rgba(255, 202, 40, 0.1);
+      border-left: 3px solid var(--gold-star);
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      border-radius: 4px;
+      line-height: 1.4;
+    }
+
+    .grade-columns-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .grade-columns-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .grade-box-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .grade-box-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-elevated);
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    .input-prefix-wrapper {
+      display: flex;
+      align-items: center;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      flex: 1;
+      height: 36px;
+    }
+
+    .input-prefix-wrapper .prefix {
+      padding: 0 9px;
+      background: #23232c;
+      color: var(--scarlet);
+      font-weight: 700;
+      font-size: 0.85rem;
+      line-height: 36px;
+    }
+
+    .input-prefix-wrapper input {
+      border: none;
+      background: transparent;
+      padding: 0 8px;
+      width: 100%;
+      color: #fff;
+      height: 100%;
+    }
+    .input-prefix-wrapper input:focus {
+      box-shadow: none;
+    }
+
+    .grade-box-row input[type="number"],
+    .grade-box-row .toprope-grade-val {
+      height: 36px;
+    }
+
+    .grade-box-row input[type="number"] {
+      width: 82px;
+    }
+
+    .btn-icon-danger {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 4px 6px;
+      font-size: 1rem;
+      border-radius: 4px;
+    }
+    .btn-icon-danger:hover {
+      color: #ff5252;
+      background: rgba(255, 82, 82, 0.1);
+    }
+
+    /* MANAGE EVENTS CARDS & DOTTED ADD BOX */
+    .event-item-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.15s, background-color 0.15s;
+    }
+    .event-item-card:hover {
+      background: var(--card-hover);
+      border-color: #454554;
+    }
+    .event-item-card.is-active-event {
+      border-color: rgba(46, 125, 50, 0.55);
+      background: rgba(46, 125, 50, 0.08);
+    }
+    .event-item-card.is-active-event:hover {
+      border-color: rgba(76, 175, 80, 0.75);
+      background: rgba(46, 125, 50, 0.12);
+    }
+
+    .add-event-dotted-card {
+      width: 100%;
+      border: 2px dashed var(--scarlet);
+      background: rgba(204, 0, 51, 0.05);
+      color: var(--text-light);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .add-event-dotted-card .plus-icon {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      min-height: 28px;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background: var(--scarlet);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 0;
+    }
+    .add-event-dotted-card .plus-icon svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+    .add-event-dotted-card:hover {
+      background: rgba(204, 0, 51, 0.14);
+      transform: translateY(-1px);
+    }
+
+    .event-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .event-title-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      flex-wrap: wrap;
+    }
+
+    .cat-tag {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* LIGHTBOX CAROUSEL */
+    .lightbox-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 92vw;
+      position: relative;
+    }
+
+    .lightbox-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .lightbox-nav-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      font-size: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .lightbox-nav-btn:hover:not(:disabled) {
+      background: var(--scarlet);
+      border-color: var(--scarlet);
+    }
+    .lightbox-nav-btn:disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+
+    #lightboxModal .lightbox-img {
+      max-width: 78vw;
+      max-height: 72vh;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border-color);
+      box-shadow: var(--shadow-lg);
+      background: #000;
+      object-fit: contain;
+    }
+
+    .lightbox-thumbs {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .lightbox-thumb-item {
+      width: 44px;
+      height: 44px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 2px solid transparent;
+      opacity: 0.55;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .lightbox-thumb-item.active {
+      border-color: var(--scarlet);
+      opacity: 1;
+      transform: scale(1.06);
+    }
+
+    .lightbox-caption-bar {
+      margin-top: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 8px 16px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .lightbox-caption-bar a {
+      color: var(--scarlet);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .lightbox-caption-bar a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer"></div>
+
+  <!-- LOGIN VIEW -->
+  <div id="loginView" class="login-wrapper hidden">
+    <div class="center-box">
+      <div class="login-brand">
+        <img src="../assets/RURC_Logo_Transparent.png" alt="Rutgers Climbing Logo" onerror="this.src='../assets/R.png'" />
+        <h2>Submissions Portal</h2>
+        <p>Rutgers Climbing Team Admin Dashboard</p>
+      </div>
+      <div id="loginError" class="warning-box hidden"></div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="adminEmail">Admin Email</label>
+          <input type="email" id="adminEmail" placeholder="admin@rutgers.edu" required autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="adminPassword">Password</label>
+          <input type="password" id="adminPassword" placeholder="Enter password" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-scarlet" style="width: 100%; height: 42px; margin-top: 8px; font-size: 0.95rem;">
+          Sign In to Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- DASHBOARD / SNAPSHOT VIEW -->
+  <div id="dashboardView" class="wrapper hidden">
+    <!-- TOP NAVBAR -->
+    <header class="navbar">
+      <div class="navbar-brand">
+        <img src="../assets/RURC_Logo_Transparent.png" alt="RURC" class="navbar-logo" onerror="this.src='../assets/R.png'" />
+        <div class="navbar-title-group">
+          <h1 id="pageMainHeading">Rutgers Climbing Submissions</h1>
+          <span class="navbar-subtitle" id="pageSubHeading">Tryouts & Competition Scorecard Management</span>
+        </div>
+      </div>
+      <div class="navbar-actions" id="adminNavbarActions">
+        <a href="../submit/" target="_blank" class="btn btn-ghost" title="Open public scorecard submission page">
+          Submit Form ↗
+        </a>
+        <div class="user-pill">
+          <span class="user-dot"></span>
+          <span id="userEmail"></span>
+        </div>
+        <button id="logoutBtn" class="btn btn-outline">Sign Out</button>
+      </div>
+    </header>
+
+    <!-- STATIC SNAPSHOT BANNER (Only shown when viewing a shared snapshot link) -->
+    <div id="snapshotBanner" class="snapshot-banner hidden">
+      <div>
+        <span class="snapshot-badge">Snapshot</span>
+        <span id="snapshotMetaText">Static results snapshot</span>
+      </div>
+      <a href="./" class="btn btn-outline" style="height: 30px; font-size: 0.78rem;">Admin Dashboard →</a>
+    </div>
+
+    <!-- SUMMARY KPI STATS -->
+    <section class="stats-grid">
+      <div class="stat-card interactive-event-card" id="eventStatCard" title="Click to switch or manage events">
+        <div class="stat-header-row">
+          <span class="stat-label" id="eventCardLabel">Current Event</span>
+          <span class="event-switch-pill" id="eventCardSwitchBadge">Switch / Manage ▾</span>
+        </div>
+        <div class="stat-value" id="statActiveEvent">Loading...</div>
+        <div class="stat-sub" id="statActiveCategories">Checking events...</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Displayed Submissions</span>
+        <div class="stat-value" id="statShownCount">0</div>
+        <div class="stat-sub" id="statTotalCount">of 0 event submissions</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Top Score</span>
+        <div class="stat-value" id="statTopScore">—</div>
+        <div class="stat-sub" id="statTopAthlete">No submissions in view</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Average Score</span>
+        <div class="stat-value" id="statAvgScore">0 pts</div>
+        <div class="stat-sub" id="statDisciplineBreakdown">0 Bouldering · 0 Top Rope</div>
+      </div>
+    </section>
+
+    <!-- CONTROLS & FILTERS TOOLBAR (Hidden in static snapshot mode) -->
+    <section id="adminToolbar" class="toolbar-section">
+      <div class="filters-grid">
+        <div class="filter-field">
+          <label for="searchInput">Search Athlete</label>
+          <div class="search-wrapper">
+            <span class="search-icon">⌕</span>
+            <input type="text" id="searchInput" placeholder="Search name, email, discord, or notes..." />
+            <button type="button" id="clearSearchBtn" class="clear-search-btn hidden" title="Clear search">✕</button>
+          </div>
+        </div>
+
+        <div class="filter-field">
+          <label for="filterDiscipline">Discipline</label>
+          <select id="filterDiscipline">
+            <option value="ALL">All Disciplines</option>
+            <option value="Bouldering">Bouldering</option>
+            <option value="Top Rope">Top Rope</option>
+          </select>
+        </div>
+
+        <div class="filter-field">
+          <label for="filterCategory">Category</label>
+          <select id="filterCategory">
+            <option value="ALL">All Categories</option>
+          </select>
+        </div>
+
+        <div class="filter-field">
+          <label for="sortBySelect">Sort Order</label>
+          <select id="sortBySelect">
+            <option value="points-desc">Points: High → Low</option>
+            <option value="points-asc">Points: Low → High</option>
+            <option value="newest">Submitted: Newest</option>
+            <option value="oldest">Submitted: Oldest</option>
+            <option value="name">Athlete Name (A–Z)</option>
+          </select>
+        </div>
+
+        <div class="filter-field">
+          <div class="filter-actions-group">
+            <button type="button" id="resetFiltersBtn" class="btn btn-ghost" style="height: 40px;" title="Reset filters">
+              Reset
+            </button>
+            <button type="button" id="refreshBtn" class="btn btn-outline" style="height: 40px;" title="Refresh all current data">
+              ⟳ Refresh
+            </button>
+            <button type="button" id="shareSnapshotBtn" class="btn btn-scarlet" style="height: 40px;" title="Create a shareable static link of the current table view">
+              🔗 Share Snapshot
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLUMN MANAGER RESTORATION PANEL -->
+    <div id="columnManagerPanel" class="column-manager-panel hidden"></div>
+
+    <!-- TABLE META BAR (Left: count, Right: Edit Columns Icon) -->
+    <div class="table-meta-bar">
+      <span id="resultsSummaryText">Loading submissions...</span>
+      <button type="button" id="manageColumnsBtn" class="icon-edit-cols-btn" onclick="toggleColumnManagement()" title="Edit visible columns">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- SUBMISSIONS TABLE -->
+    <div class="table-container">
+      <table>
+        <thead id="tableHead"></thead>
+        <tbody id="submissionsTable">
+          <tr><td colspan="6" class="empty-state">Loading submissions...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- POINTS BREAKDOWN MODAL (Triggered by clicking Points below Rank #) -->
+  <div id="pointsBreakdownModal" class="modal-overlay">
+    <div class="modal" style="max-width: 460px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="pointsModalTitle">Points Breakdown</h3>
+        <button class="close-btn" onclick="closeModal('pointsBreakdownModal')">&times;</button>
+      </div>
+      <div id="pointsBreakdownContainer" class="detail-list"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('pointsBreakdownModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION INFO MODAL (Triggered by clicking Info button next to Name) -->
+  <div id="submissionInfoModal" class="modal-overlay">
+    <div class="modal" style="max-width: 480px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="subInfoModalTitle">Submission Info</h3>
+        <button class="close-btn" onclick="closeModal('submissionInfoModal')">&times;</button>
+      </div>
+      <div class="detail-list">
+        <div class="detail-row">
+          <span class="detail-label">Submitted At</span>
+          <span class="detail-value" id="subInfoTimestamp">—</span>
+        </div>
+        <div class="detail-row">
+          <div>
+            <div class="detail-label">Email</div>
+            <div class="detail-value" id="subInfoEmail">—</div>
+          </div>
+          <button type="button" class="btn btn-outline" style="height: 30px; padding: 0 10px; font-size: 0.76rem;" id="copyEmailBtn">Copy</button>
+        </div>
+        <div class="detail-row">
+          <div>
+            <div class="detail-label">Discord</div>
+            <div class="detail-value" id="subInfoDiscord">—</div>
+          </div>
+          <button type="button" class="btn btn-outline" style="height: 30px; padding: 0 10px; font-size: 0.76rem;" id="copyDiscordBtn">Copy</button>
+        </div>
+        <div>
+          <label style="margin-bottom: 6px; text-transform: uppercase; font-size: 0.75rem; color: var(--text-muted);">Notes</label>
+          <div class="notes-box" id="subInfoNotes">No notes provided.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('submissionInfoModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SNAPSHOT SHARE LINK MODAL -->
+  <div id="snapshotShareModal" class="modal-overlay">
+    <div class="modal" style="max-width: 500px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Snapshot Link Created</h3>
+        <button class="close-btn" onclick="closeModal('snapshotShareModal')">&times;</button>
+      </div>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 14px;">
+        Anyone with this link can view a static, read-only snapshot of the current table, columns, and results:
+      </p>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <input type="text" id="snapshotUrlInput" readonly style="flex: 1; font-size: 0.84rem;" />
+        <button type="button" id="copySnapshotUrlBtn" class="btn btn-scarlet" style="height: 40px;">Copy Link</button>
+      </div>
+      <div class="modal-footer">
+        <a id="openSnapshotUrlBtn" href="#" target="_blank" class="btn btn-outline">Open Snapshot ↗</a>
+        <button type="button" class="btn btn-outline" onclick="closeModal('snapshotShareModal')">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANAGE & SWITCH EVENTS MODAL -->
+  <div id="manageEventsModal" class="modal-overlay">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Switch or Manage Events</h3>
+        <button class="close-btn" onclick="closeModal('manageEventsModal')">&times;</button>
+      </div>
+      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">
+        Click an event below to view its submissions, or set which event is active on the public submit form.
+      </p>
+      <div id="eventsListContainer" style="max-height: 360px; overflow-y: auto;"></div>
+
+      <!-- DOTTED RED RECTANGLE WITH CENTERED PLUS SIGN TO ADD NEW EVENT -->
+      <button type="button" id="openNewEventModalBtn" class="add-event-dotted-card">
+        <span class="plus-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </span>
+        <span>Create New Event</span>
+      </button>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('manageEventsModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATE EVENT MODAL -->
+  <div id="newEventModal" class="modal-overlay">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Create New Event & Grade Point Weights</h3>
+        <button class="close-btn" onclick="closeModal('newEventModal')">&times;</button>
+      </div>
+
+      <div class="scoring-note">
+        <strong>Auto-Scoring:</strong> Points are automatically calculated upon submission based on the grade weights below.
+      </div>
+
+      <form id="createEventForm">
+        <div class="form-group">
+          <label for="newEventName">Event Title</label>
+          <input type="text" id="newEventName" placeholder="e.g. Fall 2026 Tryouts" required />
+        </div>
+
+        <div class="form-group">
+          <label for="newEventCategories">Custom Categories (Comma Separated)</label>
+          <input type="text" id="newEventCategories" placeholder="Men, Women, Advanced / Open" required />
+        </div>
+
+        <div class="grade-columns-wrapper">
+          <div class="form-group">
+            <label>Bouldering Grades & Points</label>
+            <div id="boulderingBoxesContainer" class="grade-box-grid"></div>
+            <button type="button" class="btn btn-outline" style="width: 100%; font-size:0.8rem; height: 34px;" onclick="addBoulderingBox('', '')">
+              + Add Bouldering Range
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label>Top Rope Grades & Points</label>
+            <div id="topRopeBoxesContainer" class="grade-box-grid"></div>
+            <button type="button" class="btn btn-outline" style="width: 100%; font-size:0.8rem; height: 34px;" onclick="addTopRopeBox('', '')">
+              + Add Top Rope Grade
+            </button>
+          </div>
+        </div>
+
+        <label class="checkbox-group">
+          <input type="checkbox" id="newEventIsActive" checked />
+          <span style="font-size: 0.85rem; color: var(--text-light);">Set as Active Event immediately for submitters</span>
+        </label>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('newEventModal')">Cancel</button>
+          <button type="submit" class="btn btn-scarlet">Save Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DELETE EVENT CONFIRMATION MODAL -->
+  <div id="confirmDeleteModal" class="modal-overlay">
+    <div class="modal" style="max-width: 460px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 style="color: #ff8a80;">Delete Event Confirmation</h3>
+        <button class="close-btn" onclick="closeModal('confirmDeleteModal')">&times;</button>
+      </div>
+      <div class="warning-box">
+        <strong>Warning:</strong> You are about to permanently delete <u id="deleteTargetName"></u>.
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+        To confirm deletion, type <strong style="color: #fff;">DELETE</strong> below:
+      </p>
+      <input type="text" id="deleteConfirmInput" placeholder="Type DELETE" />
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('confirmDeleteModal')">Cancel</button>
+        <button type="button" id="executeDeleteBtn" class="btn btn-danger-solid" disabled>Confirm & Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION DELETE CONFIRMATION MODAL -->
+  <div id="confirmDeleteSubmissionModal" class="modal-overlay">
+    <div class="modal" style="max-width: 460px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 style="color: #ff8a80;">Delete Submission</h3>
+        <button class="close-btn" onclick="closeModal('confirmDeleteSubmissionModal')">&times;</button>
+      </div>
+      <div class="warning-box">
+        <strong>Warning:</strong> You are about to permanently delete <strong id="deleteSubAthleteName">this athlete</strong>'s scorecard entry. This action cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('confirmDeleteSubmissionModal')">Cancel</button>
+        <button type="button" id="executeDeleteSubmissionBtn" class="btn btn-danger-solid">Confirm & Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGE LIGHTBOX MODAL WITH MULTI-PHOTO SCROLLING -->
+  <div id="lightboxModal" class="modal-overlay" onclick="closeModal('lightboxModal')">
+    <div class="lightbox-container" onclick="event.stopPropagation()">
+      <div class="lightbox-stage">
+        <button type="button" id="lightboxPrevBtn" class="lightbox-nav-btn" title="Previous photo (←)">‹</button>
+        <img id="lightboxImage" class="lightbox-img" src="" alt="Proof Expanded" />
+        <button type="button" id="lightboxNextBtn" class="lightbox-nav-btn" title="Next photo (→)">›</button>
+      </div>
+      <div id="lightboxThumbs" class="lightbox-thumbs"></div>
+      <div class="lightbox-caption-bar">
+        <span id="lightboxCaption">Climb Proof</span>
+        <a id="lightboxOriginalLink" href="#" target="_blank" rel="noopener">Open Full Image ↗</a>
+        <button type="button" class="btn btn-ghost" style="height: 28px; font-size: 0.8rem;" onclick="closeModal('lightboxModal')">Close (Esc)</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, getDoc, updateDoc, deleteDoc, doc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDIIbSN2nBnpf946yLNCS9vfq41dWb-w2I",
+      authDomain: "tryouts-scoring.firebaseapp.com",
+      projectId: "tryouts-scoring",
+      storageBucket: "tryouts-scoring.firebasestorage.app",
+      messagingSenderId: "56954072644",
+      appId: "1:56954072644:web:5c95da0c0edf35be649611"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const snapshotIdParam = urlParams.get("snapshot");
+    let isSnapshotMode = Boolean(snapshotIdParam);
+
+    let allSubmissions = [];
+    let currentFilteredSubmissions = [];
+    let eventsList = [];
+    let selectedEventId = null;
+    let pendingDeleteEventId = null;
+    let pendingDeleteSubmissionId = null;
+
+    let isManagingColumns = false;
+    let hiddenColumns = new Set();
+
+    // Lightbox gallery state for scrolling through one athlete's photos
+    let currentGalleryPhotos = [];
+    let currentGalleryIndex = 0;
+
+    const allColumns = [
+      { id: 'col-rank', label: '# / Points', sortKey: 'points' },
+      { id: 'col-name', label: 'Name', sortKey: 'name' },
+      { id: 'col-discipline', label: 'Discipline' },
+      { id: 'col-category', label: 'Category' },
+      { id: 'col-climbs', label: 'Logged Climbs & Proofs' },
+      { id: 'col-action', label: 'Action' }
+    ];
+
+    function showToast(message, type = "info") {
+      const container = document.getElementById("toastContainer");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type === 'success' ? 'toast-success' : type === 'error' ? 'toast-error' : ''}`;
+      toast.innerText = message;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    window.openModal = (id) => document.getElementById(id).classList.add('active');
+    window.closeModal = (id) => document.getElementById(id).classList.remove('active');
+
+    // Keyboard shortcuts for Lightbox (Left/Right arrows) and Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        document.querySelectorAll(".modal-overlay.active").forEach(m => m.classList.remove("active"));
+        return;
+      }
+      const lightboxActive = document.getElementById("lightboxModal").classList.contains("active");
+      if (lightboxActive && currentGalleryPhotos.length > 1) {
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          stepLightboxPhoto(-1);
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          stepLightboxPhoto(1);
+        }
+      }
+    });
+
+    document.querySelectorAll(".modal-overlay").forEach(overlay => {
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) overlay.classList.remove("active");
+      });
+    });
+
+    async function copyToClipboard(text, label) {
+      if (!text || text === "N/A" || text === "—") return;
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(`Copied ${label}: ${text}`, "success");
+      } catch {
+        showToast("Failed to copy to clipboard", "error");
+      }
+    }
+
+    // Active Event Stat Card opens Manage/Switch Events Modal
+    document.getElementById("eventStatCard").addEventListener("click", () => {
+      if (isSnapshotMode) return;
+      renderManageEventsList();
+      openModal("manageEventsModal");
+    });
+
+    window.toggleColumnManagement = () => {
+      if (isSnapshotMode) return;
+      isManagingColumns = !isManagingColumns;
+      const btn = document.getElementById("manageColumnsBtn");
+      btn.classList.toggle("active", isManagingColumns);
+      renderTable();
+    };
+
+    window.hideColumn = (colId) => {
+      hiddenColumns.add(colId);
+      renderTable();
+    };
+
+    window.showColumn = (colId) => {
+      hiddenColumns.delete(colId);
+      renderTable();
+    };
+
+    window.toggleColumn = (colId) => {
+      if (hiddenColumns.has(colId)) {
+        hiddenColumns.delete(colId);
+      } else {
+        hiddenColumns.add(colId);
+      }
+      renderTable();
+    };
+
+    window.resetAllColumns = () => {
+      hiddenColumns.clear();
+      renderTable();
+    };
+
+    // Open athlete's photo gallery and allow scrolling through all of their climb photos
+    window.openAthletePhoto = (submissionId, startPhotoIndex) => {
+      const sub = currentFilteredSubmissions.find(s => s.id === submissionId) || allSubmissions.find(s => s.id === submissionId);
+      if (!sub || !sub.climbs) return;
+
+      currentGalleryPhotos = [];
+      sub.climbs.forEach((c, idx) => {
+        if (c.photoUrl) {
+          currentGalleryPhotos.push({
+            url: c.photoUrl,
+            caption: `${sub.fullName || 'Athlete'} — Climb ${c.climbNumber || (idx + 1)} (${c.grade || 'N/A'})`
+          });
+        }
+      });
+
+      if (currentGalleryPhotos.length === 0) return;
+      currentGalleryIndex = Math.max(0, Math.min(startPhotoIndex, currentGalleryPhotos.length - 1));
+      updateLightboxView();
+      openModal("lightboxModal");
+    };
+
+    function stepLightboxPhoto(delta) {
+      if (currentGalleryPhotos.length <= 1) return;
+      currentGalleryIndex = (currentGalleryIndex + delta + currentGalleryPhotos.length) % currentGalleryPhotos.length;
+      updateLightboxView();
+    }
+
+    document.getElementById("lightboxPrevBtn").addEventListener("click", () => stepLightboxPhoto(-1));
+    document.getElementById("lightboxNextBtn").addEventListener("click", () => stepLightboxPhoto(1));
+
+    function updateLightboxView() {
+      const current = currentGalleryPhotos[currentGalleryIndex];
+      if (!current) return;
+      const total = currentGalleryPhotos.length;
+
+      document.getElementById("lightboxImage").src = current.url;
+      document.getElementById("lightboxCaption").innerText = total > 1
+        ? `${current.caption} · Photo ${currentGalleryIndex + 1} of ${total}`
+        : current.caption;
+      document.getElementById("lightboxOriginalLink").href = current.url;
+
+      const prevBtn = document.getElementById("lightboxPrevBtn");
+      const nextBtn = document.getElementById("lightboxNextBtn");
+      prevBtn.style.visibility = total > 1 ? "visible" : "hidden";
+      nextBtn.style.visibility = total > 1 ? "visible" : "hidden";
+
+      const thumbsContainer = document.getElementById("lightboxThumbs");
+      if (total > 1) {
+        thumbsContainer.innerHTML = currentGalleryPhotos.map((p, i) => `
+          <img src="${escapeHtml(p.url)}" class="lightbox-thumb-item ${i === currentGalleryIndex ? 'active' : ''}" onclick="selectGalleryPhoto(${i})" alt="Thumbnail ${i + 1}" />
+        `).join('');
+      } else {
+        thumbsContainer.innerHTML = "";
+      }
+    }
+
+    window.selectGalleryPhoto = (idx) => {
+      currentGalleryIndex = idx;
+      updateLightboxView();
+    };
+
+    // Click athlete's points -> show per-climb Points Breakdown modal
+    window.showPointsBreakdown = (submissionId) => {
+      const sub = currentFilteredSubmissions.find(s => s.id === submissionId) || allSubmissions.find(s => s.id === submissionId);
+      if (!sub) return;
+      document.getElementById("pointsModalTitle").innerText = `${sub.fullName || 'Athlete'} — Points Breakdown`;
+      const container = document.getElementById("pointsBreakdownContainer");
+      const climbs = sub.climbs || [];
+
+      if (climbs.length === 0) {
+        container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 14px;">No climbs logged.</p>`;
+      } else {
+        let rowsHtml = climbs.map((c, idx) => {
+          const pts = c.points !== undefined ? c.points : 0;
+          return `
+            <div class="breakdown-row">
+              <div>
+                <span style="color:var(--text-muted); font-size:0.8rem; margin-right:8px;">Climb ${c.climbNumber || (idx + 1)}</span>
+                <strong style="color:var(--text-light);">${escapeHtml(c.grade || 'N/A')}</strong>
+              </div>
+              <span style="font-weight:700; color:var(--gold-star);">${pts} pts</span>
+            </div>
+          `;
+        }).join('');
+
+        rowsHtml += `
+          <div class="breakdown-total">
+            <span>Total Score (${escapeHtml(sub.discipline || 'Bouldering')})</span>
+            <span>${sub.totalPoints || 0} pts</span>
+          </div>
+        `;
+        container.innerHTML = rowsHtml;
+      }
+      openModal("pointsBreakdownModal");
+    };
+
+    // Click Info button next to Name -> show Submitted At, Email, Discord, and Notes
+    window.showSubmissionInfo = (submissionId) => {
+      const sub = currentFilteredSubmissions.find(s => s.id === submissionId) || allSubmissions.find(s => s.id === submissionId);
+      if (!sub) return;
+      document.getElementById("subInfoModalTitle").innerText = `${sub.fullName || 'Athlete'} — Submission Info`;
+
+      let dateFormatted = "N/A";
+      if (sub.timestamp && sub.timestamp.seconds) {
+        const d = new Date(sub.timestamp.seconds * 1000);
+        dateFormatted = d.toLocaleString(undefined, {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit'
+        });
+      } else if (sub.submittedAtText) {
+        dateFormatted = sub.submittedAtText;
+      }
+
+      const email = sub.email || "—";
+      const discord = sub.discordUsername || "—";
+
+      document.getElementById("subInfoTimestamp").innerText = dateFormatted;
+      document.getElementById("subInfoEmail").innerText = email;
+      document.getElementById("subInfoDiscord").innerText = discord;
+
+      document.getElementById("copyEmailBtn").onclick = () => copyToClipboard(email, "Email");
+      document.getElementById("copyDiscordBtn").onclick = () => copyToClipboard(discord, "Discord");
+
+      const notesText = (sub.notes || "").trim();
+      document.getElementById("subInfoNotes").innerText = notesText || "No notes or comments provided.";
+      openModal("submissionInfoModal");
+    };
+
+    window.handleColumnSort = (sortKey) => {
+      if (isSnapshotMode) return;
+      const sortSelect = document.getElementById("sortBySelect");
+      if (sortKey === "points") {
+        sortSelect.value = sortSelect.value === "points-desc" ? "points-asc" : "points-desc";
+      } else if (sortKey === "name") {
+        sortSelect.value = "name";
+      }
+      renderTable();
+    };
+
+    // REFRESH BUTTON HANDLER
+    document.getElementById("refreshBtn").addEventListener("click", async () => {
+      showToast("Refreshing data from server...", "info");
+      await initDashboard();
+      showToast("Data refreshed!", "success");
+    });
+
+    window.addBoulderingBox = (gradeVal = "", pointsVal = "") => {
+      const container = document.getElementById("boulderingBoxesContainer");
+      const row = document.createElement("div");
+      row.className = "grade-box-row bouldering-row";
+      const cleanVal = gradeVal.toString().replace(/^V/i, "");
+      row.innerHTML = `
+        <div class="input-prefix-wrapper">
+          <span class="prefix">V</span>
+          <input type="text" class="bouldering-grade-val" value="${cleanVal}" placeholder="0-2 or 7" required />
+        </div>
+        <input type="number" class="bouldering-points-val" value="${pointsVal}" placeholder="Pts" min="0" required />
+        <button type="button" class="btn-icon-danger" onclick="this.parentElement.remove()" title="Remove">✕</button>
+      `;
+      container.appendChild(row);
+    };
+
+    window.addTopRopeBox = (gradeVal = "", pointsVal = "") => {
+      const container = document.getElementById("topRopeBoxesContainer");
+      const row = document.createElement("div");
+      row.className = "grade-box-row top-rope-row";
+      row.innerHTML = `
+        <input type="text" class="toprope-grade-val" value="${gradeVal}" placeholder="e.g. 5.10+" required style="flex:1;" />
+        <input type="number" class="toprope-points-val" value="${pointsVal}" placeholder="Pts" min="0" required />
+        <button type="button" class="btn-icon-danger" onclick="this.parentElement.remove()" title="Remove">✕</button>
+      `;
+      container.appendChild(row);
+    };
+
+    function populateDefaultBoxes() {
+      document.getElementById("boulderingBoxesContainer").innerHTML = "";
+      document.getElementById("topRopeBoxesContainer").innerHTML = "";
+      [{ grade: "0-2", pts: 10 }, { grade: "3-4", pts: 25 }, { grade: "5-6", pts: 50 }, { grade: "7-8", pts: 75 }, { grade: "9+", pts: 100 }].forEach(i => addBoulderingBox(i.grade, i.pts));
+      [{ grade: "5.6", pts: 5 }, { grade: "5.7", pts: 10 }, { grade: "5.8", pts: 15 }, { grade: "5.9", pts: 20 }, { grade: "5.10-", pts: 25 }, { grade: "5.10+", pts: 35 }, { grade: "5.11-", pts: 50 }, { grade: "5.11+", pts: 65 }].forEach(i => addTopRopeBox(i.grade, i.pts));
+    }
+
+    // Check if viewing a static snapshot or normal admin dashboard
+    if (isSnapshotMode) {
+      loadSnapshotView(snapshotIdParam);
+    } else {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          document.getElementById("loginView").classList.add("hidden");
+          document.getElementById("dashboardView").classList.remove("hidden");
+          document.getElementById("userEmail").innerText = user.email;
+          initDashboard();
+        } else {
+          document.getElementById("loginView").classList.remove("hidden");
+          document.getElementById("dashboardView").classList.add("hidden");
+        }
+      });
+    }
+
+    async function loadSnapshotView(snapshotId) {
+      document.getElementById("loginView").classList.add("hidden");
+      document.getElementById("dashboardView").classList.remove("hidden");
+      document.getElementById("adminNavbarActions").classList.add("hidden");
+      document.getElementById("adminToolbar").classList.add("hidden");
+      document.getElementById("manageColumnsBtn").classList.add("hidden");
+      document.getElementById("snapshotBanner").classList.remove("hidden");
+
+      const eventCard = document.getElementById("eventStatCard");
+      eventCard.classList.remove("interactive-event-card");
+      eventCard.removeAttribute("title");
+      document.getElementById("eventCardSwitchBadge").classList.add("hidden");
+
+      try {
+        const snapDoc = await getDoc(doc(db, "events", snapshotId));
+        if (!snapDoc.exists() || snapDoc.data().type !== "snapshot") {
+          document.getElementById("submissionsTable").innerHTML = `
+            <tr><td colspan="6" class="empty-state"><h4>Snapshot not found</h4><p>This snapshot link may be invalid or expired.</p></td></tr>
+          `;
+          return;
+        }
+
+        const data = snapDoc.data();
+        document.getElementById("statActiveEvent").innerText = data.eventName || "Event Snapshot";
+        document.getElementById("statActiveCategories").innerText = data.filterSummary || "Saved Results";
+
+        const createdDate = data.snapshotCreatedAt?.seconds
+          ? new Date(data.snapshotCreatedAt.seconds * 1000).toLocaleString()
+          : (data.createdAtText || "");
+        document.getElementById("snapshotMetaText").innerText =
+          `Saved snapshot for ${data.eventName || 'Event'}${createdDate ? ` · Captured ${createdDate}` : ''}`;
+
+        hiddenColumns = new Set(data.hiddenColumns || []);
+        hiddenColumns.add('col-action');
+        currentFilteredSubmissions = data.rows || [];
+        allSubmissions = currentFilteredSubmissions;
+
+        updateSummaryStats(currentFilteredSubmissions, data.totalEventCount || currentFilteredSubmissions.length);
+        document.getElementById("resultsSummaryText").innerText =
+          `Showing ${currentFilteredSubmissions.length} submission${currentFilteredSubmissions.length === 1 ? '' : 's'} (Static Snapshot)`;
+
+        renderRowsIntoTable(currentFilteredSubmissions, data.sortBy || "points-desc");
+      } catch (err) {
+        console.error(err);
+        document.getElementById("submissionsTable").innerHTML = `
+          <tr><td colspan="6" class="empty-state"><h4>Error loading snapshot</h4><p>Could not load the requested snapshot.</p></td></tr>
+        `;
+      }
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("adminEmail").value;
+      const pass = document.getElementById("adminPassword").value;
+      const errorBox = document.getElementById("loginError");
+      try {
+        errorBox.classList.add("hidden");
+        await signInWithEmailAndPassword(auth, email, pass);
+        showToast("Signed in successfully", "success");
+      } catch (err) {
+        errorBox.innerText = "Invalid credentials. Please check your email and password.";
+        errorBox.classList.remove("hidden");
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
+
+    async function initDashboard() {
+      await loadEvents();
+      await loadSubmissions();
+    }
+
+    async function loadEvents() {
+      try {
+        const q = query(collection(db, "events"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        eventsList = [];
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          if (data.type === "snapshot") return;
+          eventsList.push({ id: docSnap.id, ...data });
+        });
+
+        // Ensure exactly one event is selected at a time (default to Active event, or latest event)
+        if (!selectedEventId || !eventsList.some(e => e.id === selectedEventId)) {
+          const activeEv = eventsList.find(e => e.isActive) || eventsList[0];
+          selectedEventId = activeEv ? activeEv.id : "general";
+        }
+
+        updateActiveEventStat();
+        updateCategoryFilter();
+        renderManageEventsList();
+      } catch (err) {
+        console.error(err);
+        showToast("Error loading events", "error");
+      }
+    }
+
+    function updateActiveEventStat() {
+      const currentEv = eventsList.find(e => e.id === selectedEventId) || eventsList.find(e => e.isActive) || eventsList[0];
+      const labelEl = document.getElementById("eventCardLabel");
+      const titleEl = document.getElementById("statActiveEvent");
+      const subEl = document.getElementById("statActiveCategories");
+
+      if (currentEv) {
+        labelEl.innerText = currentEv.isActive ? "Active Event" : "Viewing Event";
+        titleEl.innerText = currentEv.name || "Unnamed Event";
+        const cats = (currentEv.categories || []).join(", ") || "Standard categories";
+        subEl.innerText = `${currentEv.isActive ? "Active for Submitters" : "Past / Inactive Event"} · ${cats}`;
+      } else {
+        labelEl.innerText = "Active Event";
+        titleEl.innerText = "General Tryouts";
+        subEl.innerText = "Click to create or manage events";
+      }
+    }
+
+    function updateCategoryFilter() {
+      const filterCategory = document.getElementById("filterCategory");
+      const prevCat = filterCategory.value;
+      filterCategory.innerHTML = `<option value="ALL">All Categories</option>`;
+      let categoriesSet = new Set();
+
+      const eventItem = eventsList.find(e => e.id === selectedEventId);
+      if (eventItem && eventItem.categories) {
+        eventItem.categories.forEach(c => categoriesSet.add(c));
+      }
+      allSubmissions.forEach(s => {
+        if (s.category && (!selectedEventId || s.eventId === selectedEventId)) {
+          categoriesSet.add(s.category);
+        }
+      });
+
+      categoriesSet.forEach(cat => {
+        filterCategory.innerHTML += `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`;
+      });
+      if (prevCat && categoriesSet.has(prevCat)) {
+        filterCategory.value = prevCat;
+      }
+    }
+
+    // Dotted red button inside Manage Events opens New Event modal
+    document.getElementById("openNewEventModalBtn").addEventListener("click", () => {
+      closeModal("manageEventsModal");
+      document.getElementById("createEventForm").reset();
+      populateDefaultBoxes();
+      document.getElementById("newEventIsActive").checked = true;
+      openModal("newEventModal");
+    });
+
+    document.getElementById("createEventForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("newEventName").value.trim();
+      const rawCategories = document.getElementById("newEventCategories").value.trim();
+      const isActive = document.getElementById("newEventIsActive").checked;
+      const categoryArray = rawCategories ? rawCategories.split(',').map(c => c.trim()).filter(c => c.length > 0) : ["Men", "Women"];
+
+      const boulderingGrades = [];
+      document.querySelectorAll("#boulderingBoxesContainer .bouldering-row").forEach(row => {
+        const rawVal = row.querySelector(".bouldering-grade-val").value.trim();
+        const ptsVal = parseInt(row.querySelector(".bouldering-points-val").value, 10) || 0;
+        if (rawVal) boulderingGrades.push({ grade: rawVal.toUpperCase().startsWith("V") ? rawVal.toUpperCase() : `V${rawVal}`, points: ptsVal });
+      });
+
+      const topRopeGrades = [];
+      document.querySelectorAll("#topRopeBoxesContainer .top-rope-row").forEach(row => {
+        const rawVal = row.querySelector(".toprope-grade-val").value.trim();
+        const ptsVal = parseInt(row.querySelector(".toprope-points-val").value, 10) || 0;
+        if (rawVal) topRopeGrades.push({ grade: rawVal, points: ptsVal });
+      });
+
+      try {
+        if (isActive) {
+          for (let ev of eventsList) {
+            if (ev.isActive) await updateDoc(doc(db, "events", ev.id), { isActive: false });
+          }
+        }
+        const docRef = await addDoc(collection(db, "events"), { name, categories: categoryArray, boulderingGrades, topRopeGrades, isActive, createdAt: serverTimestamp() });
+        selectedEventId = docRef.id;
+        showToast(`Event '${name}' created!`, "success");
+        closeModal("newEventModal");
+        await loadEvents();
+        renderTable();
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to create event.", "error");
+      }
+    });
+
+    function renderManageEventsList() {
+      const container = document.getElementById("eventsListContainer");
+      if (eventsList.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:24px;">No events created yet. Click below to create your first event.</p>`;
+        return;
+      }
+      container.innerHTML = eventsList.map(ev => {
+        const subCount = allSubmissions.filter(s => s.eventId === ev.id).length;
+        const isViewing = ev.id === selectedEventId;
+        return `
+          <div class="event-item-card ${ev.isActive ? 'is-active-event' : ''}" onclick="selectEventToView('${ev.id}')">
+            <div class="event-info">
+              <div class="event-title-line">
+                <span>${escapeHtml(ev.name)}</span>
+                ${ev.isActive ? '<span class="active-badge">● ACTIVE</span>' : '<span class="inactive-badge">INACTIVE</span>'}
+                ${isViewing && !ev.isActive ? '<span class="viewing-badge">VIEWING</span>' : ''}
+              </div>
+              <span class="cat-tag">Categories: ${escapeHtml((ev.categories || []).join(", ") || 'None')} · ${subCount} submission${subCount === 1 ? '' : 's'}</span>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;" onclick="event.stopPropagation()">
+              ${!ev.isActive ? `<button class="btn btn-success" style="height: 30px; padding: 0 10px; font-size:0.75rem;" onclick="setActiveEvent('${ev.id}')">Set Active</button>` : ''}
+              <button class="btn btn-danger" style="height: 30px; padding: 0 10px; font-size:0.75rem;" onclick="promptDeleteEvent('${ev.id}')">Delete</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.selectEventToView = (id) => {
+      selectedEventId = id;
+      updateActiveEventStat();
+      updateCategoryFilter();
+      renderManageEventsList();
+      renderTable();
+      closeModal("manageEventsModal");
+      const ev = eventsList.find(e => e.id === id);
+      if (ev) showToast(`Viewing '${ev.name}'`, "info");
+    };
+
+    window.setActiveEvent = async (id) => {
+      try {
+        for (let ev of eventsList) await updateDoc(doc(db, "events", ev.id), { isActive: (ev.id === id) });
+        selectedEventId = id;
+        showToast("Active event updated", "success");
+        await loadEvents();
+        renderTable();
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to update active status.", "error");
+      }
+    };
+
+    window.promptDeleteEvent = (id) => {
+      const target = eventsList.find(e => e.id === id);
+      if (!target) return;
+      pendingDeleteEventId = id;
+      document.getElementById("deleteTargetName").innerText = target.name;
+      document.getElementById("deleteConfirmInput").value = "";
+      document.getElementById("executeDeleteBtn").disabled = true;
+      openModal("confirmDeleteModal");
+    };
+
+    document.getElementById("deleteConfirmInput").addEventListener("input", (e) => {
+      document.getElementById("executeDeleteBtn").disabled = e.target.value.trim().toUpperCase() !== "DELETE";
+    });
+
+    document.getElementById("executeDeleteBtn").addEventListener("click", async () => {
+      if (!pendingDeleteEventId) return;
+      try {
+        await deleteDoc(doc(db, "events", pendingDeleteEventId));
+        if (selectedEventId === pendingDeleteEventId) selectedEventId = null;
+        showToast("Event deleted", "success");
+        closeModal("confirmDeleteModal");
+        pendingDeleteEventId = null;
+        await loadEvents();
+        renderTable();
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to delete event.", "error");
+      }
+    });
+
+    async function loadSubmissions() {
+      const tbody = document.getElementById("submissionsTable");
+      tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Loading submissions...</td></tr>`;
+      try {
+        const q = query(collection(db, "submissions"), orderBy("timestamp", "desc"));
+        const snapshot = await getDocs(q);
+        allSubmissions = [];
+        snapshot.forEach(docSnap => allSubmissions.push({ id: docSnap.id, ...docSnap.data() }));
+        updateCategoryFilter();
+        renderManageEventsList();
+        renderTable();
+      } catch (err) {
+        console.error(err);
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state" style="color: #ff8a80;">Error loading submissions.</td></tr>`;
+      }
+    }
+
+    function updateSummaryStats(filtered, eventTotalCount) {
+      document.getElementById("statShownCount").innerText = filtered.length;
+      document.getElementById("statTotalCount").innerText = `of ${eventTotalCount} event submission${eventTotalCount === 1 ? '' : 's'}`;
+
+      const topScoreEl = document.getElementById("statTopScore");
+      const topAthleteEl = document.getElementById("statTopAthlete");
+      const avgScoreEl = document.getElementById("statAvgScore");
+      const breakdownEl = document.getElementById("statDisciplineBreakdown");
+
+      if (filtered.length === 0) {
+        topScoreEl.innerText = "—";
+        topAthleteEl.innerText = "No matching submissions";
+        avgScoreEl.innerText = "0 pts";
+        breakdownEl.innerText = "0 Bouldering · 0 Top Rope";
+        return;
+      }
+
+      let bestSub = filtered[0];
+      let sumPoints = 0;
+      let boulderingCount = 0;
+      let topRopeCount = 0;
+
+      filtered.forEach(s => {
+        const pts = s.totalPoints || 0;
+        sumPoints += pts;
+        if (pts > (bestSub.totalPoints || 0)) bestSub = s;
+        if ((s.discipline || "Bouldering") === "Top Rope") topRopeCount++;
+        else boulderingCount++;
+      });
+
+      topScoreEl.innerText = `${bestSub.totalPoints || 0} pts`;
+      topAthleteEl.innerText = `${bestSub.fullName || "Unnamed"} (${bestSub.category || "General"})`;
+      avgScoreEl.innerText = `${Math.round(sumPoints / filtered.length)} pts`;
+      breakdownEl.innerText = `${boulderingCount} Bouldering · ${topRopeCount} Top Rope`;
+    }
+
+    function renderTable() {
+      if (isSnapshotMode) return;
+      const managerPanel = document.getElementById("columnManagerPanel");
+      const visibleColumns = allColumns.filter(col => !hiddenColumns.has(col.id));
+      const sortBy = document.getElementById("sortBySelect").value;
+
+      if (isManagingColumns) {
+        managerPanel.classList.remove("hidden");
+        managerPanel.innerHTML = `
+          <div class="column-manager-header">
+            <span style="color:var(--text-secondary); font-size:0.8rem; font-weight:600;">
+              Toggle visible columns (${visibleColumns.length} of ${allColumns.length} shown):
+            </span>
+            ${hiddenColumns.size > 0 ? `<button type="button" class="btn btn-ghost" style="height:26px; font-size:0.75rem;" onclick="resetAllColumns()">Reset All</button>` : ''}
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            ${allColumns.map(c => {
+              const isHidden = hiddenColumns.has(c.id);
+              return `<button type="button" class="col-chip ${isHidden ? 'hidden-chip' : 'visible'}" onclick="toggleColumn('${c.id}')">${isHidden ? '+ ' : '✓ '}${c.label}</button>`;
+            }).join('')}
+          </div>
+        `;
+      } else {
+        managerPanel.classList.add("hidden");
+      }
+
+      const rawSearch = document.getElementById("searchInput").value;
+      const search = rawSearch.toLowerCase().trim();
+      document.getElementById("clearSearchBtn").classList.toggle("hidden", rawSearch.length === 0);
+
+      const disciplineFilter = document.getElementById("filterDiscipline").value;
+      const categoryFilter = document.getElementById("filterCategory").value;
+
+      // Filter strictly to the single currently selected event
+      const eventSubmissions = allSubmissions.filter(item => {
+        if (!selectedEventId || selectedEventId === "general") return true;
+        return item.eventId === selectedEventId;
+      });
+
+      let filtered = eventSubmissions.filter(item => {
+        const matchesSearch = !search ||
+          (item.fullName || "").toLowerCase().includes(search) ||
+          (item.email || "").toLowerCase().includes(search) ||
+          (item.discordUsername || "").toLowerCase().includes(search) ||
+          (item.notes || "").toLowerCase().includes(search);
+        const matchesDiscipline = disciplineFilter === "ALL" || (item.discipline || "Bouldering") === disciplineFilter;
+        const matchesCategory = categoryFilter === "ALL" || item.category === categoryFilter;
+        return matchesSearch && matchesDiscipline && matchesCategory;
+      });
+
+      filtered.sort((a, b) => {
+        const pA = a.totalPoints || 0, pB = b.totalPoints || 0;
+        if (sortBy === "points-desc") return pB - pA;
+        if (sortBy === "points-asc") return pA - pB;
+        if (sortBy === "name") return (a.fullName || "").localeCompare(b.fullName || "");
+        if (sortBy === "oldest") return (a.timestamp?.seconds || 0) - (b.timestamp?.seconds || 0);
+        return (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
+      });
+
+      currentFilteredSubmissions = filtered;
+      updateSummaryStats(filtered, eventSubmissions.length);
+
+      document.getElementById("resultsSummaryText").innerText =
+        `Showing ${filtered.length} of ${eventSubmissions.length} submission${eventSubmissions.length === 1 ? '' : 's'}`;
+
+      renderRowsIntoTable(filtered, sortBy);
+    }
+
+    function renderRowsIntoTable(filtered, sortBy) {
+      const tbody = document.getElementById("submissionsTable");
+      const tableHead = document.getElementById("tableHead");
+      const visibleColumns = allColumns.filter(col => !hiddenColumns.has(col.id));
+
+      let headerHtml = '';
+      if (isManagingColumns && !isSnapshotMode) {
+        headerHtml += `<tr>`;
+        headerHtml += visibleColumns.map(col => `<th class="${col.id}" style="text-align: center; padding: 8px;"><button type="button" class="remove-col-btn" onclick="hideColumn('${col.id}')">✕ Hide</button></th>`).join('');
+        headerHtml += `</tr>`;
+      }
+      headerHtml += `<tr>`;
+      headerHtml += visibleColumns.map(col => {
+        let sortIndicator = "";
+        if (col.sortKey === "points" && (sortBy === "points-desc" || sortBy === "points-asc")) {
+          sortIndicator = sortBy === "points-desc" ? " ↓" : " ↑";
+        } else if (col.sortKey === "name" && sortBy === "name") {
+          sortIndicator = " ↑";
+        }
+        const clickAttr = (col.sortKey && !isSnapshotMode) ? `class="${col.id} sortable" onclick="handleColumnSort('${col.sortKey}')"` : `class="${col.id}"`;
+        const labelText = isSnapshotMode && col.id === 'col-action' ? 'Info' : col.label;
+        return `<th ${clickAttr} style="${isManagingColumns ? 'text-align: center;' : ''}">${labelText}${sortIndicator}</th>`;
+      }).join('');
+      headerHtml += `</tr>`;
+      tableHead.innerHTML = headerHtml;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="${visibleColumns.length || 1}" class="empty-state">
+              <h4>No matching submissions found</h4>
+              <p>Try adjusting your search query or clearing active filters.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((item, idx) => {
+        let cellsHtml = '';
+        const rankNum = idx + 1;
+        const rankClass = sortBy === "points-desc" && rankNum <= 3 ? `rank-${rankNum}` : "";
+
+        // Rank # with clickable Points badge stacked underneath
+        if (!hiddenColumns.has('col-rank')) {
+          cellsHtml += `
+            <td class="col-rank">
+              <div class="rank-points-stack">
+                <span class="rank-badge ${rankClass}">#${rankNum}</span>
+                <button type="button" class="points-badge-btn" onclick="showPointsBreakdown('${item.id}')" title="Click to view points breakdown per climb">
+                  ${item.totalPoints || 0} pts
+                </button>
+              </div>
+            </td>
+          `;
+        }
+
+        // Athlete Name with Info button directly to the right
+        if (!hiddenColumns.has('col-name')) {
+          cellsHtml += `
+            <td class="col-name">
+              <div class="name-cell-group">
+                <span class="athlete-name-text">${escapeHtml(item.fullName || 'Unnamed')}</span>
+                <button type="button" class="btn-info-inline" onclick="showSubmissionInfo('${item.id}')" title="View submission info">
+                  ⓘ Info
+                </button>
+              </div>
+            </td>
+          `;
+        }
+
+        if (!hiddenColumns.has('col-discipline')) {
+          const disc = item.discipline || 'Bouldering';
+          const discClass = disc === 'Top Rope' ? 'discipline-toprope' : 'discipline-bouldering';
+          cellsHtml += `<td class="col-discipline"><span class="discipline-badge ${discClass}">${escapeHtml(disc)}</span></td>`;
+        }
+
+        if (!hiddenColumns.has('col-category')) {
+          cellsHtml += `<td class="col-category"><span class="category-pill">${escapeHtml(item.category || 'Uncategorized')}</span></td>`;
+        }
+
+        // Climbs & Proofs: Only show Grade and Photo (no points here), and clicking a photo scrolls through all of that person's photos
+        if (!hiddenColumns.has('col-climbs')) {
+          let climbsHtml = '<span style="color:var(--text-muted); font-size:0.8rem;">No climbs logged</span>';
+          if (item.climbs && item.climbs.length > 0) {
+            let photoCounter = 0;
+            climbsHtml = `<div class="climbs-list">` + item.climbs.map((c) => {
+              if (c.photoUrl) {
+                const thisPhotoIdx = photoCounter++;
+                return `<span class="climb-tag has-photo" onclick="openAthletePhoto('${item.id}', ${thisPhotoIdx})" title="Click to view proof photos">
+                  <strong>${escapeHtml(c.grade || 'N/A')}</strong>
+                  <img src="${escapeHtml(c.photoUrl)}" class="img-thumb" alt="Proof" loading="lazy" />
+                </span>`;
+              }
+              return `<span class="climb-tag">
+                <strong>${escapeHtml(c.grade || 'N/A')}</strong>
+              </span>`;
+            }).join('') + `</div>`;
+          }
+          cellsHtml += `<td class="col-climbs">${climbsHtml}</td>`;
+        }
+
+        // Action column: Delete button (hidden in snapshot mode)
+        if (!hiddenColumns.has('col-action') && !isSnapshotMode) {
+          cellsHtml += `
+            <td class="col-action">
+              <div class="row-actions">
+                <button type="button" class="btn btn-danger" style="height: 30px; padding: 0 10px; font-size:0.75rem;" onclick="deleteEntry('${item.id}')">Delete</button>
+              </div>
+            </td>
+          `;
+        }
+
+        return `<tr>${cellsHtml}</tr>`;
+      }).join('');
+    }
+
+    window.deleteEntry = (id) => {
+      pendingDeleteSubmissionId = id;
+      const target = allSubmissions.find(s => s.id === id);
+      document.getElementById("deleteSubAthleteName").innerText = target?.fullName || "this athlete";
+      openModal("confirmDeleteSubmissionModal");
+    };
+
+    document.getElementById("executeDeleteSubmissionBtn").addEventListener("click", async () => {
+      if (!pendingDeleteSubmissionId) return;
+      try {
+        await deleteDoc(doc(db, "submissions", pendingDeleteSubmissionId));
+        showToast("Submission deleted", "success");
+        closeModal("confirmDeleteSubmissionModal");
+        pendingDeleteSubmissionId = null;
+        loadSubmissions();
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to delete submission.", "error");
+      }
+    });
+
+    document.getElementById("searchInput").addEventListener("input", renderTable);
+    document.getElementById("clearSearchBtn").addEventListener("click", () => {
+      document.getElementById("searchInput").value = "";
+      renderTable();
+    });
+    document.getElementById("filterDiscipline").addEventListener("change", renderTable);
+    document.getElementById("filterCategory").addEventListener("change", renderTable);
+    document.getElementById("sortBySelect").addEventListener("change", renderTable);
+
+    document.getElementById("resetFiltersBtn").addEventListener("click", () => {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("filterDiscipline").value = "ALL";
+      document.getElementById("filterCategory").value = "ALL";
+      document.getElementById("sortBySelect").value = "points-desc";
+      renderTable();
+      showToast("Filters reset", "info");
+    });
+
+    // SHARE STATIC SNAPSHOT LINK
+    document.getElementById("shareSnapshotBtn").addEventListener("click", async () => {
+      if (currentFilteredSubmissions.length === 0) {
+        return showToast("No submissions in current view to snapshot!", "error");
+      }
+
+      const shareBtn = document.getElementById("shareSnapshotBtn");
+      const originalText = shareBtn.innerText;
+      shareBtn.disabled = true;
+      shareBtn.innerText = "Saving Snapshot...";
+
+      try {
+        const currentEv = eventsList.find(e => e.id === selectedEventId);
+        const eventName = currentEv ? currentEv.name : "General Tryouts";
+        const disc = document.getElementById("filterDiscipline").value;
+        const cat = document.getElementById("filterCategory").value;
+        const sortBy = document.getElementById("sortBySelect").value;
+        const filterSummary = `${disc === 'ALL' ? 'All Disciplines' : disc} · ${cat === 'ALL' ? 'All Categories' : cat}`;
+
+        const snapshotRows = currentFilteredSubmissions.map(s => ({
+          id: s.id,
+          fullName: s.fullName || "",
+          email: s.email || "",
+          discordUsername: s.discordUsername || "",
+          discipline: s.discipline || "Bouldering",
+          category: s.category || "",
+          totalPoints: s.totalPoints || 0,
+          climbs: (s.climbs || []).map(c => ({
+            climbNumber: c.climbNumber || 0,
+            grade: c.grade || "N/A",
+            points: c.points || 0,
+            photoUrl: c.photoUrl || ""
+          })),
+          notes: s.notes || "",
+          submittedAtText: s.timestamp?.seconds
+            ? new Date(s.timestamp.seconds * 1000).toLocaleString()
+            : "N/A"
+        }));
+
+        // Save static snapshot document (no createdAt field so normal event queries ignore it)
+        const docRef = await addDoc(collection(db, "events"), {
+          type: "snapshot",
+          isActive: false,
+          eventName,
+          filterSummary,
+          sortBy,
+          hiddenColumns: Array.from(hiddenColumns),
+          totalEventCount: snapshotRows.length,
+          rows: snapshotRows,
+          createdAtText: new Date().toLocaleString(),
+          snapshotCreatedAt: serverTimestamp()
+        });
+
+        const shareUrl = `${window.location.origin}${window.location.pathname}?snapshot=${docRef.id}`;
+        document.getElementById("snapshotUrlInput").value = shareUrl;
+        document.getElementById("openSnapshotUrlBtn").href = shareUrl;
+        openModal("snapshotShareModal");
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to create snapshot link.", "error");
+      } finally {
+        shareBtn.disabled = false;
+        shareBtn.innerText = originalText;
+      }
+    });
+
+    document.getElementById("copySnapshotUrlBtn").addEventListener("click", () => {
+      const url = document.getElementById("snapshotUrlInput").value;
+      copyToClipboard(url, "Snapshot Link");
+    });
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return str.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+  </script>
+</body>
+</html>

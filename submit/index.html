@@ -3,81 +3,540 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rutgers Climbing — Tryout Scorecard</title>
+  <title>Rutgers Climbing — Submit Scorecard</title>
+  <link rel="icon" type="image/png" href="../assets/R.png" />
   <style>
     :root {
       --scarlet: #cc0033;
+      --scarlet-hover: #e60039;
       --scarlet-dark: #990026;
-      --bg-dark: #121212;
-      --card-bg: #1e1e1e;
-      --text-light: #f5f5f5;
-      --text-muted: #aaaaaa;
-      --border-color: #333333;
-      --success: #2e7d32;
+      --scarlet-glow: rgba(204, 0, 51, 0.18);
+      --bg-dark: #0f0f12;
+      --bg-elevated: #17171c;
+      --card-bg: #1c1c22;
+      --card-hover: #23232b;
+      --input-bg: #131318;
+      --text-light: #f4f4f6;
+      --text-secondary: #c4c4cc;
+      --text-muted: #8b8b97;
+      --border-color: #2c2c35;
+      --border-subtle: #23232a;
+      --active-green: #2e7d32;
+      --active-green-text: #81c784;
+      --warning-amber: #ffca28;
+      --danger-red: #ef5350;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.65);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: var(--bg-dark); color: var(--text-light); min-height: 100vh; padding: 20px 15px; display: flex; justify-content: center; align-items: flex-start; }
-    
-    .container { width: 100%; max-width: 550px; background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border-color); box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
-    
-    .header { text-align: center; margin-bottom: 24px; border-bottom: 2px solid var(--scarlet); padding-bottom: 16px; }
-    .header h1 { font-size: 1.6rem; color: #fff; margin-bottom: 4px; }
-    .header p { color: var(--text-muted); font-size: 0.9rem; }
-
-    .form-group { margin-bottom: 18px; }
-    label { display: block; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; color: var(--text-muted); }
-    
-    input, select, textarea {
-      width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid var(--border-color);
-      border-radius: 6px; color: #fff; font-size: 1rem; transition: border-color 0.2s;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
     }
-    input[readonly] { background: #1a1a1a; color: var(--text-muted); cursor: not-allowed; border-color: #2a2a2a; }
-    input[type="file"] { padding: 8px; background: #252525; cursor: pointer; font-size: 0.85rem; color: var(--text-muted); }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--scarlet); }
 
-    .climb-card {
-      background: #252525;
+    body {
+      background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at 50% 0%, rgba(204, 0, 51, 0.1) 0%, transparent 55%);
+      color: var(--text-light);
+      min-height: 100vh;
+      padding: 28px 16px 60px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 28px;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 14px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 14px 10px 44px;
+      }
+      .container {
+        padding: 20px 16px;
+      }
+    }
+
+    /* ==========================================
+       HEADER & CURRENT EVENT BANNER
+       ========================================== */
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 22px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-logo {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-light);
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 0.86rem;
+      margin-top: 2px;
+    }
+
+    .event-banner {
+      margin-top: 16px;
+      width: 100%;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-left: 3px solid var(--scarlet);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .event-banner-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .event-banner-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4caf50;
+      box-shadow: 0 0 6px #4caf50;
+      display: inline-block;
+    }
+
+    .event-banner-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-light);
+      letter-spacing: -0.01em;
+    }
+
+    .draft-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .draft-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-clear-draft {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-clear-draft:hover {
+      background: rgba(239, 83, 80, 0.15);
+      border-color: var(--danger-red);
+      color: #ff8a80;
+    }
+
+    /* ==========================================
+       FORM FIELDS & GRID
+       ========================================== */
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 520px) {
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+    }
+
+    .req-star {
+      color: var(--scarlet);
+      margin-left: 2px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0 12px;
+      height: 42px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-light);
+      font-size: 0.92rem;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    textarea {
+      height: auto;
+      padding: 10px 12px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--scarlet);
+      box-shadow: 0 0 0 3px var(--scarlet-glow);
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border-color);
+      margin: 20px 0 18px;
+    }
+
+    .climbs-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .climbs-section-header h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-light);
+    }
+
+    .climbs-section-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
       margin-bottom: 14px;
     }
+
+    /* ==========================================
+       CLIMB CARDS & PHOTO UPLOAD
+       ========================================== */
+    .climb-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .climb-card.has-grade {
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .climb-card.ready-card {
+      border-color: rgba(46, 125, 50, 0.55);
+      background: rgba(46, 125, 50, 0.05);
+    }
+
+    .climb-card.needs-photo-error {
+      border-color: var(--danger-red);
+      box-shadow: 0 0 0 2px rgba(239, 83, 80, 0.2);
+    }
+
+    .climb-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
     .climb-card-title {
-      font-size: 0.85rem;
-      font-weight: bold;
-      color: var(--scarlet);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-light);
       text-transform: uppercase;
-      margin-bottom: 8px;
+      letter-spacing: 0.04em;
     }
-    .climb-card select { margin-bottom: 8px; }
 
+    .climb-status-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .status-optional {
+      background: #23232c;
+      color: var(--text-muted);
+    }
+
+    .status-photo-req {
+      background: rgba(255, 202, 40, 0.14);
+      color: var(--warning-amber);
+      border: 1px solid rgba(255, 202, 40, 0.35);
+    }
+
+    .status-ready {
+      background: rgba(46, 125, 50, 0.2);
+      color: var(--active-green-text);
+      border: 1px solid rgba(46, 125, 50, 0.45);
+    }
+
+    .climb-controls-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .photo-picker-area {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--input-bg);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      min-height: 46px;
+      transition: border-color 0.15s;
+    }
+
+    .climb-card.has-grade .photo-picker-area {
+      border-color: rgba(204, 0, 51, 0.45);
+    }
+
+    .climb-card.ready-card .photo-picker-area {
+      border-style: solid;
+      border-color: rgba(46, 125, 50, 0.45);
+    }
+
+    .photo-preview-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .photo-thumb-preview {
+      width: 36px;
+      height: 36px;
+      border-radius: 5px;
+      object-fit: cover;
+      border: 1px solid var(--scarlet);
+      flex-shrink: 0;
+    }
+
+    .photo-file-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .photo-file-label.has-file {
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .photo-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .btn-choose-photo {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 5px 11px;
+      border-radius: 5px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .btn-choose-photo:hover {
+      background: var(--card-hover);
+      color: #fff;
+      border-color: #484856;
+    }
+
+    .btn-remove-photo {
+      background: rgba(239, 83, 80, 0.15);
+      border: 1px solid rgba(239, 83, 80, 0.35);
+      color: #ff8a80;
+      width: 28px;
+      height: 28px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .btn-remove-photo:hover {
+      background: var(--danger-red);
+      color: #fff;
+    }
+
+    .hidden-file-input {
+      display: none;
+    }
+
+    /* ==========================================
+       SUBMIT BUTTON & MODAL
+       ========================================== */
     .btn-submit {
-      width: 100%; padding: 14px; background: var(--scarlet); color: white; border: none;
-      border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.2s; margin-top: 10px;
+      width: 100%;
+      height: 46px;
+      background: var(--scarlet);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.15s ease;
+      margin-top: 8px;
+      box-shadow: 0 4px 14px rgba(204, 0, 51, 0.35);
     }
-    .btn-submit:hover { background: var(--scarlet-dark); }
-    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* Modal Popup Styling */
+    .btn-submit:hover:not(:disabled) {
+      background: var(--scarlet-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75); display: flex; justify-content: center; align-items: center;
-      z-index: 1000; padding: 20px; backdrop-filter: blur(4px);
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+      backdrop-filter: blur(4px);
     }
+
     .modal-content {
-      background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px;
-      padding: 24px; width: 100%; max-width: 400px; text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
     }
+
     .spinner {
-      width: 44px; height: 44px; border: 4px solid var(--border-color);
-      border-top: 4px solid var(--scarlet); border-radius: 50%;
-      animation: spin 1s linear infinite; margin: 0 auto 16px auto;
+      width: 44px;
+      height: 44px;
+      border: 4px solid var(--border-color);
+      border-top: 4px solid var(--scarlet);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px auto;
     }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .modal-content h3 { font-size: 1.2rem; margin-bottom: 8px; color: #fff; }
-    .modal-content p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .modal-content h3 {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .modal-content p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      line-height: 1.45;
+    }
+
+    .hidden {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
@@ -93,57 +552,80 @@
   </div>
 
   <div class="container">
+    <!-- HEADER WITH PROMINENT CURRENT EVENT DISPLAY -->
     <div class="header">
+      <img src="../assets/RURC_Logo_Transparent.png" alt="Rutgers Climbing" class="header-logo" onerror="this.src='../assets/R.png'" />
       <h1>Rutgers Climbing Team</h1>
-      <p>Tryout Scorecard Submission</p>
+      <p>Tryout & Competition Scorecard Submission</p>
+
+      <div class="event-banner">
+        <div class="event-banner-left">
+          <span class="event-banner-label">
+            <span class="live-dot"></span>
+            Current Event
+          </span>
+          <div class="event-banner-title" id="eventDisplayTitle">Loading active event...</div>
+        </div>
+        <input type="hidden" id="eventName" value="General Tryouts" />
+        <input type="hidden" id="eventId" value="general" />
+      </div>
     </div>
 
-    <form id="scoreForm">
-      <div class="form-group">
-        <label for="eventName">Current Event</label>
-        <input type="text" id="eventName" value="Loading active event..." readonly required />
-        <input type="hidden" id="eventId" />
-      </div>
+    <!-- AUTO-SAVE PROGRESS BAR -->
+    <div class="draft-bar">
+      <span class="draft-status" id="draftStatusText">✓ Progress is saved automatically on this device</span>
+      <button type="button" id="clearDraftBtn" class="btn-clear-draft">Reset Form</button>
+    </div>
 
+    <form id="scoreForm" novalidate>
       <div class="form-group">
-        <label for="fullName">Full Name</label>
+        <label for="fullName">Full Name <span class="req-star">*</span></label>
         <input type="text" id="fullName" placeholder="Jane Doe" required />
       </div>
 
-      <div class="form-group">
-        <label for="email">Rutgers Email</label>
-        <input type="email" id="email" placeholder="netid@rutgers.edu" required />
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label for="email">Rutgers Email <span class="req-star">*</span></label>
+          <input type="email" id="email" placeholder="netid@rutgers.edu" required />
+        </div>
+
+        <div class="form-group">
+          <label for="discordUsername">Discord Username <span class="req-star">*</span></label>
+          <input type="text" id="discordUsername" placeholder="e.g. climber_joe" required />
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="discordUsername">Discord Username</label>
-        <input type="text" id="discordUsername" placeholder="e.g. climber_joe" required />
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label for="discipline">Discipline <span class="req-star">*</span></label>
+          <select id="discipline" required>
+            <option value="Bouldering">Bouldering (Top 5 Climbs)</option>
+            <option value="Top Rope">Top Rope (Top 3 Climbs)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category <span class="req-star">*</span></label>
+          <select id="category" required>
+            <option value="">Select Category</option>
+          </select>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="discipline">Discipline</label>
-        <select id="discipline" required>
-          <option value="Bouldering">Bouldering (Top 5 Climbs)</option>
-          <option value="Top Rope">Top Rope (Top 3 Climbs)</option>
-        </select>
+      <hr class="section-divider" />
+
+      <div class="climbs-section-header">
+        <h3 id="climbsHeaderTitle">Top 5 Climbs Log (Bouldering)</h3>
       </div>
-
-      <div class="form-group">
-        <label for="category">Category</label>
-        <select id="category" required>
-          <option value="">Select Category</option>
-        </select>
-      </div>
-
-      <hr style="border-color: var(--border-color); margin: 20px 0;" />
-
-      <label id="climbsHeaderTitle" style="margin-bottom: 12px;">Top Climbs Log</label>
+      <p class="climbs-section-sub">
+        Select a grade for each climb you completed. A proof photo is required for every climb you log.
+      </p>
 
       <div id="climbsContainer">
         <!-- Climb cards generated dynamically -->
       </div>
 
-      <div class="form-group">
+      <div class="form-group" style="margin-top: 18px;">
         <label for="notes">Notes / Comments (Optional)</label>
         <textarea id="notes" rows="2" placeholder="Any details about your climbs..."></textarea>
       </div>
@@ -170,6 +652,10 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
+    const DRAFT_STORAGE_KEY = "rurc_submit_draft_v1";
+    const IDB_NAME = "rurc_submit_photos_db";
+    const IDB_STORE = "climb_photos";
+
     const defaultBoulderingGrades = [
       { grade: "V0-V2", points: 10 },
       { grade: "V3-V4", points: 25 },
@@ -191,12 +677,18 @@
     let activeBoulderingGrades = defaultBoulderingGrades;
     let activeTopRopeGrades = defaultTopRopeGrades;
 
+    // In-memory map of climb index (1..5) -> File/Blob object (persisted in IndexedDB across refreshes)
+    const climbPhotoFiles = {};
+    const climbPhotoObjectUrls = {};
+
+    const eventDisplayTitle = document.getElementById("eventDisplayTitle");
     const eventNameInput = document.getElementById("eventName");
     const eventIdInput = document.getElementById("eventId");
     const categorySelect = document.getElementById("category");
     const disciplineSelect = document.getElementById("discipline");
     const climbsContainer = document.getElementById("climbsContainer");
     const climbsHeaderTitle = document.getElementById("climbsHeaderTitle");
+    const draftStatusText = document.getElementById("draftStatusText");
 
     // Modal elements
     const modalOverlay = document.getElementById("modalOverlay");
@@ -217,6 +709,167 @@
       modalOverlay.style.display = "none";
     });
 
+    // ==========================================
+    // INDEXEDDB + LOCALSTORAGE DRAFT PERSISTENCE
+    // ==========================================
+    function openPhotoDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(IDB_NAME, 1);
+        req.onupgradeneeded = (e) => {
+          const idb = e.target.result;
+          if (!idb.objectStoreNames.contains(IDB_STORE)) {
+            idb.createObjectStore(IDB_STORE);
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function savePhotoToIDB(index, file) {
+      try {
+        const idb = await openPhotoDB();
+        const tx = idb.transaction(IDB_STORE, "readwrite");
+        tx.objectStore(IDB_STORE).put({ file, name: file.name, type: file.type }, `climb_${index}`);
+      } catch (e) {
+        console.warn("Could not persist photo to IndexedDB:", e);
+      }
+    }
+
+    async function deletePhotoFromIDB(index) {
+      try {
+        const idb = await openPhotoDB();
+        const tx = idb.transaction(IDB_STORE, "readwrite");
+        tx.objectStore(IDB_STORE).delete(`climb_${index}`);
+      } catch (e) {
+        console.warn("Could not remove photo from IndexedDB:", e);
+      }
+    }
+
+    async function clearAllPhotosFromIDB() {
+      try {
+        const idb = await openPhotoDB();
+        const tx = idb.transaction(IDB_STORE, "readwrite");
+        tx.objectStore(IDB_STORE).clear();
+      } catch (e) {
+        console.warn("Could not clear photos from IndexedDB:", e);
+      }
+    }
+
+    async function loadAllPhotosFromIDB() {
+      try {
+        const idb = await openPhotoDB();
+        return await new Promise((resolve) => {
+          const tx = idb.transaction(IDB_STORE, "readonly");
+          const store = tx.objectStore(IDB_STORE);
+          const result = {};
+          const cursorReq = store.openCursor();
+          cursorReq.onsuccess = (e) => {
+            const cursor = e.target.result;
+            if (cursor) {
+              const key = cursor.key; // e.g. "climb_1"
+              const idx = parseInt(key.toString().replace("climb_", ""), 10);
+              if (idx && cursor.value && cursor.value.file) {
+                result[idx] = cursor.value.file;
+              }
+              cursor.continue();
+            } else {
+              resolve(result);
+            }
+          };
+          cursorReq.onerror = () => resolve({});
+        });
+      } catch {
+        return {};
+      }
+    }
+
+    function saveDraftToLocalStorage() {
+      try {
+        const count = disciplineSelect.value === "Top Rope" ? 3 : 5;
+        const grades = {};
+        for (let i = 1; i <= count; i++) {
+          const sel = document.getElementById(`grade-${i}`);
+          if (sel) grades[i] = sel.value;
+        }
+        const draft = {
+          fullName: document.getElementById("fullName").value,
+          email: document.getElementById("email").value,
+          discordUsername: document.getElementById("discordUsername").value,
+          discipline: disciplineSelect.value,
+          category: categorySelect.value,
+          notes: document.getElementById("notes").value,
+          grades
+        };
+        localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+        draftStatusText.innerText = "✓ Draft saved automatically";
+      } catch (e) {
+        console.warn("Draft save error:", e);
+      }
+    }
+
+    function getDraftFromLocalStorage() {
+      try {
+        const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
+      }
+    }
+
+    async function restoreDraftState() {
+      const draft = getDraftFromLocalStorage();
+      const savedPhotos = await loadAllPhotosFromIDB();
+
+      Object.keys(savedPhotos).forEach(k => {
+        climbPhotoFiles[k] = savedPhotos[k];
+      });
+
+      if (draft) {
+        if (draft.fullName) document.getElementById("fullName").value = draft.fullName;
+        if (draft.email) document.getElementById("email").value = draft.email;
+        if (draft.discordUsername) document.getElementById("discordUsername").value = draft.discordUsername;
+        if (draft.discipline && (draft.discipline === "Bouldering" || draft.discipline === "Top Rope")) {
+          disciplineSelect.value = draft.discipline;
+        }
+        if (draft.category) {
+          const hasOption = Array.from(categorySelect.options).some(o => o.value === draft.category);
+          if (hasOption) categorySelect.value = draft.category;
+        }
+        if (draft.notes) document.getElementById("notes").value = draft.notes;
+      }
+
+      renderClimbCards(draft ? draft.grades : null);
+    }
+
+    document.getElementById("clearDraftBtn").addEventListener("click", async () => {
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      await clearAllPhotosFromIDB();
+      Object.keys(climbPhotoFiles).forEach(k => delete climbPhotoFiles[k]);
+      Object.keys(climbPhotoObjectUrls).forEach(k => {
+        URL.revokeObjectURL(climbPhotoObjectUrls[k]);
+        delete climbPhotoObjectUrls[k];
+      });
+      document.getElementById("scoreForm").reset();
+      renderClimbCards();
+      draftStatusText.innerText = "✓ Form cleared";
+    });
+
+    // Listen to input changes for automatic draft saving
+    ["fullName", "email", "discordUsername", "category", "notes"].forEach(id => {
+      document.getElementById(id).addEventListener("input", saveDraftToLocalStorage);
+      document.getElementById(id).addEventListener("change", saveDraftToLocalStorage);
+    });
+
+    disciplineSelect.addEventListener("change", () => {
+      const draft = getDraftFromLocalStorage();
+      renderClimbCards(draft ? draft.grades : null);
+      saveDraftToLocalStorage();
+    });
+
+    // ==========================================
+    // LOAD ACTIVE EVENT FROM FIRESTORE
+    // ==========================================
     async function loadActiveEvent() {
       try {
         let q = query(collection(db, "events"), where("isActive", "==", true), limit(1));
@@ -228,42 +881,52 @@
         }
 
         if (snapshot.empty) {
-          eventNameInput.value = "General Tryouts";
-          eventIdInput.value = "general";
+          setEventHeader("General Tryouts", "general");
           populateCategories(["Men", "Women"]);
-          renderClimbCards();
+          await restoreDraftState();
           return;
         }
 
         const activeDoc = snapshot.docs[0];
         const data = activeDoc.data();
 
-        eventNameInput.value = data.name || "General Tryouts";
-        eventIdInput.value = activeDoc.id;
+        setEventHeader(data.name || "General Tryouts", activeDoc.id);
 
         if (data.boulderingGrades && data.boulderingGrades.length > 0) activeBoulderingGrades = data.boulderingGrades;
         if (data.topRopeGrades && data.topRopeGrades.length > 0) activeTopRopeGrades = data.topRopeGrades;
 
         const categories = (data.categories && data.categories.length > 0) ? data.categories : ["Men", "Women"];
         populateCategories(categories);
-        renderClimbCards();
+        await restoreDraftState();
       } catch (err) {
         console.error("Error loading active event:", err);
-        eventNameInput.value = "General Tryouts";
-        eventIdInput.value = "general";
+        setEventHeader("General Tryouts", "general");
         populateCategories(["Men", "Women"]);
-        renderClimbCards();
+        await restoreDraftState();
       }
     }
 
+    function setEventHeader(name, id) {
+      eventDisplayTitle.innerText = name;
+      eventNameInput.value = name;
+      eventIdInput.value = id;
+    }
+
     function populateCategories(categoriesList) {
+      const currentVal = categorySelect.value;
       categorySelect.innerHTML = `<option value="">Select Category</option>`;
       categoriesList.forEach(cat => {
         categorySelect.innerHTML += `<option value="${cat}">${cat}</option>`;
       });
+      if (currentVal && categoriesList.includes(currentVal)) {
+        categorySelect.value = currentVal;
+      }
     }
 
-    function renderClimbCards() {
+    // ==========================================
+    // RENDER CLIMB CARDS & CONDITIONAL PHOTO UI
+    // ==========================================
+    function renderClimbCards(savedGrades = null) {
       const discipline = disciplineSelect.value;
       const count = discipline === "Top Rope" ? 3 : 5;
       const gradeList = discipline === "Top Rope" ? activeTopRopeGrades : activeBoulderingGrades;
@@ -274,62 +937,226 @@
       for (let i = 1; i <= count; i++) {
         const card = document.createElement("div");
         card.className = "climb-card";
+        card.id = `climb-card-${i}`;
+
+        const initialGrade = savedGrades && savedGrades[i] ? savedGrades[i] : "";
+
         card.innerHTML = `
-          <div class="climb-card-title">Climb ${i}</div>
-          <select class="climb-grade" id="grade-${i}" required>
-            <option value="">Select Grade</option>
-            ${gradeList.map(g => `<option value="${g.grade}">${g.grade}</option>`).join('')}
-          </select>
-          <input type="file" class="climb-file" id="file-${i}" accept="image/*" />
+          <div class="climb-card-header">
+            <span class="climb-card-title">Climb ${i}</span>
+            <span class="climb-status-badge status-optional" id="climb-status-${i}">Optional</span>
+          </div>
+          <div class="climb-controls-row">
+            <select class="climb-grade" id="grade-${i}">
+              <option value="">— No Climb Logged —</option>
+              ${gradeList.map(g => `<option value="${g.grade}" ${g.grade === initialGrade ? 'selected' : ''}>${g.grade}</option>`).join('')}
+            </select>
+
+            <div class="photo-picker-area" id="photo-area-${i}">
+              <div class="photo-preview-group">
+                <img id="photo-thumb-${i}" class="photo-thumb-preview hidden" src="" alt="Preview" />
+                <span class="photo-file-label" id="photo-label-${i}">No photo selected</span>
+              </div>
+              <div class="photo-actions">
+                <button type="button" class="btn-choose-photo" id="choose-photo-btn-${i}">
+                  📷 Choose Photo
+                </button>
+                <button type="button" class="btn-remove-photo hidden" id="remove-photo-btn-${i}" title="Remove photo">
+                  ✕
+                </button>
+              </div>
+              <input type="file" class="hidden-file-input" id="file-${i}" accept="image/*" />
+            </div>
+          </div>
         `;
         climbsContainer.appendChild(card);
+
+        const gradeSelect = document.getElementById(`grade-${i}`);
+        const fileInput = document.getElementById(`file-${i}`);
+        const chooseBtn = document.getElementById(`choose-photo-btn-${i}`);
+        const removeBtn = document.getElementById(`remove-photo-btn-${i}`);
+
+        gradeSelect.addEventListener("change", () => {
+          updateClimbCardState(i);
+          saveDraftToLocalStorage();
+        });
+
+        chooseBtn.addEventListener("click", () => fileInput.click());
+
+        fileInput.addEventListener("change", async () => {
+          const f = fileInput.files && fileInput.files[0];
+          if (f) {
+            climbPhotoFiles[i] = f;
+            await savePhotoToIDB(i, f);
+            updateClimbCardState(i);
+            saveDraftToLocalStorage();
+          }
+        });
+
+        removeBtn.addEventListener("click", async () => {
+          delete climbPhotoFiles[i];
+          fileInput.value = "";
+          await deletePhotoFromIDB(i);
+          updateClimbCardState(i);
+          saveDraftToLocalStorage();
+        });
+
+        updateClimbCardState(i);
       }
     }
 
-    disciplineSelect.addEventListener("change", renderClimbCards);
+    function updateClimbCardState(i) {
+      const card = document.getElementById(`climb-card-${i}`);
+      const gradeSelect = document.getElementById(`grade-${i}`);
+      const statusBadge = document.getElementById(`climb-status-${i}`);
+      const thumbImg = document.getElementById(`photo-thumb-${i}`);
+      const photoLabel = document.getElementById(`photo-label-${i}`);
+      const chooseBtn = document.getElementById(`choose-photo-btn-${i}`);
+      const removeBtn = document.getElementById(`remove-photo-btn-${i}`);
+
+      if (!card || !gradeSelect) return;
+
+      const hasGrade = Boolean(gradeSelect.value);
+      const photoFile = climbPhotoFiles[i] || null;
+      const hasPhoto = Boolean(photoFile);
+
+      card.classList.remove("has-grade", "ready-card", "needs-photo-error");
+
+      if (hasPhoto) {
+        if (climbPhotoObjectUrls[i]) URL.revokeObjectURL(climbPhotoObjectUrls[i]);
+        climbPhotoObjectUrls[i] = URL.createObjectURL(photoFile);
+        thumbImg.src = climbPhotoObjectUrls[i];
+        thumbImg.classList.remove("hidden");
+        photoLabel.innerText = photoFile.name || "Photo attached";
+        photoLabel.classList.add("has-file");
+        chooseBtn.innerText = "Change Photo";
+        removeBtn.classList.remove("hidden");
+      } else {
+        thumbImg.src = "";
+        thumbImg.classList.add("hidden");
+        photoLabel.innerText = hasGrade ? "Photo required for this climb *" : "No photo needed unless grade selected";
+        photoLabel.classList.remove("has-file");
+        chooseBtn.innerText = "📷 Upload Photo";
+        removeBtn.classList.add("hidden");
+      }
+
+      if (hasGrade && hasPhoto) {
+        card.classList.add("ready-card");
+        statusBadge.className = "climb-status-badge status-ready";
+        statusBadge.innerText = "✓ Climb & Photo Ready";
+      } else if (hasGrade && !hasPhoto) {
+        card.classList.add("has-grade");
+        statusBadge.className = "climb-status-badge status-photo-req";
+        statusBadge.innerText = "Photo Required *";
+      } else if (!hasGrade && hasPhoto) {
+        card.classList.add("has-grade");
+        statusBadge.className = "climb-status-badge status-photo-req";
+        statusBadge.innerText = "Select Grade *";
+      } else {
+        statusBadge.className = "climb-status-badge status-optional";
+        statusBadge.innerText = "Not Logged";
+      }
+    }
+
     loadActiveEvent();
 
+    // ==========================================
+    // FORM VALIDATION & SUBMISSION
+    // ==========================================
     const form = document.getElementById("scoreForm");
     const submitBtn = document.getElementById("submitBtn");
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      
-      submitBtn.disabled = true;
-      showModal("Submitting Scorecard", "Initializing submission...", true);
+
+      // Validate required athlete info & notes fields first
+      const fullName = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const discordUsername = document.getElementById("discordUsername").value.trim();
+      const category = categorySelect.value;
+      const notes = document.getElementById("notes").value.trim();
+
+      if (!fullName || !email || !discordUsername || !category) {
+        form.reportValidity();
+        showModal("Missing Required Fields", "Please fill out your Full Name, Rutgers Email, Discord Username, and Category.", false);
+        return;
+      }
 
       const discipline = disciplineSelect.value;
       const count = discipline === "Top Rope" ? 3 : 5;
       const gradeList = discipline === "Top Rope" ? activeTopRopeGrades : activeBoulderingGrades;
+
+      // Validate conditional climb + photo rules:
+      // 1. If a climb grade is selected, a photo is required.
+      // 2. If a photo is attached without a grade, ask them to select a grade.
+      // 3. Require at least 1 logged climb.
+      let loggedClimbsCount = 0;
+
+      for (let i = 1; i <= count; i++) {
+        const gradeSelect = document.getElementById(`grade-${i}`);
+        const selectedGrade = gradeSelect ? gradeSelect.value : "";
+        const photoFile = climbPhotoFiles[i] || null;
+        const card = document.getElementById(`climb-card-${i}`);
+
+        if (selectedGrade && !photoFile) {
+          card.classList.add("needs-photo-error");
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+          showModal("Photo Proof Required", `You selected a grade (${selectedGrade}) for Climb ${i}. Please attach a proof photo for Climb ${i}, or clear its grade if you didn't complete it.`, false);
+          return;
+        }
+
+        if (!selectedGrade && photoFile) {
+          card.classList.add("needs-photo-error");
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+          showModal("Grade Required", `You attached a photo for Climb ${i}, but haven't selected a climb grade yet.`, false);
+          return;
+        }
+
+        if (selectedGrade && photoFile) {
+          loggedClimbsCount++;
+        }
+      }
+
+      if (loggedClimbsCount === 0) {
+        showModal("No Climbs Logged", "Please log at least one climb with a grade and proof photo before submitting.", false);
+        return;
+      }
+
+      submitBtn.disabled = true;
+      showModal("Submitting Scorecard", "Initializing submission...", true);
+
       const climbsData = [];
       let calculatedTotalPoints = 0;
 
       try {
+        let uploadStep = 0;
         for (let i = 1; i <= count; i++) {
           const gradeSelect = document.getElementById(`grade-${i}`);
-          const fileInput = document.getElementById(`file-${i}`);
           const selectedGrade = gradeSelect ? gradeSelect.value : "";
-          
+          const file = climbPhotoFiles[i] || null;
+
+          // Skip unlogged climbs so only completed climbs are recorded
+          if (!selectedGrade) continue;
+
+          uploadStep++;
           const matchedGradeObj = gradeList.find(g => g.grade === selectedGrade);
           const pointsValue = matchedGradeObj ? parseInt(matchedGradeObj.points, 10) : 0;
-          
           calculatedTotalPoints += pointsValue;
 
-          const file = fileInput && fileInput.files ? fileInput.files[0] : null;
           let photoUrl = "";
-
           if (file) {
-            modalMessage.innerText = `Uploading photo for Climb ${i} of ${count}...`;
-            const cleanFileName = file.name.replace(/[^a-zA-Z0-9.]/g, "_");
+            modalMessage.innerText = `Uploading photo for Climb ${i} (${uploadStep} of ${loggedClimbsCount})...`;
+            const rawName = file.name || `climb_${i}.jpg`;
+            const cleanFileName = rawName.replace(/[^a-zA-Z0-9.]/g, "_");
             const storageRef = ref(storage, `proofs/climb_${i}_${Date.now()}_${cleanFileName}`);
-            
+
             await uploadBytes(storageRef, file);
             photoUrl = await getDownloadURL(storageRef);
           }
 
           climbsData.push({
             climbNumber: i,
-            grade: selectedGrade || "N/A",
+            grade: selectedGrade,
             points: pointsValue,
             photoUrl: photoUrl
           });
@@ -340,15 +1167,24 @@
         await addDoc(collection(db, "submissions"), {
           eventId: eventIdInput.value,
           eventName: eventNameInput.value,
-          fullName: document.getElementById("fullName").value.trim(),
-          email: document.getElementById("email").value.trim(),
-          discordUsername: document.getElementById("discordUsername").value.trim(),
-          discipline: discipline,
-          category: categorySelect.value,
+          fullName,
+          email,
+          discordUsername,
+          discipline,
+          category,
           climbs: climbsData,
           totalPoints: calculatedTotalPoints,
-          notes: document.getElementById("notes").value.trim(),
+          notes,
           timestamp: serverTimestamp()
+        });
+
+        // Clear saved draft & photos on successful submission
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+        await clearAllPhotosFromIDB();
+        Object.keys(climbPhotoFiles).forEach(k => delete climbPhotoFiles[k]);
+        Object.keys(climbPhotoObjectUrls).forEach(k => {
+          URL.revokeObjectURL(climbPhotoObjectUrls[k]);
+          delete climbPhotoObjectUrls[k];
         });
 
         showModal("Success!", "Your scorecard has been submitted successfully!", false);
@@ -356,7 +1192,7 @@
         loadActiveEvent();
       } catch (err) {
         console.error(err);
-        showModal("Submission Failed", "Error submitting scorecard. Please check your network and try again.", false);
+        showModal("Submission Failed", "Error submitting scorecard. Your progress is still saved—please check your connection and try again.", false);
       } finally {
         submitBtn.disabled = false;
       }
