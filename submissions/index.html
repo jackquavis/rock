@@ -1550,8 +1550,8 @@
             <button type="button" id="refreshBtn" class="btn btn-outline" style="height: 40px;" title="Refresh all current data">
               ⟳ Refresh
             </button>
-            <button type="button" id="shareSnapshotBtn" class="btn btn-scarlet" style="height: 40px;" title="Create a shareable static link of the current table view">
-              🔗 Share Snapshot
+            <button type="button" id="openSnapshotsModalBtn" class="btn btn-scarlet" style="height: 40px;" title="Create, view, copy links, or delete saved snapshots">
+              🔗 Snapshots
             </button>
           </div>
         </div>
@@ -1634,23 +1634,33 @@
     </div>
   </div>
 
-  <!-- SNAPSHOT SHARE LINK MODAL -->
-  <div id="snapshotShareModal" class="modal-overlay">
-    <div class="modal" style="max-width: 500px;" onclick="event.stopPropagation()">
+  <!-- SNAPSHOTS CONTROL PANEL MODAL -->
+  <div id="snapshotsModal" class="modal-overlay">
+    <div class="modal" style="max-width: 620px;" onclick="event.stopPropagation()">
       <div class="modal-header">
-        <h3>Snapshot Link Created</h3>
-        <button class="close-btn" onclick="closeModal('snapshotShareModal')">&times;</button>
+        <h3>Snapshots Control Panel</h3>
+        <button class="close-btn" onclick="closeModal('snapshotsModal')">&times;</button>
       </div>
-      <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 14px;">
-        Anyone with this link can view a static, read-only snapshot of the current table, columns, and results:
+      <p style="font-size: 0.83rem; color: var(--text-muted); margin-bottom: 14px;">
+        Create a static, shareable snapshot of the table as it is currently displayed, or manage existing snapshot links below.
       </p>
-      <div style="display: flex; gap: 8px; align-items: center;">
-        <input type="text" id="snapshotUrlInput" readonly style="flex: 1; font-size: 0.84rem;" />
-        <button type="button" id="copySnapshotUrlBtn" class="btn btn-scarlet" style="height: 40px;">Copy Link</button>
+
+      <div style="background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 18px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <input type="text" id="newSnapshotLabel" placeholder="Optional title (e.g. Men's Final Standings)..." style="flex: 1; min-width: 200px; height: 38px;" />
+        <button type="button" id="createSnapshotBtn" class="btn btn-scarlet" style="height: 38px;">
+          + Capture Current View
+        </button>
       </div>
+
+      <label style="margin-bottom: 8px; text-transform: uppercase; font-size: 0.74rem; color: var(--text-muted); letter-spacing: 0.05em;">
+        Saved Snapshots
+      </label>
+      <div id="snapshotsListContainer" style="max-height: 340px; overflow-y: auto;">
+        <p style="text-align:center; color:var(--text-muted); padding:20px;">Loading snapshots...</p>
+      </div>
+
       <div class="modal-footer">
-        <a id="openSnapshotUrlBtn" href="#" target="_blank" class="btn btn-outline">Open Snapshot ↗</a>
-        <button type="button" class="btn btn-outline" onclick="closeModal('snapshotShareModal')">Done</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal('snapshotsModal')">Close</button>
       </div>
     </div>
   </div>
@@ -1818,6 +1828,7 @@
     let allSubmissions = [];
     let currentFilteredSubmissions = [];
     let eventsList = [];
+    let snapshotsList = [];
     let selectedEventId = null;
     let pendingDeleteEventId = null;
     let pendingDeleteSubmissionId = null;
@@ -1874,12 +1885,49 @@
       });
     });
 
-    async function copyToClipboard(text, label) {
+    function fallbackCopyText(text) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.top = "-9999px";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    }
+
+    async function copyToClipboard(text, label, btnEl = null) {
       if (!text || text === "N/A" || text === "—") return;
+      let copied = false;
       try {
-        await navigator.clipboard.writeText(text);
-        showToast(`Copied ${label}: ${text}`, "success");
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          copied = true;
+        }
       } catch {
+        copied = false;
+      }
+      if (!copied) {
+        try {
+          copied = fallbackCopyText(text);
+        } catch {
+          copied = false;
+        }
+      }
+
+      if (copied) {
+        showToast(`Copied ${label} to clipboard!`, "success");
+        if (btnEl) {
+          const orig = btnEl.innerText;
+          btnEl.innerText = "✓ Copied";
+          setTimeout(() => { btnEl.innerText = orig; }, 1600);
+        }
+      } else {
         showToast("Failed to copy to clipboard", "error");
       }
     }
@@ -2046,8 +2094,10 @@
       document.getElementById("subInfoEmail").innerText = email;
       document.getElementById("subInfoDiscord").innerText = discord;
 
-      document.getElementById("copyEmailBtn").onclick = () => copyToClipboard(email, "Email");
-      document.getElementById("copyDiscordBtn").onclick = () => copyToClipboard(discord, "Discord");
+      const copyEmailBtn = document.getElementById("copyEmailBtn");
+      const copyDiscordBtn = document.getElementById("copyDiscordBtn");
+      copyEmailBtn.onclick = () => copyToClipboard(email, "Email", copyEmailBtn);
+      copyDiscordBtn.onclick = () => copyToClipboard(discord, "Discord", copyDiscordBtn);
 
       const notesText = (sub.notes || "").trim();
       document.getElementById("subInfoNotes").innerText = notesText || "No notes or comments provided.";
@@ -2198,14 +2248,20 @@
 
     async function loadEvents() {
       try {
-        const q = query(collection(db, "events"), orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
+        const snapshot = await getDocs(collection(db, "events"));
         eventsList = [];
+        snapshotsList = [];
         snapshot.forEach(docSnap => {
           const data = docSnap.data();
-          if (data.type === "snapshot") return;
-          eventsList.push({ id: docSnap.id, ...data });
+          if (data.type === "snapshot") {
+            snapshotsList.push({ id: docSnap.id, ...data });
+          } else {
+            eventsList.push({ id: docSnap.id, ...data });
+          }
         });
+
+        eventsList.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+        snapshotsList.sort((a, b) => (b.snapshotCreatedAt?.seconds || 0) - (a.snapshotCreatedAt?.seconds || 0));
 
         // Ensure exactly one event is selected at a time (default to Active event, or latest event)
         if (!selectedEventId || !eventsList.some(e => e.id === selectedEventId)) {
@@ -2216,6 +2272,7 @@
         updateActiveEventStat();
         updateCategoryFilter();
         renderManageEventsList();
+        renderSnapshotsList();
       } catch (err) {
         console.error(err);
         showToast("Error loading events", "error");
@@ -2671,16 +2728,80 @@
       showToast("Filters reset", "info");
     });
 
-    // SHARE STATIC SNAPSHOT LINK
-    document.getElementById("shareSnapshotBtn").addEventListener("click", async () => {
+    // SNAPSHOTS CONTROL PANEL
+    function buildSnapshotUrl(id) {
+      const base = window.location.href.split('?')[0].split('#')[0];
+      return `${base}?snapshot=${id}`;
+    }
+
+    document.getElementById("openSnapshotsModalBtn").addEventListener("click", () => {
+      renderSnapshotsList();
+      openModal("snapshotsModal");
+    });
+
+    function renderSnapshotsList() {
+      const container = document.getElementById("snapshotsListContainer");
+      if (!container) return;
+      if (snapshotsList.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:24px;">No saved snapshots yet. Click <strong>+ Capture Current View</strong> above to create one.</p>`;
+        return;
+      }
+
+      container.innerHTML = snapshotsList.map(snap => {
+        const title = snap.label || snap.eventName || "Results Snapshot";
+        const count = snap.rows ? snap.rows.length : (snap.totalEventCount || 0);
+        const createdStr = snap.snapshotCreatedAt?.seconds
+          ? new Date(snap.snapshotCreatedAt.seconds * 1000).toLocaleString(undefined, { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })
+          : (snap.createdAtText || "");
+        const url = buildSnapshotUrl(snap.id);
+
+        return `
+          <div class="event-item-card" style="cursor: default;">
+            <div class="event-info">
+              <div class="event-title-line">
+                <span>${escapeHtml(title)}</span>
+                <span class="inactive-badge">${count} row${count === 1 ? '' : 's'}</span>
+              </div>
+              <span class="cat-tag">${escapeHtml(snap.eventName || '')} · ${escapeHtml(snap.filterSummary || 'All')} · ${escapeHtml(createdStr)}</span>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
+              <button type="button" class="btn btn-scarlet" style="height: 30px; padding: 0 10px; font-size:0.75rem;" onclick="copySnapshotLink('${snap.id}', this)">Copy Link</button>
+              <a href="${escapeHtml(url)}" target="_blank" rel="noopener" class="btn btn-outline" style="height: 30px; padding: 0 10px; font-size:0.75rem;">Open ↗</a>
+              <button type="button" class="btn btn-danger" style="height: 30px; padding: 0 10px; font-size:0.75rem;" onclick="deleteSnapshot('${snap.id}')">Delete</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.copySnapshotLink = (id, btnEl) => {
+      const url = buildSnapshotUrl(id);
+      copyToClipboard(url, "Snapshot Link", btnEl);
+    };
+
+    window.deleteSnapshot = async (id) => {
+      try {
+        await deleteDoc(doc(db, "events", id));
+        snapshotsList = snapshotsList.filter(s => s.id !== id);
+        renderSnapshotsList();
+        showToast("Snapshot deleted", "success");
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to delete snapshot", "error");
+      }
+    };
+
+    document.getElementById("createSnapshotBtn").addEventListener("click", async () => {
       if (currentFilteredSubmissions.length === 0) {
         return showToast("No submissions in current view to snapshot!", "error");
       }
 
-      const shareBtn = document.getElementById("shareSnapshotBtn");
-      const originalText = shareBtn.innerText;
-      shareBtn.disabled = true;
-      shareBtn.innerText = "Saving Snapshot...";
+      const createBtn = document.getElementById("createSnapshotBtn");
+      const labelInput = document.getElementById("newSnapshotLabel");
+      const customLabel = labelInput.value.trim();
+      const originalText = createBtn.innerText;
+      createBtn.disabled = true;
+      createBtn.innerText = "Saving...";
 
       try {
         const currentEv = eventsList.find(e => e.id === selectedEventId);
@@ -2710,36 +2831,34 @@
             : "N/A"
         }));
 
-        // Save static snapshot document (no createdAt field so normal event queries ignore it)
-        const docRef = await addDoc(collection(db, "events"), {
+        const createdAtText = new Date().toLocaleString();
+        const newSnapData = {
           type: "snapshot",
           isActive: false,
+          label: customLabel || `${eventName} (${disc === 'ALL' ? 'All' : disc})`,
           eventName,
           filterSummary,
           sortBy,
           hiddenColumns: Array.from(hiddenColumns),
           totalEventCount: snapshotRows.length,
           rows: snapshotRows,
-          createdAtText: new Date().toLocaleString(),
+          createdAtText,
           snapshotCreatedAt: serverTimestamp()
-        });
+        };
 
-        const shareUrl = `${window.location.origin}${window.location.pathname}?snapshot=${docRef.id}`;
-        document.getElementById("snapshotUrlInput").value = shareUrl;
-        document.getElementById("openSnapshotUrlBtn").href = shareUrl;
-        openModal("snapshotShareModal");
+        const docRef = await addDoc(collection(db, "events"), newSnapData);
+        labelInput.value = "";
+
+        await loadEvents();
+        const shareUrl = buildSnapshotUrl(docRef.id);
+        await copyToClipboard(shareUrl, "New Snapshot Link");
       } catch (err) {
         console.error(err);
-        showToast("Failed to create snapshot link.", "error");
+        showToast("Failed to create snapshot.", "error");
       } finally {
-        shareBtn.disabled = false;
-        shareBtn.innerText = originalText;
+        createBtn.disabled = false;
+        createBtn.innerText = originalText;
       }
-    });
-
-    document.getElementById("copySnapshotUrlBtn").addEventListener("click", () => {
-      const url = document.getElementById("snapshotUrlInput").value;
-      copyToClipboard(url, "Snapshot Link");
     });
 
     function escapeHtml(str) {
