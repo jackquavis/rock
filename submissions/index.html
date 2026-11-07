@@ -2157,27 +2157,24 @@
       [{ grade: "5.6", pts: 5 }, { grade: "5.7", pts: 10 }, { grade: "5.8", pts: 15 }, { grade: "5.9", pts: 20 }, { grade: "5.10-", pts: 25 }, { grade: "5.10+", pts: 35 }, { grade: "5.11-", pts: 50 }, { grade: "5.11+", pts: 65 }].forEach(i => addTopRopeBox(i.grade, i.pts));
     }
 
-    // Check if viewing a static snapshot or normal admin dashboard
-    if (isSnapshotMode) {
-      loadSnapshotView(snapshotIdParam);
-    } else {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          document.getElementById("loginView").classList.add("hidden");
-          document.getElementById("dashboardView").classList.remove("hidden");
-          document.getElementById("userEmail").innerText = user.email;
-          initDashboard();
+    // Require authentication for both the admin dashboard and any snapshot view (contains PII)
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("loginView").classList.add("hidden");
+        document.getElementById("dashboardView").classList.remove("hidden");
+        document.getElementById("userEmail").innerText = user.email;
+        if (isSnapshotMode) {
+          loadSnapshotView(snapshotIdParam);
         } else {
-          document.getElementById("loginView").classList.remove("hidden");
-          document.getElementById("dashboardView").classList.add("hidden");
+          initDashboard();
         }
-      });
-    }
+      } else {
+        document.getElementById("loginView").classList.remove("hidden");
+        document.getElementById("dashboardView").classList.add("hidden");
+      }
+    });
 
     async function loadSnapshotView(snapshotId) {
-      document.getElementById("loginView").classList.add("hidden");
-      document.getElementById("dashboardView").classList.remove("hidden");
-      document.getElementById("adminNavbarActions").classList.add("hidden");
       document.getElementById("adminToolbar").classList.add("hidden");
       document.getElementById("manageColumnsBtn").classList.add("hidden");
       document.getElementById("snapshotBanner").classList.remove("hidden");
@@ -2188,10 +2185,13 @@
       document.getElementById("eventCardSwitchBadge").classList.add("hidden");
 
       try {
-        const snapDoc = await getDoc(doc(db, "events", snapshotId));
+        let snapDoc = await getDoc(doc(db, "submissions", snapshotId));
+        if (!snapDoc.exists() || snapDoc.data().type !== "snapshot") {
+          snapDoc = await getDoc(doc(db, "events", snapshotId));
+        }
         if (!snapDoc.exists() || snapDoc.data().type !== "snapshot") {
           document.getElementById("submissionsTable").innerHTML = `
-            <tr><td colspan="6" class="empty-state"><h4>Snapshot not found</h4><p>This snapshot link may be invalid or expired.</p></td></tr>
+            <tr><td colspan="6" class="empty-state"><h4>Snapshot not found</h4><p>This snapshot link may be invalid or deleted.</p></td></tr>
           `;
           return;
         }
@@ -2242,6 +2242,7 @@
     document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
 
     async function initDashboard() {
+      snapshotsList = [];
       await loadEvents();
       await loadSubmissions();
     }
@@ -2250,18 +2251,16 @@
       try {
         const snapshot = await getDocs(collection(db, "events"));
         eventsList = [];
-        snapshotsList = [];
         snapshot.forEach(docSnap => {
           const data = docSnap.data();
           if (data.type === "snapshot") {
-            snapshotsList.push({ id: docSnap.id, ...data });
+            snapshotsList.push({ id: docSnap.id, _col: "events", ...data });
           } else {
             eventsList.push({ id: docSnap.id, ...data });
           }
         });
 
         eventsList.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-        snapshotsList.sort((a, b) => (b.snapshotCreatedAt?.seconds || 0) - (a.snapshotCreatedAt?.seconds || 0));
 
         // Ensure exactly one event is selected at a time (default to Active event, or latest event)
         if (!selectedEventId || !eventsList.some(e => e.id === selectedEventId)) {
@@ -2272,7 +2271,6 @@
         updateActiveEventStat();
         updateCategoryFilter();
         renderManageEventsList();
-        renderSnapshotsList();
       } catch (err) {
         console.error(err);
         showToast("Error loading events", "error");
@@ -2455,12 +2453,22 @@
       const tbody = document.getElementById("submissionsTable");
       tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Loading submissions...</td></tr>`;
       try {
-        const q = query(collection(db, "submissions"), orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(q);
+        const snapshot = await getDocs(collection(db, "submissions"));
         allSubmissions = [];
-        snapshot.forEach(docSnap => allSubmissions.push({ id: docSnap.id, ...docSnap.data() }));
+        snapshotsList = snapshotsList.filter(s => s._col === "events");
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          if (data.type === "snapshot") {
+            snapshotsList.push({ id: docSnap.id, _col: "submissions", ...data });
+          } else {
+            allSubmissions.push({ id: docSnap.id, ...data });
+          }
+        });
+        allSubmissions.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+        snapshotsList.sort((a, b) => (b.snapshotCreatedAt?.seconds || 0) - (a.snapshotCreatedAt?.seconds || 0));
         updateCategoryFilter();
         renderManageEventsList();
+        renderSnapshotsList();
         renderTable();
       } catch (err) {
         console.error(err);
@@ -2781,7 +2789,9 @@
 
     window.deleteSnapshot = async (id) => {
       try {
-        await deleteDoc(doc(db, "events", id));
+        const target = snapshotsList.find(s => s.id === id);
+        const colName = target && target._col ? target._col : "submissions";
+        await deleteDoc(doc(db, colName, id));
         snapshotsList = snapshotsList.filter(s => s.id !== id);
         renderSnapshotsList();
         showToast("Snapshot deleted", "success");
@@ -2846,10 +2856,10 @@
           snapshotCreatedAt: serverTimestamp()
         };
 
-        const docRef = await addDoc(collection(db, "events"), newSnapData);
+        const docRef = await addDoc(collection(db, "submissions"), newSnapData);
         labelInput.value = "";
 
-        await loadEvents();
+        await loadSubmissions();
         const shareUrl = buildSnapshotUrl(docRef.id);
         await copyToClipboard(shareUrl, "New Snapshot Link");
       } catch (err) {
