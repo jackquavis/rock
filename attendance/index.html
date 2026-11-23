@@ -34,7 +34,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 2rem 1rem 3rem;
+            padding: 2.5rem 1rem 3rem;
         }
 
         .logo-container {
@@ -53,10 +53,11 @@
             border: 1px solid var(--border-color);
             border-radius: 16px;
             width: 100%;
-            max-width: 520px;
-            padding: 2rem;
+            max-width: 480px;
+            padding: 2.25rem 2rem;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
         }
 
         /* Practice banner */
@@ -104,8 +105,22 @@
             margin-bottom: 1.75rem;
         }
 
-        .form-group {
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
             margin-bottom: 1.25rem;
+        }
+
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 0;
         }
 
         .form-group label {
@@ -121,11 +136,9 @@
             margin-left: 2px;
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group input {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: 0.8rem 1rem;
             font-size: 0.95rem;
             font-family: inherit;
             color: var(--text-light);
@@ -136,49 +149,19 @@
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
+        .form-group input::placeholder {
             color: var(--text-muted);
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .form-group input:focus {
             border-color: var(--scarlet);
             box-shadow: 0 0 0 3px rgba(204, 0, 51, 0.15);
         }
 
-        .form-group select {
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%238b8b97' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 16px;
-            padding-right: 2.5rem;
-            cursor: pointer;
-        }
-
-        .form-group select option {
-            background: var(--card-bg);
-            color: var(--text-light);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-group .field-hint {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            margin-top: 0.3rem;
-        }
-
         .submit-btn {
             width: 100%;
-            padding: 0.85rem 1.5rem;
-            font-size: 1rem;
+            padding: 0.9rem 1.5rem;
+            font-size: 1.05rem;
             font-weight: 700;
             font-family: inherit;
             color: #fff;
@@ -187,7 +170,7 @@
             border-radius: 10px;
             cursor: pointer;
             transition: background 0.2s ease, transform 0.1s ease, opacity 0.2s ease;
-            margin-top: 0.5rem;
+            margin-top: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -229,31 +212,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Closed state */
-        .closed-container {
-            text-align: center;
-            padding: 2.5rem 1.5rem;
-        }
-
-        .closed-container .closed-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.7;
-        }
-
-        .closed-container h2 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-light);
-        }
-
-        .closed-container p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
         /* Error banner */
         .error-banner {
             background: rgba(220, 38, 38, 0.1);
@@ -270,33 +228,12 @@
             display: block;
         }
 
-        /* Loading state */
-        .loading-container {
-            text-align: center;
-            padding: 3rem 1.5rem;
-        }
-
-        .loading-container .loader {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border-color);
-            border-top-color: var(--scarlet);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 1.25rem;
-        }
-
-        .loading-container p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
         /* Success Modal Overlay */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(4px);
             z-index: 1000;
             align-items: center;
@@ -317,6 +254,7 @@
             max-width: 400px;
             width: 100%;
             animation: modalSlideIn 0.35s ease;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
         }
 
         @keyframes modalSlideIn {
@@ -392,7 +330,6 @@
             background: var(--scarlet-hover);
         }
 
-        /* Footer */
         .footer {
             margin-top: 2rem;
             text-align: center;
@@ -402,19 +339,15 @@
 
         @media (max-width: 540px) {
             body {
-                padding: 1.25rem 0.75rem 2rem;
+                padding: 1.5rem 0.75rem 2rem;
             }
 
             .card {
-                padding: 1.5rem 1.25rem;
+                padding: 1.75rem 1.25rem;
             }
 
             .form-title {
                 font-size: 1.3rem;
-            }
-
-            .practice-banner .practice-name {
-                font-size: 1.15rem;
             }
         }
     </style>
@@ -426,64 +359,35 @@
     </div>
 
     <div class="card" id="mainCard">
-        <!-- Loading state -->
-        <div id="loadingState" class="loading-container">
-            <div class="loader"></div>
-            <p>Loading practice info…</p>
+        <div class="practice-banner">
+            <div class="practice-label">Now Checking In</div>
+            <div class="practice-name" id="practiceName">Team Practice</div>
+            <div class="practice-date" id="practiceDate">Loading date...</div>
         </div>
 
-        <!-- Closed state -->
-        <div id="closedState" class="closed-container" style="display:none;">
-            <div class="closed-icon">🔒</div>
-            <h2>Check-In Not Open</h2>
-            <p>Attendance check-in automatically opens every <strong>Friday</strong> and <strong>Sunday</strong> for team practice.</p>
-        </div>
+        <h1 class="form-title">Attendance Check-In</h1>
+        <p class="form-subtitle">Mark your attendance for today's practice.</p>
 
-        <!-- Form state -->
-        <div id="formState" style="display:none;">
-            <div class="practice-banner">
-                <div class="practice-label">Now Checking In</div>
-                <div class="practice-name" id="practiceName"></div>
-                <div class="practice-date" id="practiceDate"></div>
+        <div class="error-banner" id="errorBanner"></div>
+
+        <form id="attendanceForm" novalidate>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name <span class="required">*</span></label>
+                    <input type="text" id="firstName" name="firstName" placeholder="e.g. Jane" required autocomplete="given-name">
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name <span class="required">*</span></label>
+                    <input type="text" id="lastName" name="lastName" placeholder="e.g. Doe" required autocomplete="family-name">
+                </div>
             </div>
 
-            <h1 class="form-title">Attendance Check-In</h1>
-            <p class="form-subtitle">Mark your attendance for today's practice.</p>
-
-            <div class="error-banner" id="errorBanner"></div>
-
-            <form id="attendanceForm" novalidate>
-                <div class="form-group">
-                    <label for="fullName">Full Name <span class="required">*</span></label>
-                    <input type="text" id="fullName" name="fullName" placeholder="e.g. Jane Doe" required autocomplete="name">
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Rutgers Email <span class="required">*</span></label>
-                    <input type="email" id="email" name="email" placeholder="e.g. jd1234@rutgers.edu" required autocomplete="email">
-                </div>
-
-                <div class="form-group">
-                    <label for="team">Team <span class="required">*</span></label>
-                    <select id="team" name="team" required>
-                        <option value="" disabled selected>Select your team</option>
-                        <option value="Rec Team">Rec Team</option>
-                        <option value="Comp Team">Comp Team</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="notes">Notes <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
-                    <textarea id="notes" name="notes" placeholder="e.g. Leaving early at 9pm, have an injury, etc."></textarea>
-                    <div class="field-hint">Let us know if you're arriving late, leaving early, or anything else.</div>
-                </div>
-
-                <button type="submit" class="submit-btn" id="submitBtn">
-                    <span class="btn-text">Check In</span>
-                    <span class="spinner"></span>
-                </button>
-            </form>
-        </div>
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <span class="btn-text">Check In</span>
+                <span class="spinner"></span>
+            </button>
+        </form>
     </div>
 
     <div class="footer">Rutgers University Rock Climbing</div>
@@ -504,7 +408,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDIIbSN2nBnpf946yLNCS9vfq41dWb-w2I",
@@ -519,9 +423,6 @@
         const db = getFirestore(app);
 
         // DOM refs
-        const loadingState = document.getElementById("loadingState");
-        const closedState = document.getElementById("closedState");
-        const formState = document.getElementById("formState");
         const practiceNameEl = document.getElementById("practiceName");
         const practiceDateEl = document.getElementById("practiceDate");
         const attendanceForm = document.getElementById("attendanceForm");
@@ -531,57 +432,8 @@
         const modalCloseBtn = document.getElementById("modalCloseBtn");
         const successMessage = document.getElementById("successMessage");
 
-        const fullNameInput = document.getElementById("fullName");
-        const emailInput = document.getElementById("email");
-        const teamSelect = document.getElementById("team");
-        const notesInput = document.getElementById("notes");
-
-        let currentPracticeDate = "";
-        let currentPracticeName = "";
-
-        // ── LocalStorage Draft ──
-        const DRAFT_KEY = "rurc_attendance_draft";
-
-        function loadDraft() {
-            try {
-                const draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
-                if (draft) {
-                    if (draft.fullName) fullNameInput.value = draft.fullName;
-                    if (draft.email) emailInput.value = draft.email;
-                    if (draft.team) teamSelect.value = draft.team;
-                }
-            } catch {}
-        }
-
-        function saveDraft() {
-            try {
-                localStorage.setItem(DRAFT_KEY, JSON.stringify({
-                    fullName: fullNameInput.value.trim(),
-                    email: emailInput.value.trim(),
-                    team: teamSelect.value
-                }));
-            } catch {}
-        }
-
-        fullNameInput.addEventListener("input", saveDraft);
-        emailInput.addEventListener("input", saveDraft);
-        teamSelect.addEventListener("change", saveDraft);
-
-        // ── Format date for display ──
-        function formatDate(dateStr) {
-            try {
-                const [year, month, day] = dateStr.split("-").map(Number);
-                const d = new Date(year, month - 1, day);
-                return d.toLocaleDateString("en-US", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric"
-                });
-            } catch {
-                return dateStr;
-            }
-        }
+        const firstNameInput = document.getElementById("firstName");
+        const lastNameInput = document.getElementById("lastName");
 
         function getTodayString() {
             const now = new Date();
@@ -591,74 +443,45 @@
             return `${year}-${month}-${day}`;
         }
 
-        // ── Fetch practice settings ──
-        async function fetchPracticeSettings() {
-            const now = new Date();
-            const dayOfWeek = now.getDay(); // 0 = Sunday, 5 = Friday
-            const isFridayOrSunday = (dayOfWeek === 0 || dayOfWeek === 5);
-            const todayStr = getTodayString();
-            const defaultPracticeName = dayOfWeek === 5 ? "Friday Practice" : (dayOfWeek === 0 ? "Sunday Practice" : "Team Practice");
+        const currentPracticeDate = getTodayString();
+        const now = new Date();
+        const dayOfWeek = now.getDay();
+        const currentPracticeName = dayOfWeek === 5 ? "Friday Practice" : (dayOfWeek === 0 ? "Sunday Practice" : "Team Practice");
 
+        practiceNameEl.textContent = currentPracticeName;
+        practiceDateEl.textContent = now.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+
+        // ── LocalStorage Draft ──
+        const DRAFT_KEY = "rurc_attendance_names_draft";
+
+        function loadDraft() {
             try {
-                const snap = await getDoc(doc(db, "attendance_settings", "current"));
-                const data = snap.exists() ? snap.data() : null;
-
-                // Open automatically on Friday and Sunday!
-                let shouldBeOpen = false;
-
-                if (isFridayOrSunday) {
-                    shouldBeOpen = true;
-                    // Check if explicit override closing today
-                    if (data && data.practiceDate === todayStr && data.isOpen === false) {
-                        shouldBeOpen = false;
-                    }
-                } else if (data && data.isOpen && data.practiceDate === todayStr) {
-                    // Open for special clinic/trip/makeup
-                    shouldBeOpen = true;
+                const draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
+                if (draft) {
+                    if (draft.firstName) firstNameInput.value = draft.firstName;
+                    if (draft.lastName) lastNameInput.value = draft.lastName;
                 }
-
-                if (!shouldBeOpen) {
-                    showClosed();
-                    return;
-                }
-
-                if (data && data.practiceDate === todayStr && data.practiceName) {
-                    currentPracticeDate = data.practiceDate;
-                    currentPracticeName = data.practiceName;
-                } else {
-                    currentPracticeDate = todayStr;
-                    currentPracticeName = defaultPracticeName;
-                }
-
-                practiceNameEl.textContent = currentPracticeName;
-                practiceDateEl.textContent = formatDate(currentPracticeDate);
-                showForm();
-            } catch (err) {
-                console.error("Error fetching practice settings:", err);
-                if (isFridayOrSunday) {
-                    currentPracticeDate = todayStr;
-                    currentPracticeName = defaultPracticeName;
-                    practiceNameEl.textContent = currentPracticeName;
-                    practiceDateEl.textContent = formatDate(currentPracticeDate);
-                    showForm();
-                } else {
-                    showClosed();
-                }
-            }
+            } catch {}
         }
 
-        function showClosed() {
-            loadingState.style.display = "none";
-            closedState.style.display = "block";
-            formState.style.display = "none";
+        function saveDraft() {
+            try {
+                localStorage.setItem(DRAFT_KEY, JSON.stringify({
+                    firstName: firstNameInput.value.trim(),
+                    lastName: lastNameInput.value.trim()
+                }));
+            } catch {}
         }
 
-        function showForm() {
-            loadingState.style.display = "none";
-            closedState.style.display = "none";
-            formState.style.display = "block";
-            loadDraft();
-        }
+        firstNameInput.addEventListener("input", saveDraft);
+        lastNameInput.addEventListener("input", saveDraft);
+
+        loadDraft();
 
         function showError(msg) {
             errorBanner.textContent = msg;
@@ -674,41 +497,46 @@
             e.preventDefault();
             hideError();
 
-            const fullName = fullNameInput.value.trim();
-            const email = emailInput.value.trim();
-            const team = teamSelect.value;
-            const notes = notesInput.value.trim();
+            // Ignore extra whitespace and collapse spaces
+            const firstName = firstNameInput.value.trim().replace(/\s+/g, " ");
+            const lastName = lastNameInput.value.trim().replace(/\s+/g, " ");
 
-            if (!fullName) { showError("Please enter your full name."); fullNameInput.focus(); return; }
-            if (!email) { showError("Please enter your Rutgers email."); emailInput.focus(); return; }
-            if (!email.includes("@")) { showError("Please enter a valid email address."); emailInput.focus(); return; }
-            if (!team) { showError("Please select your team."); teamSelect.focus(); return; }
+            if (!firstName) {
+                showError("Please enter your first name.");
+                firstNameInput.focus();
+                return;
+            }
+            if (!lastName) {
+                showError("Please enter your last name.");
+                lastNameInput.focus();
+                return;
+            }
+
+            const fullName = `${firstName} ${lastName}`;
 
             submitBtn.classList.add("loading");
             submitBtn.disabled = true;
 
             try {
-                await addDoc(collection(db, "attendance_records"), {
+                await addDoc(collection(db, "submissions"), {
+                    type: "attendance",
+                    firstName,
+                    lastName,
                     fullName,
-                    email,
-                    team,
-                    notes,
                     practiceDate: currentPracticeDate,
                     practiceName: currentPracticeName,
                     checkedInAt: serverTimestamp(),
+                    timestamp: serverTimestamp(),
                     status: "present"
                 });
 
                 // Show success
-                successMessage.textContent = `${fullName}, your attendance for ${currentPracticeName} has been recorded.`;
+                successMessage.textContent = `${fullName}, you're checked in for ${currentPracticeName}!`;
                 successModal.classList.add("visible");
-
-                // Reset notes only
-                notesInput.value = "";
 
             } catch (err) {
                 console.error("Submission error:", err);
-                showError("Something went wrong. Please try again.");
+                showError("Error recording attendance. Please check your connection and try again.");
             } finally {
                 submitBtn.classList.remove("loading");
                 submitBtn.disabled = false;
@@ -725,9 +553,6 @@
                 successModal.classList.remove("visible");
             }
         });
-
-        // ── Init ──
-        fetchPracticeSettings();
     </script>
 </body>
 </html>

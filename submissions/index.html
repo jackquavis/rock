@@ -2460,6 +2460,8 @@
           const data = docSnap.data();
           if (data.type === "snapshot") {
             snapshotsList.push({ id: docSnap.id, _col: "submissions", ...data });
+          } else if (data.type === "attendance" || data.type === "attendance_override") {
+            // Ignore attendance records in scorecard portal
           } else {
             allSubmissions.push({ id: docSnap.id, ...data });
           }

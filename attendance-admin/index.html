@@ -649,6 +649,170 @@
       letter-spacing: 0.03em;
     }
 
+    .comp-credit-pill {
+      font-size: 0.7rem;
+      color: #ffd54f;
+      background: rgba(255, 202, 40, 0.15);
+      border: 1px solid rgba(255, 202, 40, 0.4);
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      letter-spacing: 0.02em;
+    }
+
+    .trip-credit-pill {
+      font-size: 0.7rem;
+      color: #90caf9;
+      background: rgba(33, 150, 243, 0.15);
+      border: 1px solid rgba(33, 150, 243, 0.4);
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      letter-spacing: 0.02em;
+    }
+
+    .stat-link-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-width: 32px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      user-select: none;
+      background: none;
+      font-family: inherit;
+    }
+
+    .stat-link-badge:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.25);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .stat-link-badge.missed-ok {
+      color: var(--active-green-text);
+      background: rgba(46, 125, 50, 0.18);
+      border-color: rgba(46, 125, 50, 0.45);
+    }
+
+    .stat-link-badge.missed-warn {
+      color: #ffd54f;
+      background: rgba(255, 202, 40, 0.18);
+      border-color: rgba(255, 202, 40, 0.45);
+    }
+
+    .stat-link-badge.missed-danger {
+      color: var(--danger-red-text);
+      background: rgba(198, 40, 40, 0.2);
+      border-color: rgba(198, 40, 40, 0.5);
+    }
+
+    .stat-link-badge.excused-badge {
+      color: var(--excused-amber-text);
+      background: rgba(178, 106, 0, 0.18);
+      border-color: rgba(178, 106, 0, 0.45);
+    }
+
+    /* Event Cards in Events Tab */
+    .event-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+      position: relative;
+    }
+
+    .event-card:hover {
+      border-color: #454552;
+      transform: translateY(-2px);
+    }
+
+    .event-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .event-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .event-card-date {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .event-card-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .event-rule-pill {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .event-rule-pill.point {
+      background: rgba(46, 125, 50, 0.18);
+      border: 1px solid rgba(46, 125, 50, 0.4);
+      color: var(--active-green-text);
+    }
+
+    .event-rule-pill.allowance {
+      background: rgba(255, 202, 40, 0.15);
+      border: 1px solid rgba(255, 202, 40, 0.45);
+      color: var(--gold-star);
+    }
+
+    .event-rule-pill.no-penalty {
+      background: rgba(33, 150, 243, 0.15);
+      border: 1px solid rgba(33, 150, 243, 0.4);
+      color: #90caf9;
+    }
+
+    .event-rule-pill.excuse-all {
+      background: rgba(178, 106, 0, 0.18);
+      border: 1px solid rgba(178, 106, 0, 0.45);
+      color: var(--excused-amber-text);
+    }
+
+    .event-card-footer {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
     /* ==========================================
        SUB-TABS & PILLS (Tracker tab)
        ========================================== */
@@ -691,22 +855,6 @@
     .pill-btn.active.rec {
       background: rgba(33, 150, 243, 0.25);
       color: #90caf9;
-    }
-
-    .info-callout {
-      background: rgba(255, 202, 40, 0.08);
-      border: 1px solid rgba(255, 202, 40, 0.25);
-      border-left: 3px solid var(--gold-star);
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 0.84rem;
-      color: var(--text-secondary);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
     }
 
     /* ==========================================
@@ -955,6 +1103,9 @@
       <button type="button" class="tab-btn" id="tabBtnTracker" data-tab="tabTracker">
         🏆 Comp & Rec Team Tracker
       </button>
+      <button type="button" class="tab-btn" id="tabBtnEvents" data-tab="tabEvents">
+        🎪 Events & Trips
+      </button>
     </nav>
 
     <!-- ========================================================
@@ -1022,7 +1173,7 @@
       <!-- Practice Info Banner -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 4px; flex-wrap: wrap; gap: 8px;">
         <div>
-          <span style="font-weight: 700; font-size: 1.05rem; color: var(--text-light);" id="dailyPracticeDayTitle">Friday Practice</span>
+          <span style="font-weight: 700; font-size: 1.05rem; color: var(--text-light);" id="dailyPracticeDayTitle">Team Practice</span>
           <span style="color: var(--text-muted); font-size: 0.85rem; margin-left: 8px;" id="dailyPracticeDateFormatted">Loading date...</span>
         </div>
         <div style="font-size: 0.85rem; color: var(--text-muted);" id="dailyAttendanceCountSummary">
@@ -1035,8 +1186,8 @@
         <table>
           <thead>
             <tr>
+              <th style="width: 120px;">Team</th>
               <th>Athlete</th>
-              <th>Team</th>
               <th>Status</th>
               <th>Check-In Action</th>
               <th class="col-action">Excuse Action</th>
@@ -1055,21 +1206,6 @@
          VIEW 2: COMP & REC TEAM TRACKER (DATE RANGE & METRICS)
          ======================================================== -->
     <div id="tabTrackerView" class="hidden">
-      <!-- Callout Explanation -->
-      <div class="info-callout">
-        <div>
-          <strong>📊 Two Independent Trackers:</strong>
-          <span style="margin-left: 6px;">
-            <strong>🎯 Attendance Points</strong> = Points earned from attending practices (end-of-semester rewards).
-            &nbsp;|&nbsp;
-            <strong>⚠️ Missed Practices</strong> = Unexcused missed practices (used for competition reimbursement eligibility).
-          </span>
-        </div>
-        <button type="button" id="btnExportTrackerCSV" class="btn btn-outline btn-sm">
-          📥 Export CSV
-        </button>
-      </div>
-
       <!-- Tracker Filter Section -->
       <section class="toolbar-section">
         <div class="filters-row">
@@ -1082,16 +1218,6 @@
           <div class="filter-field">
             <label for="rangeEndDate">To Date</label>
             <input type="date" id="rangeEndDate" style="height: 38px;" />
-          </div>
-
-          <!-- Quick Range Presets -->
-          <div class="filter-field">
-            <label>Quick Presets</label>
-            <div style="display: flex; gap: 6px;">
-              <button type="button" id="presetSemester" class="btn btn-outline btn-sm" style="height: 38px;">Semester</button>
-              <button type="button" id="preset30Days" class="btn btn-outline btn-sm" style="height: 38px;">30 Days</button>
-              <button type="button" id="preset60Days" class="btn btn-outline btn-sm" style="height: 38px;">60 Days</button>
-            </div>
           </div>
 
           <!-- Team Selector Pills -->
@@ -1113,13 +1239,20 @@
           </div>
 
           <!-- Search -->
-          <div class="filter-field" style="margin-left: auto;">
+          <div class="filter-field">
             <label for="trackerSearchInput">Search Athlete</label>
             <div class="search-wrapper">
               <span class="search-icon">⌕</span>
               <input type="text" id="trackerSearchInput" placeholder="Search..." style="height: 38px;" />
               <button type="button" id="clearTrackerSearchBtn" class="clear-search-btn hidden" title="Clear">✕</button>
             </div>
+          </div>
+
+          <!-- Export CSV Button in Toolbar -->
+          <div class="filter-field" style="margin-left: auto;">
+            <button type="button" id="btnExportTrackerCSV" class="btn btn-outline" style="height: 38px;">
+              📥 Export CSV
+            </button>
           </div>
         </div>
       </section>
@@ -1139,21 +1272,47 @@
         <table>
           <thead>
             <tr>
+              <th style="width: 120px;">Team</th>
               <th>Athlete</th>
-              <th>Team</th>
-              <th style="text-align: center;">🎯 Attendance Points (Rewards)</th>
-              <th style="text-align: center;">⚠️ Missed Practices (Reimbursement)</th>
-              <th style="text-align: center;">📝 Excused</th>
-              <th style="text-align: center;">Attendance %</th>
-              <th class="col-action">Adjust</th>
+              <th style="text-align: center; width: 140px;">Missed Practices</th>
+              <th style="text-align: center; width: 140px;">Attendance Points</th>
+              <th style="text-align: center; width: 110px;">Excused</th>
+              <th class="col-action" style="width: 90px;">Adjust</th>
             </tr>
           </thead>
           <tbody id="trackerTableBody">
             <tr>
-              <td colspan="7" class="empty-state">Loading tracker data...</td>
+              <td colspan="6" class="empty-state">Loading tracker data...</td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         VIEW 3: EVENTS & TRIPS (SPECIAL COMPETITIONS & TRIPS)
+         ======================================================== -->
+    <div id="tabEventsView" class="hidden">
+      <!-- Toolbar Section -->
+      <section class="toolbar-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 700;">Special Events, Comps & Trips</h2>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+              Manage competitions, gym trips, and weekend excursions. Configure attendance points, -1 absence point allowances, and excused practice rules.
+            </p>
+          </div>
+          <div>
+            <button type="button" id="btnOpenAddEventModal" class="btn btn-scarlet" style="height: 38px;">
+              + Add Event / Trip
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Events Cards Grid -->
+      <div id="eventsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px;">
+        <!-- Dynamically rendered event cards -->
       </div>
     </div>
 
@@ -1188,16 +1347,17 @@
         </div>
 
         <div class="detail-row">
-          <span class="detail-label">Attendance Points (Rewards)</span>
+          <span class="detail-label">Attendance Points</span>
           <div class="detail-value">
             <span id="infoModalAttendancePoints" style="color: var(--gold-star); font-weight: 700;">0 pts</span>
           </div>
         </div>
 
         <div class="detail-row">
-          <span class="detail-label">Unexcused Missed Practices</span>
+          <span class="detail-label">Missed Practices</span>
           <div class="detail-value">
             <span id="infoModalMissedCount" style="color: var(--danger-red-text); font-weight: 700;">0</span>
+            <button type="button" class="btn btn-outline btn-sm" id="btnInfoModalMissedBreakdown" style="padding: 2px 8px; font-size: 0.75rem;">View Dates</button>
           </div>
         </div>
 
@@ -1205,6 +1365,21 @@
           <span class="detail-label">Excused Absences</span>
           <div class="detail-value">
             <span id="infoModalExcusedCount" style="color: var(--excused-amber-text); font-weight: 700;">0</span>
+            <button type="button" class="btn btn-outline btn-sm" id="btnInfoModalExcusedBreakdown" style="padding: 2px 8px; font-size: 0.75rem;">View Dates</button>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Method Trip (10/11)</span>
+          <div class="detail-value">
+            <span id="infoModalMethodStatus">—</span>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Fight Knight Vol 2 (11/22)</span>
+          <div class="detail-value">
+            <span id="infoModalFKStatus">—</span>
           </div>
         </div>
 
@@ -1233,11 +1408,11 @@
       </div>
 
       <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">
-        Excused absences do <strong style="color: #fff;">not count as a missed practice</strong> for reimbursement eligibility.
+        Excused absences do <strong style="color: #fff;">not count as a missed practice</strong>.
       </p>
 
       <form id="excuseSingleForm">
-        <input type="hidden" id="excuseTargetEmail" />
+        <input type="hidden" id="excuseTargetKey" />
         <input type="hidden" id="excuseTargetDate" />
 
         <div class="form-group">
@@ -1290,9 +1465,9 @@
         <button type="button" class="close-btn" data-close="tripCheckInModal">&times;</button>
       </div>
 
-      <div class="info-callout" style="margin-bottom: 16px;">
+      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 16px;">
         Automatically check in all roster members for <strong id="tripModalDateText" style="color: #fff;">this date</strong>. You can then quickly toggle off any outliers with one click!
-      </div>
+      </p>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" data-close="tripCheckInModal">Cancel</button>
@@ -1310,21 +1485,21 @@
       </div>
 
       <form id="adjustPointsForm">
-        <input type="hidden" id="adjustTargetEmail" />
+        <input type="hidden" id="adjustTargetKey" />
 
         <div class="form-group">
-          <label for="adjustRewardPoints">Attendance Points (Rewards)</label>
+          <label for="adjustRewardPoints">Attendance Points</label>
           <input type="number" id="adjustRewardPoints" min="0" step="1" placeholder="Leave empty for auto-calculated" />
           <p style="font-size: 0.74rem; color: var(--text-muted); margin-top: 4px;">
-            1 point earned per attended practice. Enter a number to override reward points.
+            1 point earned per attended practice. Enter a number to manually override.
           </p>
         </div>
 
         <div class="form-group">
-          <label for="adjustMissedCount">Missed Practices (Comp Reimbursement)</label>
+          <label for="adjustMissedCount">Missed Practices</label>
           <input type="number" id="adjustMissedCount" min="0" step="1" placeholder="Leave empty for auto-calculated" />
           <p style="font-size: 0.74rem; color: var(--text-muted); margin-top: 4px;">
-            Count of unexcused missed practices. Enter a number to override unexcused absences.
+            Count of unexcused missed practices. Enter a number to manually override.
           </p>
         </div>
 
@@ -1367,6 +1542,113 @@
     </div>
   </div>
 
+  <!-- MODAL 7: ADD / EDIT SPECIAL EVENT MODAL -->
+  <div id="eventModal" class="modal-overlay">
+    <div class="modal" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 id="eventModalTitle">Add Special Event / Trip</h3>
+        <button type="button" class="close-btn" data-close="eventModal">&times;</button>
+      </div>
+
+      <form id="eventForm">
+        <input type="hidden" id="eventEditId" />
+
+        <div class="form-group">
+          <label for="eventNameInput">Event / Trip Name</label>
+          <input type="text" id="eventNameInput" placeholder="e.g. Fight Knight Volume 2, Method Trip, Reach Trip..." required />
+        </div>
+
+        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="eventDateInput">Event Date</label>
+            <input type="date" id="eventDateInput" required style="width: 100%; height: 38px;" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="eventCategoryInput">Category</label>
+            <select id="eventCategoryInput" style="width: 100%; height: 38px;">
+              <option value="Competition">Competition</option>
+              <option value="Gym Trip">Gym Trip</option>
+              <option value="Outdoor Trip">Outdoor Trip</option>
+              <option value="Special Clinic">Special Clinic</option>
+              <option value="Team Excursion">Team Excursion</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 10px;">
+          <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="eventCountsAttendanceCheck" checked style="width: 18px; height: 18px; margin-top: 2px; accent-color: var(--scarlet);" />
+            <div>
+              <span style="font-weight: 600; font-size: 0.88rem; color: var(--text-light);">Counts for Attendance (+1 Point)</span>
+              <p style="font-size: 0.76rem; color: var(--text-muted); margin-top: 1px;">Attending this event grants +1 attendance point for semester rewards.</p>
+            </div>
+          </label>
+
+          <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="eventMinusAbsenceCheck" style="width: 18px; height: 18px; margin-top: 2px; accent-color: var(--scarlet);" />
+            <div>
+              <span style="font-weight: 600; font-size: 0.88rem; color: var(--text-light);">Allows -1 Absence Point (Excused Allowance)</span>
+              <p style="font-size: 0.76rem; color: var(--text-muted); margin-top: 1px;">Attending competition/event allows 1 excused absence (forgives 1 missed practice point).</p>
+            </div>
+          </label>
+
+          <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="eventNoMissedPenaltyCheck" checked style="width: 18px; height: 18px; margin-top: 2px; accent-color: var(--scarlet);" />
+            <div>
+              <span style="font-weight: 600; font-size: 0.88rem; color: var(--text-light);">No Penalty If Not Attending</span>
+              <p style="font-size: 0.76rem; color: var(--text-muted); margin-top: 1px;">Not attending this event does NOT count as a missed practice.</p>
+            </div>
+          </label>
+
+          <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="eventExcuseEveryoneCheck" style="width: 18px; height: 18px; margin-top: 2px; accent-color: var(--scarlet);" />
+            <div>
+              <span style="font-weight: 600; font-size: 0.88rem; color: var(--text-light);">Excuse All Members (Trip Weekend)</span>
+              <p style="font-size: 0.76rem; color: var(--text-muted); margin-top: 1px;">Automatically excuses all members from practice on this date (e.g. Reach trip).</p>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="eventDescriptionInput">Description / Notes</label>
+          <textarea id="eventDescriptionInput" rows="2" placeholder="e.g. Competition travel, optional weekend trip..."></textarea>
+        </div>
+
+        <div class="modal-footer" style="justify-content: space-between;">
+          <button type="button" id="btnDeleteEvent" class="btn btn-danger btn-sm hidden">Delete Event</button>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-outline" data-close="eventModal">Cancel</button>
+            <button type="submit" class="btn btn-scarlet">Save Event</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 8: ATTENDANCE DETAILS BREAKDOWN (EXCUSED / MISSED) -->
+  <div id="attendanceDetailsModal" class="modal-overlay">
+    <div class="modal" style="max-width: 580px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="detailsModalTitle">Absence Breakdown</h3>
+          <p id="detailsModalSubtitle" style="font-size: 0.84rem; color: var(--text-muted); margin-top: 3px;"></p>
+        </div>
+        <button type="button" class="close-btn" data-close="attendanceDetailsModal">&times;</button>
+      </div>
+
+      <div id="detailsModalSummaryBanner" style="margin-bottom: 14px;"></div>
+
+      <div id="detailsModalList" style="max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+        <!-- Dynamically rendered items -->
+      </div>
+
+      <div class="modal-footer" style="justify-content: flex-end; margin-top: 16px;">
+        <button type="button" class="btn btn-outline" data-close="attendanceDetailsModal">Close</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ==========================================
        APPLICATION CODE
        ========================================== -->
@@ -1403,13 +1685,16 @@
 
     // State
     let currentUser = null;
-    let selectedPracticeDate = getTodayString();
-    let membersMap = {}; // emailKey -> { fullName, email, team, pointsOverride, missedOverride }
+    let selectedPracticeDate = "2026-11-22"; // default to recent competition date or today
+    let membersMap = {}; // nameKey -> { nameKey, fullName, email, team, pointsRewardOverride, missedOverride }
     let rawRosterList = [];
-    let recordsList = []; // all attendance_records docs
-    let overridesMap = {}; // emailKey -> { pointsOverride, missedOverride }
+    let historicalData = { specialEvents: {}, canonicalAliases: {}, athletes: [] };
+    let historicalRecordsMap = {}; // dateStr -> { nameKey -> { status, eventType, practiceName } }
+    let recordsList = []; // live attendance records from submissions collection
+    let overridesMap = {}; // nameKey -> override doc data
+    let eventsMap = {}; // dateStr -> event object
+    let canonicalAliases = {};
 
-    // Helpers
     function getTodayString() {
       const now = new Date();
       const year = now.getFullYear();
@@ -1418,9 +1703,26 @@
       return `${year}-${month}-${day}`;
     }
 
-    function sanitizeEmailKey(email) {
-      if (!email) return "";
-      return email.trim().toLowerCase();
+    function normalizeName(name) {
+      if (!name) return "";
+      return name.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function toCanonicalName(name) {
+      if (!name) return "";
+      const norm = normalizeName(name);
+      if (canonicalAliases[norm]) {
+        return canonicalAliases[norm];
+      }
+      return norm.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    }
+
+    function canonicalKey(name) {
+      return normalizeName(toCanonicalName(name));
+    }
+
+    function safeIdKey(nameKey) {
+      return (nameKey || "").replace(/[^a-zA-Z0-9_-]/g, "_");
     }
 
     function formatDateForDisplay(dateStr) {
@@ -1450,7 +1752,6 @@
       return day === 0 || day === 5;
     }
 
-    // Step to nearest Friday or Sunday
     function stepToFriSun(dateStr, forward = true) {
       const parts = dateStr.split("-");
       let d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
@@ -1466,6 +1767,18 @@
       }
       return dateStr;
     }
+
+    // Clicking anywhere on date inputs pops up the calendar
+    ["practiceDatePicker", "rangeStartDate", "rangeEndDate", "eventDateInput"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("click", () => {
+          try {
+            if (typeof el.showPicker === "function") el.showPicker();
+          } catch (e) {}
+        });
+      }
+    });
 
     // Toast
     function showToast(message, type = "info") {
@@ -1511,7 +1824,6 @@
       }
     });
 
-    // Copy to clipboard
     async function copyToClipboard(text, label, btnEl = null) {
       if (!text) return;
       try {
@@ -1562,47 +1874,60 @@
       signOut(auth).then(() => showToast("Signed out", "info"));
     });
 
-    // Tab Switching
+    // ──────────────────────────────────────────────
+    // TAB SWITCHING (Daily Practice / Tracker / Events)
+    // ──────────────────────────────────────────────
     const tabBtnDaily = document.getElementById("tabBtnDaily");
     const tabBtnTracker = document.getElementById("tabBtnTracker");
+    const tabBtnEvents = document.getElementById("tabBtnEvents");
     const tabDailyView = document.getElementById("tabDailyView");
     const tabTrackerView = document.getElementById("tabTrackerView");
+    const tabEventsView = document.getElementById("tabEventsView");
 
-    tabBtnDaily.addEventListener("click", () => {
-      tabBtnDaily.classList.add("active");
-      tabBtnTracker.classList.remove("active");
-      tabDailyView.classList.remove("hidden");
-      tabTrackerView.classList.add("hidden");
-      renderDailyView();
-    });
+    function setActiveTab(tab) {
+      [tabBtnDaily, tabBtnTracker, tabBtnEvents].forEach(b => b.classList.remove("active"));
+      [tabDailyView, tabTrackerView, tabEventsView].forEach(v => v.classList.add("hidden"));
 
-    tabBtnTracker.addEventListener("click", () => {
-      tabBtnTracker.classList.add("active");
-      tabBtnDaily.classList.remove("active");
-      tabTrackerView.classList.remove("hidden");
-      tabDailyView.classList.add("hidden");
-      renderTrackerView();
-    });
+      if (tab === "daily") {
+        tabBtnDaily.classList.add("active");
+        tabDailyView.classList.remove("hidden");
+        renderDailyView();
+      } else if (tab === "tracker") {
+        tabBtnTracker.classList.add("active");
+        tabTrackerView.classList.remove("hidden");
+        renderTrackerView();
+      } else if (tab === "events") {
+        tabBtnEvents.classList.add("active");
+        tabEventsView.classList.remove("hidden");
+        renderEventsView();
+      }
+    }
+
+    tabBtnDaily.addEventListener("click", () => setActiveTab("daily"));
+    tabBtnTracker.addEventListener("click", () => setActiveTab("tracker"));
+    tabBtnEvents.addEventListener("click", () => setActiveTab("events"));
 
     // ──────────────────────────────────────────────
     // DATA INITIALIZATION & ROSTER MERGE
     // ──────────────────────────────────────────────
     async function initDashboard() {
-      // Default practice date to today if Friday or Sunday, else previous Fri/Sun
+      // Default practice date to recent Sunday (or today if Friday/Sunday)
       const todayStr = getTodayString();
-      if (isFridayOrSunday(todayStr)) {
+      if (todayStr >= "2026-11-22") {
+        selectedPracticeDate = "2026-11-22"; // default to recent Fight Knight Comp
+      } else if (isFridayOrSunday(todayStr)) {
         selectedPracticeDate = todayStr;
       } else {
         selectedPracticeDate = stepToFriSun(todayStr, false);
       }
       document.getElementById("practiceDatePicker").value = selectedPracticeDate;
 
-      // Default Tracker date range: semester start to today
-      const currentYear = new Date().getFullYear();
-      document.getElementById("rangeStartDate").value = `${currentYear}-09-01`;
-      document.getElementById("rangeEndDate").value = todayStr;
+      // Default Tracker date range: full semester
+      document.getElementById("rangeStartDate").value = "2026-09-01";
+      document.getElementById("rangeEndDate").value = "2026-11-30";
 
       await loadRosterJson();
+      await loadHistoricalJson();
       await loadAllData();
     }
 
@@ -1618,95 +1943,194 @@
       }
     }
 
+    async function loadHistoricalJson() {
+      try {
+        const res = await fetch("../data/historical_attendance.json");
+        if (res.ok) {
+          historicalData = await res.json();
+          canonicalAliases = { ...historicalData.canonicalAliases };
+
+          if (historicalData.specialEvents) {
+            eventsMap = { ...historicalData.specialEvents };
+          }
+
+          // Build historicalRecordsMap: dateStr -> { nameKey -> { status, eventType } }
+          historicalRecordsMap = {};
+          if (historicalData.athletes) {
+            historicalData.athletes.forEach(athlete => {
+              const cName = toCanonicalName(athlete.fullName);
+              const nKey = canonicalKey(cName);
+              if (athlete.records) {
+                Object.keys(athlete.records).forEach(d => {
+                  if (!historicalRecordsMap[d]) historicalRecordsMap[d] = {};
+                  historicalRecordsMap[d][nKey] = athlete.records[d];
+                });
+              }
+            });
+          }
+        }
+      } catch (err) {
+        console.warn("Could not load ../data/historical_attendance.json:", err);
+      }
+    }
+
     async function loadAllData() {
       try {
-        // 1. Fetch overrides from attendance_points
+        recordsList = [];
+        overridesMap = {};
+
         try {
-          const ptsSnap = await getDocs(collection(db, "attendance_points"));
-          overridesMap = {};
-          ptsSnap.forEach(d => {
-            overridesMap[sanitizeEmailKey(d.id)] = d.data();
+          const snap = await getDocs(collection(db, "submissions"));
+          snap.forEach(d => {
+            const data = d.data();
+            if (data.type === "attendance") {
+              const cName = toCanonicalName(data.fullName || `${data.firstName || ''} ${data.lastName || ''}`.trim() || data.name);
+              const nKey = canonicalKey(cName);
+              recordsList.push({ id: d.id, ...data, fullName: cName, nameKey: nKey });
+            } else if (data.type === "attendance_override") {
+              const cName = toCanonicalName(data.fullName || data.nameKey || d.id.replace("override_", ""));
+              const nKey = canonicalKey(cName);
+              if (nKey) overridesMap[nKey] = data;
+            } else if (data.type === "attendance_event") {
+              if (data.date) {
+                eventsMap[data.date] = data;
+              }
+            }
           });
-        } catch (e) {
-          console.warn("Error loading attendance_points:", e);
+        } catch (fbErr) {
+          console.warn("Submissions read warning:", fbErr);
         }
 
-        // 2. Fetch all attendance_records
-        const recSnap = await getDocs(collection(db, "attendance_records"));
-        recordsList = [];
-        recSnap.forEach(d => {
-          recordsList.push({ id: d.id, ...d.data() });
-        });
-
-        // 3. Assemble unified members
         assembleMembersMap();
 
-        // 4. Render active tab
         if (!tabDailyView.classList.contains("hidden")) {
           renderDailyView();
-        } else {
+        } else if (!tabTrackerView.classList.contains("hidden")) {
           renderTrackerView();
+        } else if (!tabEventsView.classList.contains("hidden")) {
+          renderEventsView();
         }
       } catch (err) {
         console.error("Load all data error:", err);
-        showToast("Error loading records from database", "error");
+        showToast("Error processing attendance data", "error");
       }
     }
 
     function assembleMembersMap() {
       membersMap = {};
 
-      // A. Populate from static roster (Comp Team members)
+      // A. Populate from static Comp Team roster (data/roster.json)
       rawRosterList.forEach(m => {
         if (!m.name) return;
-        const nameClean = m.name.trim();
-        const placeholderEmail = nameClean.toLowerCase().replace(/[^a-z0-9]/g, ".") + "@rutgers.edu";
-        const emailKey = sanitizeEmailKey(placeholderEmail);
-        membersMap[emailKey] = {
-          fullName: nameClean,
-          email: placeholderEmail,
-          team: "Comp Team"
+        const cName = toCanonicalName(m.name);
+        const nameKey = canonicalKey(cName);
+        membersMap[nameKey] = {
+          nameKey,
+          fullName: cName,
+          email: "",
+          team: "Comp Team",
+          pointsRewardOverride: null,
+          missedOverride: null
         };
       });
 
-      // B. Merge saved overrides & stored points
-      Object.keys(overridesMap).forEach(emailKey => {
-        const o = overridesMap[emailKey];
-        if (!o) return;
-        if (o.fullName) {
-          const found = Object.keys(membersMap).find(k => membersMap[k].fullName.toLowerCase() === o.fullName.toLowerCase());
-          if (found) delete membersMap[found];
-        }
-        membersMap[emailKey] = {
-          fullName: o.fullName || "Athlete",
-          email: o.email || emailKey,
-          team: o.team || "Comp Team",
-          pointsRewardOverride: (o.pointsRewardOverride !== undefined && o.pointsRewardOverride !== null && o.pointsRewardOverride !== "") ? Number(o.pointsRewardOverride) : null,
-          missedOverride: (o.missedOverride !== undefined && o.missedOverride !== null && o.missedOverride !== "") ? Number(o.missedOverride) : null
-        };
-      });
-
-      // C. Merge checked-in athletes from attendance_records (including Rec Team athletes)
-      recordsList.forEach(r => {
-        if (!r.email) return;
-        const emailKey = sanitizeEmailKey(r.email);
-        if (!membersMap[emailKey]) {
-          if (r.fullName) {
-            const found = Object.keys(membersMap).find(k => membersMap[k].fullName.toLowerCase() === r.fullName.toLowerCase());
-            if (found) delete membersMap[found];
+      // B. Populate from historical athletes (data/historical_attendance.json)
+      if (historicalData.athletes) {
+        historicalData.athletes.forEach(a => {
+          const cName = toCanonicalName(a.fullName);
+          const nameKey = canonicalKey(cName);
+          if (!membersMap[nameKey]) {
+            membersMap[nameKey] = {
+              nameKey,
+              fullName: cName,
+              email: "",
+              team: a.team || "Rec Team",
+              pointsRewardOverride: null,
+              missedOverride: null
+            };
+          } else {
+            if (a.team === "Comp Team") {
+              membersMap[nameKey].team = "Comp Team";
+            }
           }
-          membersMap[emailKey] = {
-            fullName: r.fullName || "Athlete",
-            email: r.email,
+        });
+      }
+
+      // C. Merge saved overrides
+      Object.keys(overridesMap).forEach(key => {
+        const o = overridesMap[key];
+        if (!o) return;
+        const cName = toCanonicalName(o.fullName || o.nameKey || key);
+        const nameKey = canonicalKey(cName);
+        if (!nameKey) return;
+
+        if (!membersMap[nameKey]) {
+          membersMap[nameKey] = {
+            nameKey,
+            fullName: cName,
+            email: o.email || "",
+            team: o.team || "Comp Team",
+            pointsRewardOverride: (o.pointsRewardOverride !== undefined && o.pointsRewardOverride !== null && o.pointsRewardOverride !== "") ? Number(o.pointsRewardOverride) : null,
+            missedOverride: (o.missedOverride !== undefined && o.missedOverride !== null && o.missedOverride !== "") ? Number(o.missedOverride) : null
+          };
+        } else {
+          if (o.email) membersMap[nameKey].email = o.email;
+          if (o.team) membersMap[nameKey].team = o.team;
+          membersMap[nameKey].pointsRewardOverride = (o.pointsRewardOverride !== undefined && o.pointsRewardOverride !== null && o.pointsRewardOverride !== "") ? Number(o.pointsRewardOverride) : null;
+          membersMap[nameKey].missedOverride = (o.missedOverride !== undefined && o.missedOverride !== null && o.missedOverride !== "") ? Number(o.missedOverride) : null;
+        }
+      });
+
+      // D. Merge live checked-in athletes from attendance records
+      recordsList.forEach(r => {
+        const cName = toCanonicalName(r.fullName || (r.firstName && r.lastName ? `${r.firstName} ${r.lastName}` : "") || r.name);
+        if (!cName) return;
+        const nameKey = canonicalKey(cName);
+        if (!nameKey) return;
+
+        if (!membersMap[nameKey]) {
+          membersMap[nameKey] = {
+            nameKey,
+            fullName: cName,
+            email: r.email || "",
             team: r.team || "Rec Team",
             pointsRewardOverride: null,
             missedOverride: null
           };
         } else {
-          if (r.team) membersMap[emailKey].team = r.team;
-          if (r.fullName) membersMap[emailKey].fullName = r.fullName;
+          if (r.email && !membersMap[nameKey].email) {
+            membersMap[nameKey].email = r.email;
+          }
         }
       });
+    }
+
+    // Helper: gets effective record for an athlete on a specific date (live firestore takes priority over historical)
+    function getAthleteRecordForDate(nameKey, dateStr) {
+      // 1. Live records from submissions collection
+      const live = recordsList.find(r => r.practiceDate === dateStr && r.nameKey === nameKey);
+      if (live) return live;
+
+      // 2. Historical records from spreadsheet / import
+      if (historicalRecordsMap[dateStr] && historicalRecordsMap[dateStr][nameKey]) {
+        return historicalRecordsMap[dateStr][nameKey];
+      }
+
+      return null;
+    }
+
+    // Helper: gets all distinct dates in system
+    function getAllDates() {
+      const datesSet = new Set();
+      if (historicalRecordsMap) {
+        Object.keys(historicalRecordsMap).forEach(d => datesSet.add(d));
+      }
+      Object.keys(eventsMap).forEach(d => datesSet.add(d));
+      recordsList.forEach(r => {
+        if (r.practiceDate) datesSet.add(r.practiceDate);
+      });
+      if (selectedPracticeDate) datesSet.add(selectedPracticeDate);
+      return Array.from(datesSet).sort();
     }
 
     // ──────────────────────────────────────────────
@@ -1717,22 +2141,23 @@
       const teamFilter = document.getElementById("dailyTeamFilter").value;
       const search = document.getElementById("dailySearchInput").value.trim().toLowerCase();
 
-      // Formatted date and header
       const dayOfWeek = getDayOfWeek(selectedPracticeDate);
       const isFri = dayOfWeek === 5;
       const isSun = dayOfWeek === 0;
-      let dayTitle = isFri ? "Friday Practice" : (isSun ? "Sunday Practice" : "Team Practice");
+
+      const ev = eventsMap[selectedPracticeDate];
+      let dayTitle = "Team Practice";
+      if (ev) {
+        dayTitle = ev.name;
+      } else if (isFri) {
+        dayTitle = "Friday Practice";
+      } else if (isSun) {
+        dayTitle = "Sunday Practice";
+      }
+
       document.getElementById("dailyPracticeDayTitle").innerText = dayTitle;
       document.getElementById("dailyPracticeDateFormatted").innerText = formatDateForDisplay(selectedPracticeDate);
 
-      // Collect records for selected date
-      const dateRecords = recordsList.filter(r => r.practiceDate === selectedPracticeDate);
-      const recordMap = {}; // emailKey -> record
-      dateRecords.forEach(r => {
-        if (r.email) recordMap[sanitizeEmailKey(r.email)] = r;
-      });
-
-      // Filter members
       const memberKeys = Object.keys(membersMap).filter(key => {
         const m = membersMap[key];
         if (teamFilter !== "ALL" && m.team !== teamFilter) return false;
@@ -1740,16 +2165,14 @@
         return true;
       });
 
-      // Sort alphabetically by name
       memberKeys.sort((a, b) => membersMap[a].fullName.localeCompare(membersMap[b].fullName));
 
-      // Stats counters
       let presentCount = 0;
       let excusedCount = 0;
       let absentCount = 0;
 
       memberKeys.forEach(k => {
-        const r = recordMap[k];
+        const r = getAthleteRecordForDate(k, selectedPracticeDate);
         if (r && r.status === "present") presentCount++;
         else if (r && r.status === "excused") excusedCount++;
         else absentCount++;
@@ -1764,42 +2187,54 @@
       }
 
       let rowsHtml = "";
-      memberKeys.forEach(emailKey => {
-        const m = membersMap[emailKey];
-        const r = recordMap[emailKey];
+      memberKeys.forEach(nameKey => {
+        const m = membersMap[nameKey];
+        const r = getAthleteRecordForDate(nameKey, selectedPracticeDate);
         const isPresent = Boolean(r && r.status === "present");
         const isExcused = Boolean(r && r.status === "excused");
         const excuseNote = (r && r.excuseNote) || "";
 
-        // Status badge
         let statusBadge = `<span class="badge badge-absent">❌ Absent</span>`;
+        if (ev && !isPresent && !isExcused) {
+          if (ev.excuseEveryone) {
+            statusBadge = `<span class="badge badge-excused">📝 Excused (Trip)</span>`;
+          } else if (ev.noMissedPenalty) {
+            statusBadge = `<span class="badge badge-absent" style="opacity: 0.75; background: #23232c; border-color: var(--border-color); color: var(--text-muted);" title="Not attending this event does not count as a missed practice">Optional (No Penalty)</span>`;
+          }
+        }
+
         if (isPresent) {
-          statusBadge = `<span class="badge badge-present">✅ Present</span>`;
+          if (ev && ev.allowsMinusAbsence) {
+            statusBadge = `<span class="badge badge-present" style="background: rgba(255, 202, 40, 0.2); border-color: rgba(255, 202, 40, 0.5); color: #ffd54f;">🥊 Present (Comp Credit)</span>`;
+          } else if (ev) {
+            statusBadge = `<span class="badge badge-present" style="background: rgba(33, 150, 243, 0.2); border-color: rgba(33, 150, 243, 0.5); color: #90caf9;">🧗 Present (+1 pt)</span>`;
+          } else {
+            statusBadge = `<span class="badge badge-present">✅ Present</span>`;
+          }
         } else if (isExcused) {
-          statusBadge = `<span class="badge badge-excused" onclick="openExcuseModal('${escapeHtml(emailKey)}')">📝 Excused ${excuseNote ? `(${escapeHtml(excuseNote.slice(0, 20))}${excuseNote.length > 20 ? '...' : ''})` : ''}</span>`;
+          const shortNote = excuseNote ? `(${escapeHtml(excuseNote.slice(0, 18))}${excuseNote.length > 18 ? '...' : ''})` : '';
+          statusBadge = `<span class="badge badge-excused" onclick="openExcuseModal('${escapeHtml(nameKey)}')">📝 Excused ${shortNote}</span>`;
         }
 
         const teamClass = m.team === "Comp Team" ? "comp" : "rec";
 
-        // Check-in toggle button: 1-click
         const checkInBtn = isPresent
-          ? `<button type="button" class="btn btn-toggle-checkin checked btn-sm" onclick="toggleCheckIn('${escapeHtml(emailKey)}', false)" title="Click to remove check-in">✓ Checked In</button>`
-          : `<button type="button" class="btn btn-toggle-checkin unchecked btn-sm" onclick="toggleCheckIn('${escapeHtml(emailKey)}', true)" title="Click to check in">+ Check In</button>`;
+          ? `<button type="button" class="btn btn-toggle-checkin checked btn-sm" onclick="toggleCheckIn('${escapeHtml(nameKey)}', false)" title="Click to remove check-in">✓ Checked In</button>`
+          : `<button type="button" class="btn btn-toggle-checkin unchecked btn-sm" onclick="toggleCheckIn('${escapeHtml(nameKey)}', true)" title="Click to check in">+ Check In</button>`;
 
-        // Excuse button
         const excuseBtn = isExcused
-          ? `<button type="button" class="btn btn-outline btn-sm" onclick="openExcuseModal('${escapeHtml(emailKey)}')">Edit Excuse</button>`
-          : `<button type="button" class="btn btn-outline btn-sm" onclick="openExcuseModal('${escapeHtml(emailKey)}')">📝 Excuse</button>`;
+          ? `<button type="button" class="btn btn-outline btn-sm" onclick="openExcuseModal('${escapeHtml(nameKey)}')">Edit Excuse</button>`
+          : `<button type="button" class="btn btn-outline btn-sm" onclick="openExcuseModal('${escapeHtml(nameKey)}')">📝 Excuse</button>`;
 
         rowsHtml += `
           <tr>
+            <td><span class="team-badge ${teamClass}">${escapeHtml(m.team)}</span></td>
             <td>
               <div class="athlete-name-group">
                 <span class="athlete-name">${escapeHtml(m.fullName)}</span>
-                <button type="button" class="btn-info-icon" onclick="openAthleteInfo('${escapeHtml(emailKey)}')" title="View info & email">ⓘ Info</button>
+                <button type="button" class="btn-info-icon" onclick="openAthleteInfo('${escapeHtml(nameKey)}')" title="View info & email">ⓘ Info</button>
               </div>
             </td>
-            <td><span class="team-badge ${teamClass}">${escapeHtml(m.team)}</span></td>
             <td>${statusBadge}</td>
             <td>${checkInBtn}</td>
             <td class="col-action">${excuseBtn}</td>
@@ -1813,30 +2248,56 @@
     // ──────────────────────────────────────────────
     // ONE-CLICK CHECK-IN TOGGLE
     // ──────────────────────────────────────────────
-    window.toggleCheckIn = async (emailKey, markPresent) => {
-      const m = membersMap[emailKey];
+    window.toggleCheckIn = async (nameKey, markPresent) => {
+      const m = membersMap[nameKey];
       if (!m) return;
 
-      const recordId = `${selectedPracticeDate}_${emailKey}`.replace(/[^a-zA-Z0-9_-]/g, "_");
-      const recordDocRef = doc(db, "attendance_records", recordId);
+      const recordDocId = `att_${selectedPracticeDate}_${safeIdKey(nameKey)}`;
+      const recordDocRef = doc(db, "submissions", recordDocId);
 
       try {
         if (markPresent) {
-          // Check in
+          let eventName = "Practice";
+          const ev = eventsMap[selectedPracticeDate];
+          if (ev) eventName = ev.name;
+          else if (isFridayOrSunday(selectedPracticeDate)) eventName = (getDayOfWeek(selectedPracticeDate) === 5 ? "Friday Practice" : "Sunday Practice");
+
           await setDoc(recordDocRef, {
+            type: "attendance",
+            nameKey: nameKey,
             fullName: m.fullName,
-            email: m.email,
+            email: m.email || "",
             team: m.team,
             practiceDate: selectedPracticeDate,
-            practiceName: isFridayOrSunday(selectedPracticeDate) ? (getDayOfWeek(selectedPracticeDate) === 5 ? "Friday Practice" : "Sunday Practice") : "Practice",
+            practiceName: eventName,
             status: "present",
             checkedInAt: serverTimestamp(),
             notes: ""
           });
           showToast(`Checked in ${m.fullName}`, "success");
         } else {
-          // Remove check in (delete or unmark)
+          const matching = recordsList.filter(rec => rec.practiceDate === selectedPracticeDate && rec.nameKey === nameKey);
+          if (matching.length > 0) {
+            for (const rec of matching) {
+              if (rec.id) await deleteDoc(doc(db, "submissions", rec.id));
+            }
+          }
           await deleteDoc(recordDocRef);
+
+          // If historical record had present, record an explicit absent in Firestore to override it
+          if (historicalRecordsMap[selectedPracticeDate] && historicalRecordsMap[selectedPracticeDate][nameKey]) {
+            await setDoc(recordDocRef, {
+              type: "attendance",
+              nameKey: nameKey,
+              fullName: m.fullName,
+              email: m.email || "",
+              team: m.team,
+              practiceDate: selectedPracticeDate,
+              status: "absent",
+              checkedInAt: serverTimestamp()
+            });
+          }
+
           showToast(`Removed check-in for ${m.fullName}`, "info");
         }
         await loadAllData();
@@ -1849,15 +2310,14 @@
     // ──────────────────────────────────────────────
     // EXCUSE ATHLETE MODAL & LOGIC
     // ──────────────────────────────────────────────
-    window.openExcuseModal = (emailKey) => {
-      const m = membersMap[emailKey];
+    window.openExcuseModal = (nameKey) => {
+      const m = membersMap[nameKey];
       if (!m) return;
 
-      const recordId = `${selectedPracticeDate}_${emailKey}`.replace(/[^a-zA-Z0-9_-]/g, "_");
-      const existing = recordsList.find(r => r.practiceDate === selectedPracticeDate && sanitizeEmailKey(r.email) === emailKey);
+      const existing = getAthleteRecordForDate(nameKey, selectedPracticeDate);
       const isAlreadyExcused = existing && existing.status === "excused";
 
-      document.getElementById("excuseTargetEmail").value = emailKey;
+      document.getElementById("excuseTargetKey").value = nameKey;
       document.getElementById("excuseTargetDate").value = selectedPracticeDate;
       document.getElementById("excuseModalTitle").innerText = `Excuse ${m.fullName}`;
       document.getElementById("excuseReasonInput").value = isAlreadyExcused ? (existing.excuseNote || "") : "";
@@ -1867,7 +2327,23 @@
         removeBtn.classList.remove("hidden");
         removeBtn.onclick = async () => {
           try {
-            await deleteDoc(doc(db, "attendance_records", recordId));
+            const recordDocId = `att_${selectedPracticeDate}_${safeIdKey(nameKey)}`;
+            if (existing && existing.id) {
+              await deleteDoc(doc(db, "submissions", existing.id));
+            }
+            await deleteDoc(doc(db, "submissions", recordDocId));
+
+            if (historicalRecordsMap[selectedPracticeDate] && historicalRecordsMap[selectedPracticeDate][nameKey]) {
+              await setDoc(doc(db, "submissions", recordDocId), {
+                type: "attendance",
+                nameKey: nameKey,
+                fullName: m.fullName,
+                practiceDate: selectedPracticeDate,
+                status: "absent",
+                checkedInAt: serverTimestamp()
+              });
+            }
+
             closeModal("excuseSingleModal");
             showToast(`Cleared excuse for ${m.fullName}`, "info");
             await loadAllData();
@@ -1884,19 +2360,27 @@
 
     document.getElementById("excuseSingleForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const emailKey = document.getElementById("excuseTargetEmail").value;
+      const nameKey = document.getElementById("excuseTargetKey").value;
       const targetDate = document.getElementById("excuseTargetDate").value;
       const reason = document.getElementById("excuseReasonInput").value.trim();
-      const m = membersMap[emailKey];
+      const m = membersMap[nameKey];
       if (!m) return;
 
-      const recordId = `${targetDate}_${emailKey}`.replace(/[^a-zA-Z0-9_-]/g, "_");
-      const recordDocRef = doc(db, "attendance_records", recordId);
+      const recordDocId = `att_${targetDate}_${safeIdKey(nameKey)}`;
 
       try {
-        await setDoc(recordDocRef, {
+        const matching = recordsList.filter(rec => rec.practiceDate === targetDate && rec.nameKey === nameKey);
+        for (const rec of matching) {
+          if (rec.id && rec.id !== recordDocId) {
+            await deleteDoc(doc(db, "submissions", rec.id));
+          }
+        }
+
+        await setDoc(doc(db, "submissions", recordDocId), {
+          type: "attendance",
+          nameKey: nameKey,
           fullName: m.fullName,
-          email: m.email,
+          email: m.email || "",
           team: m.team,
           practiceDate: targetDate,
           practiceName: isFridayOrSunday(targetDate) ? (getDayOfWeek(targetDate) === 5 ? "Friday Practice" : "Sunday Practice") : "Practice",
@@ -1934,10 +2418,12 @@
       try {
         for (const k of compKeys) {
           const m = membersMap[k];
-          const recordId = `${selectedPracticeDate}_${k}`.replace(/[^a-zA-Z0-9_-]/g, "_");
-          await setDoc(doc(db, "attendance_records", recordId), {
+          const recordDocId = `att_${selectedPracticeDate}_${safeIdKey(k)}`;
+          await setDoc(doc(db, "submissions", recordDocId), {
+            type: "attendance",
+            nameKey: k,
             fullName: m.fullName,
-            email: m.email,
+            email: m.email || "",
             team: "Comp Team",
             practiceDate: selectedPracticeDate,
             practiceName: isFridayOrSunday(selectedPracticeDate) ? (getDayOfWeek(selectedPracticeDate) === 5 ? "Friday Practice" : "Sunday Practice") : "Practice",
@@ -1970,10 +2456,12 @@
       try {
         for (const k of keys) {
           const m = membersMap[k];
-          const recordId = `${selectedPracticeDate}_${k}`.replace(/[^a-zA-Z0-9_-]/g, "_");
-          await setDoc(doc(db, "attendance_records", recordId), {
+          const recordDocId = `att_${selectedPracticeDate}_${safeIdKey(k)}`;
+          await setDoc(doc(db, "submissions", recordDocId), {
+            type: "attendance",
+            nameKey: k,
             fullName: m.fullName,
-            email: m.email,
+            email: m.email || "",
             team: m.team,
             practiceDate: selectedPracticeDate,
             practiceName: "Trip / Practice",
@@ -1991,42 +2479,92 @@
     });
 
     // ──────────────────────────────────────────────
-    // ATHLETE INFO MODAL (SHOWS EMAIL)
+    // ATHLETE INFO MODAL (SHOWS EMAIL & SPECIAL EVENTS)
     // ──────────────────────────────────────────────
-    window.openAthleteInfo = (emailKey) => {
-      const m = membersMap[emailKey];
+    window.openAthleteInfo = (nameKey) => {
+      const m = membersMap[nameKey];
       if (!m) return;
 
       document.getElementById("infoModalAthleteName").innerText = m.fullName;
-      document.getElementById("infoModalEmailText").innerText = m.email;
+      document.getElementById("infoModalEmailText").innerText = m.email || "No email provided";
 
       const teamBadge = document.getElementById("infoModalTeamBadge");
       teamBadge.innerText = m.team;
       teamBadge.className = `team-badge ${m.team === 'Comp Team' ? 'comp' : 'rec'}`;
 
-      // Calculate overall stats for this athlete
       let attended = 0;
       let excused = 0;
-      let missed = 0;
+      let rawMissed = 0;
+      let compAllowancesEarned = 0;
+      let attendedSpecialEvents = [];
 
-      // Scan distinct practice dates recorded
-      const distinctDates = Array.from(new Set(recordsList.map(r => r.practiceDate).filter(Boolean)));
-      distinctDates.forEach(d => {
-        const r = recordsList.find(rec => rec.practiceDate === d && sanitizeEmailKey(rec.email) === emailKey);
-        if (r && r.status === "present") attended++;
-        else if (r && r.status === "excused") excused++;
-        else missed++;
+      const allDates = getAllDates();
+      allDates.forEach(d => {
+        const r = getAthleteRecordForDate(nameKey, d);
+        const isPresent = Boolean(r && r.status === "present");
+        const isExcused = Boolean(r && r.status === "excused");
+        const ev = eventsMap[d];
+
+        if (isPresent) {
+          attended++;
+          if (ev) {
+            attendedSpecialEvents.push(ev);
+            if (ev.allowsMinusAbsence) compAllowancesEarned++;
+          }
+        } else if (isExcused) {
+          excused++;
+        } else {
+          // Absent
+          if (ev) {
+            if (ev.excuseEveryone) {
+              excused++;
+            } else if (!ev.noMissedPenalty) {
+              if (m.team === "Comp Team" || (r && r.status === "absent")) rawMissed++;
+            }
+          } else {
+            if (m.team === "Comp Team" || (r && r.status === "absent")) rawMissed++;
+          }
+        }
       });
 
+      let finalMissed = rawMissed;
+      let effectiveExcused = excused;
+      if (compAllowancesEarned > 0 && finalMissed > 0) {
+        const deduction = Math.min(finalMissed, compAllowancesEarned);
+        finalMissed -= deduction;
+        effectiveExcused += deduction;
+      }
+
       const pointsReward = m.pointsRewardOverride !== null ? m.pointsRewardOverride : attended;
-      const missedCount = m.missedOverride !== null ? m.missedOverride : missed;
+      const missedCount = m.missedOverride !== null ? m.missedOverride : finalMissed;
 
       document.getElementById("infoModalAttendancePoints").innerText = `${pointsReward} pts`;
       document.getElementById("infoModalMissedCount").innerText = `${missedCount} unexcused missed`;
-      document.getElementById("infoModalExcusedCount").innerText = `${excused} excused`;
+      document.getElementById("infoModalExcusedCount").innerText = `${effectiveExcused} excused`;
 
-      // Selected practice check-in notes
-      const selectedRec = recordsList.find(r => r.practiceDate === selectedPracticeDate && sanitizeEmailKey(r.email) === emailKey);
+      // Method Trip Status
+      const methodEl = document.getElementById("infoModalMethodStatus");
+      if (methodEl) {
+        const attendedMethod = attendedSpecialEvents.some(ev => ev.date === "2026-10-11");
+        if (attendedMethod) {
+          methodEl.innerHTML = `<span style="color: #90caf9; font-weight: 600;">✓ Attended (+1 Point earned)</span>`;
+        } else {
+          methodEl.innerHTML = `<span style="color: var(--text-muted);">Did not attend (Optional / No penalty)</span>`;
+        }
+      }
+
+      // Fight Knight Status
+      const fkEl = document.getElementById("infoModalFKStatus");
+      if (fkEl) {
+        const attendedFK = attendedSpecialEvents.some(ev => ev.date === "2026-11-22");
+        if (attendedFK) {
+          fkEl.innerHTML = `<span style="color: #ffd54f; font-weight: 700;">🥊 Attended (+1 Pt earned, -1 Absence allowance applied)</span>`;
+        } else {
+          fkEl.innerHTML = `<span style="color: var(--text-muted);">Did not attend (Optional / No penalty)</span>`;
+        }
+      }
+
+      const selectedRec = getAthleteRecordForDate(nameKey, selectedPracticeDate);
       const notesBox = document.getElementById("infoModalNotesBox");
       if (selectedRec && selectedRec.notes) {
         notesBox.innerText = selectedRec.notes;
@@ -2036,15 +2574,301 @@
         notesBox.innerText = "No notes logged for this practice date.";
       }
 
-      document.getElementById("btnCopyEmail").onclick = () => copyToClipboard(m.email, "Email", document.getElementById("btnCopyEmail"));
+      document.getElementById("btnCopyEmail").onclick = () => {
+        if (!m.email) {
+          showToast("No email on file for this athlete", "info");
+          return;
+        }
+        copyToClipboard(m.email, "Email", document.getElementById("btnCopyEmail"));
+      };
+
+      const btnMissedBreakdown = document.getElementById("btnInfoModalMissedBreakdown");
+      if (btnMissedBreakdown) {
+        btnMissedBreakdown.onclick = () => {
+          closeModal("athleteInfoModal");
+          openMissedDetails(nameKey);
+        };
+      }
+      const btnExcusedBreakdown = document.getElementById("btnInfoModalExcusedBreakdown");
+      if (btnExcusedBreakdown) {
+        btnExcusedBreakdown.onclick = () => {
+          closeModal("athleteInfoModal");
+          openExcusedDetails(nameKey);
+        };
+      }
 
       openModal("athleteInfoModal");
     };
 
     // ──────────────────────────────────────────────
+    // EXCUSED PRACTICES BREAKDOWN MODAL
+    // ──────────────────────────────────────────────
+    window.openExcusedDetails = (nameKey) => {
+      const m = membersMap[nameKey];
+      if (!m) return;
+
+      const startDate = document.getElementById("rangeStartDate") ? document.getElementById("rangeStartDate").value : "";
+      const endDate = document.getElementById("rangeEndDate") ? document.getElementById("rangeEndDate").value : "";
+      const friSunOnly = document.getElementById("checkFriSunOnly") ? document.getElementById("checkFriSunOnly").checked : true;
+
+      const allDates = getAllDates();
+      const eligibleDates = allDates.filter(d => {
+        if (startDate && d < startDate) return false;
+        if (endDate && d > endDate) return false;
+        if (friSunOnly && !isFridayOrSunday(d) && !eventsMap[d]) return false;
+        return true;
+      });
+
+      const excusedItems = [];
+      let compAllowancesApplied = 0;
+
+      eligibleDates.forEach(dateStr => {
+        const rec = getAthleteRecordForDate(nameKey, dateStr);
+        const isPresent = Boolean(rec && rec.status === "present");
+        const isExcused = Boolean(rec && rec.status === "excused");
+        const ev = eventsMap[dateStr];
+        const dayOfWeek = getDayOfWeek(dateStr);
+        const dayFormatted = formatDateForDisplay(dateStr);
+
+        if (isPresent) {
+          if (ev && ev.allowsMinusAbsence) {
+            compAllowancesApplied++;
+          }
+        } else if (isExcused) {
+          excusedItems.push({
+            dateStr,
+            dateFormatted: dayFormatted,
+            sessionName: ev ? ev.name : (dayOfWeek === 5 ? "Friday Practice" : (dayOfWeek === 0 ? "Sunday Practice" : "Team Practice")),
+            reason: (rec && rec.excuseNote) ? rec.excuseNote : "Marked Excused by Admin",
+            badgeText: "Excused",
+            badgeClass: "badge-excused"
+          });
+        } else {
+          // Absent - check if whole team excused for trip
+          if (ev && ev.excuseEveryone) {
+            excusedItems.push({
+              dateStr,
+              dateFormatted: dayFormatted,
+              sessionName: ev.name,
+              reason: `Whole-team trip weekend excuse (${ev.name})`,
+              badgeText: "Trip Excused",
+              badgeClass: "badge-excused"
+            });
+          }
+        }
+      });
+
+      // If athlete earned comp credit allowances, add them to excused credits list
+      if (compAllowancesApplied > 0) {
+        eligibleDates.forEach(dateStr => {
+          const rec = getAthleteRecordForDate(nameKey, dateStr);
+          if (rec && rec.status === "present" && eventsMap[dateStr] && eventsMap[dateStr].allowsMinusAbsence) {
+            const ev = eventsMap[dateStr];
+            excusedItems.push({
+              dateStr,
+              dateFormatted: formatDateForDisplay(dateStr),
+              sessionName: ev.name,
+              reason: `Competition Attendance Credit: Attending awarded an excused absence allowance (-1 unexcused missed practice).`,
+              badgeText: "Comp Credit",
+              badgeClass: "badge-present"
+            });
+          }
+        });
+      }
+
+      excusedItems.sort((a, b) => a.dateStr.localeCompare(b.dateStr));
+
+      document.getElementById("detailsModalTitle").innerText = `Excused Practices Breakdown`;
+      const dateSubtitle = startDate && endDate ? `${formatDateForDisplay(startDate)} to ${formatDateForDisplay(endDate)}` : "All Time";
+      document.getElementById("detailsModalSubtitle").innerText = `${m.fullName} (${m.team}) · ${dateSubtitle}`;
+
+      const banner = document.getElementById("detailsModalSummaryBanner");
+      banner.innerHTML = `
+        <div style="background: rgba(178, 106, 0, 0.15); border: 1px solid rgba(178, 106, 0, 0.35); border-radius: var(--radius-sm); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <span style="color: var(--excused-amber-text); font-weight: 700; font-size: 0.95rem;">
+            Total Excused Absences: ${excusedItems.length}
+          </span>
+          <span style="font-size: 0.78rem; color: var(--text-muted);">
+            Excused absences do not count against missed practices
+          </span>
+        </div>
+      `;
+
+      const listEl = document.getElementById("detailsModalList");
+      if (excusedItems.length === 0) {
+        listEl.innerHTML = `
+          <div class="empty-state" style="padding: 30px; text-align: center;">
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">📋</div>
+            <div style="font-weight: 600; color: var(--text-light); font-size: 1rem;">No Excused Absences</div>
+            <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">No excused absences or comp credits recorded in the selected date range.</div>
+          </div>
+        `;
+      } else {
+        listEl.innerHTML = excusedItems.map(item => `
+          <div style="background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+              <div>
+                <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-light);">${item.dateFormatted}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">${escapeHtml(item.sessionName)}</div>
+              </div>
+              <span class="badge ${item.badgeClass}">${item.badgeText}</span>
+            </div>
+            <div style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 8px; border-top: 1px dashed var(--border-color); padding-top: 6px;">
+              <strong style="color: var(--text-muted);">Reason:</strong> ${escapeHtml(item.reason)}
+            </div>
+          </div>
+        `).join("");
+      }
+
+      openModal("attendanceDetailsModal");
+    };
+
+    // ──────────────────────────────────────────────
+    // MISSED PRACTICES BREAKDOWN MODAL
+    // ──────────────────────────────────────────────
+    window.openMissedDetails = (nameKey) => {
+      const m = membersMap[nameKey];
+      if (!m) return;
+
+      const startDate = document.getElementById("rangeStartDate") ? document.getElementById("rangeStartDate").value : "";
+      const endDate = document.getElementById("rangeEndDate") ? document.getElementById("rangeEndDate").value : "";
+      const friSunOnly = document.getElementById("checkFriSunOnly") ? document.getElementById("checkFriSunOnly").checked : true;
+
+      const allDates = getAllDates();
+      const eligibleDates = allDates.filter(d => {
+        if (startDate && d < startDate) return false;
+        if (endDate && d > endDate) return false;
+        if (friSunOnly && !isFridayOrSunday(d) && !eventsMap[d]) return false;
+        return true;
+      });
+
+      const missedItems = [];
+      let compAllowancesEarned = 0;
+      let forgivenCount = 0;
+
+      eligibleDates.forEach(dateStr => {
+        const rec = getAthleteRecordForDate(nameKey, dateStr);
+        const isPresent = Boolean(rec && rec.status === "present");
+        const isExcused = Boolean(rec && rec.status === "excused");
+        const ev = eventsMap[dateStr];
+        const dayOfWeek = getDayOfWeek(dateStr);
+        const dayFormatted = formatDateForDisplay(dateStr);
+
+        if (isPresent) {
+          if (ev && ev.allowsMinusAbsence) compAllowancesEarned++;
+        } else if (isExcused) {
+          // Excused, not missed
+        } else {
+          // Absent
+          if (ev) {
+            if (ev.excuseEveryone) {
+              // Excused for whole-team trip
+            } else if (!ev.noMissedPenalty) {
+              if (m.team === "Comp Team" || (rec && rec.status === "absent")) {
+                missedItems.push({
+                  dateStr,
+                  dateFormatted: dayFormatted,
+                  sessionName: ev.name,
+                  reason: (rec && rec.notes) ? rec.notes : "Unexcused absence - did not attend event",
+                  badgeText: "Missed",
+                  badgeClass: "badge-absent"
+                });
+              }
+            }
+          } else {
+            if (m.team === "Comp Team" || (rec && rec.status === "absent")) {
+              missedItems.push({
+                dateStr,
+                dateFormatted: dayFormatted,
+                sessionName: dayOfWeek === 5 ? "Friday Practice" : (dayOfWeek === 0 ? "Sunday Practice" : "Team Practice"),
+                reason: (rec && rec.notes) ? rec.notes : "Unexcused absence - did not check in for practice",
+                badgeText: "Missed Practice",
+                badgeClass: "badge-absent"
+              });
+            }
+          }
+        }
+      });
+
+      // Calculate forgiven count by competition allowance
+      if (compAllowancesEarned > 0 && missedItems.length > 0) {
+        forgivenCount = Math.min(missedItems.length, compAllowancesEarned);
+      }
+
+      let netMissed = Math.max(0, missedItems.length - forgivenCount);
+      if (m.missedOverride !== null) {
+        netMissed = m.missedOverride;
+      }
+
+      document.getElementById("detailsModalTitle").innerText = `Missed Practices Breakdown`;
+      const dateSubtitle = startDate && endDate ? `${formatDateForDisplay(startDate)} to ${formatDateForDisplay(endDate)}` : "All Time";
+      document.getElementById("detailsModalSubtitle").innerText = `${m.fullName} (${m.team}) · ${dateSubtitle}`;
+
+      const banner = document.getElementById("detailsModalSummaryBanner");
+      let bannerHtml = `
+        <div style="background: ${netMissed >= 2 ? 'rgba(198, 40, 40, 0.15)' : 'rgba(255, 202, 40, 0.12)'}; border: 1px solid ${netMissed >= 2 ? 'rgba(198, 40, 40, 0.35)' : 'rgba(255, 202, 40, 0.35)'}; border-radius: var(--radius-sm); padding: 10px 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+            <span style="font-weight: 700; font-size: 0.95rem; color: ${netMissed >= 2 ? 'var(--danger-red-text)' : 'var(--gold-star)'};">
+              Total Missed Practices: ${netMissed}
+            </span>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">
+              ${m.team === 'Comp Team' ? 'Comp Team unexcused absences count toward reimbursement eligibility' : 'Rec Team attendance'}
+            </span>
+          </div>
+          ${forgivenCount > 0 ? `
+            <div style="margin-top: 6px; font-size: 0.8rem; color: #ffd54f;">
+              🥊 ${forgivenCount} missed practice forgiven by competition allowance (Fight Knight Volume 2 credit).
+            </div>
+          ` : ''}
+          ${m.missedOverride !== null ? `
+            <div style="margin-top: 4px; font-size: 0.78rem; color: #90caf9;">
+              ⚙️ Manual Admin Override active: set to ${m.missedOverride} (Raw calculated: ${missedItems.length - forgivenCount})
+            </div>
+          ` : ''}
+        </div>
+      `;
+      banner.innerHTML = bannerHtml;
+
+      const listEl = document.getElementById("detailsModalList");
+      if (missedItems.length === 0) {
+        listEl.innerHTML = `
+          <div class="empty-state" style="padding: 30px; text-align: center;">
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">🎉</div>
+            <div style="font-weight: 600; color: var(--text-light); font-size: 1rem;">No Missed Practices!</div>
+            <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">This athlete has 0 unexcused absences in the selected date range.</div>
+          </div>
+        `;
+      } else {
+        // If some are forgiven, mark them as forgiven
+        listEl.innerHTML = missedItems.map((item, idx) => {
+          const isForgiven = idx >= (missedItems.length - forgivenCount);
+          return `
+            <div style="background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px 14px; ${isForgiven ? 'opacity: 0.75;' : ''}">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                <div>
+                  <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-light);">${item.dateFormatted}</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">${escapeHtml(item.sessionName)}</div>
+                </div>
+                ${isForgiven 
+                  ? `<span class="badge" style="background: rgba(255, 202, 40, 0.15); color: #ffd54f; border: 1px solid rgba(255, 202, 40, 0.4);">Forgiven by Comp Credit</span>`
+                  : `<span class="badge ${item.badgeClass}">${item.badgeText}</span>`
+                }
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 8px; border-top: 1px dashed var(--border-color); padding-top: 6px;">
+                <strong style="color: var(--text-muted);">Status / Note:</strong> ${escapeHtml(item.reason)}
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      openModal("attendanceDetailsModal");
+    };
+
+    // ──────────────────────────────────────────────
     // VIEW 2: COMP & REC TEAM TRACKER
     // ──────────────────────────────────────────────
-    let trackerSelectedTeam = "Comp Team"; // default to Comp Team as requested!
+    let trackerSelectedTeam = "Comp Team";
 
     document.querySelectorAll(".pill-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -2064,15 +2888,12 @@
       const friSunOnly = document.getElementById("checkFriSunOnly").checked;
       const search = document.getElementById("trackerSearchInput").value.trim().toLowerCase();
 
-      // Find all distinct practice dates within [startDate, endDate]
-      const allDates = Array.from(new Set(recordsList.map(r => r.practiceDate).filter(Boolean)));
-      if (selectedPracticeDate && !allDates.includes(selectedPracticeDate)) allDates.push(selectedPracticeDate);
+      const allDates = getAllDates();
 
-      // Filter dates
       const eligibleDates = allDates.filter(d => {
         if (startDate && d < startDate) return false;
         if (endDate && d > endDate) return false;
-        if (friSunOnly && !isFridayOrSunday(d)) return false;
+        if (friSunOnly && !isFridayOrSunday(d) && !eventsMap[d]) return false;
         return true;
       });
 
@@ -2083,7 +2904,6 @@
       document.getElementById("trackerPracticesListSummary").innerText =
         `${eligibleDates.length} practice session${eligibleDates.length === 1 ? '' : 's'} scheduled in window`;
 
-      // Filter members for tracker
       const memberKeys = Object.keys(membersMap).filter(key => {
         const m = membersMap[key];
         if (trackerSelectedTeam !== "ALL" && m.team !== trackerSelectedTeam) return false;
@@ -2091,32 +2911,53 @@
         return true;
       });
 
-      // Compute statistics for each member in this date window
       const memberStats = memberKeys.map(key => {
         const m = membersMap[key];
         let attended = 0;
         let excused = 0;
-        let missed = 0;
+        let rawMissed = 0;
+        let compAllowancesEarned = 0;
+        let attendedEvents = [];
 
         eligibleDates.forEach(dateStr => {
-          const rec = recordsList.find(r => r.practiceDate === dateStr && sanitizeEmailKey(r.email) === key);
-          if (rec && rec.status === "present") {
+          const rec = getAthleteRecordForDate(key, dateStr);
+          const isPresent = Boolean(rec && rec.status === "present");
+          const isExcused = Boolean(rec && rec.status === "excused");
+          const ev = eventsMap[dateStr];
+
+          if (isPresent) {
             attended++;
-          } else if (rec && rec.status === "excused") {
+            if (ev) {
+              attendedEvents.push(ev);
+              if (ev.allowsMinusAbsence) compAllowancesEarned++;
+            }
+          } else if (isExcused) {
             excused++;
           } else {
-            // Unexcused absence
-            missed++;
+            // Absent
+            if (ev) {
+              if (ev.excuseEveryone) {
+                excused++; // Automatically excused for whole-team trip
+              } else if (!ev.noMissedPenalty) {
+                if (m.team === "Comp Team" || (rec && rec.status === "absent")) rawMissed++;
+              }
+            } else {
+              if (m.team === "Comp Team" || (rec && rec.status === "absent")) rawMissed++;
+            }
           }
         });
 
-        // 🎯 Attendance Points: +1 point per practice attended (or manual override)
+        // Apply comp allowances (-1 absence point for each comp allowance earned)
+        let missedPractices = rawMissed;
+        let effectiveExcused = excused;
+        if (compAllowancesEarned > 0 && missedPractices > 0) {
+          const deduction = Math.min(missedPractices, compAllowancesEarned);
+          missedPractices -= deduction;
+          effectiveExcused += deduction;
+        }
+
         const attendancePoints = m.pointsRewardOverride !== null ? m.pointsRewardOverride : attended;
-
-        // ⚠️ Missed Practices: unexcused absences (or manual override)
-        const missedPractices = m.missedOverride !== null ? m.missedOverride : missed;
-
-        const rate = eligibleDates.length > 0 ? Math.round((attended / eligibleDates.length) * 100) : 100;
+        const finalMissed = m.missedOverride !== null ? m.missedOverride : missedPractices;
 
         return {
           key,
@@ -2124,19 +2965,19 @@
           email: m.email,
           team: m.team,
           attendancePoints,
-          missedPractices,
-          excused,
+          missedPractices: finalMissed,
+          excused: effectiveExcused,
           attended,
-          rate,
+          attendedEvents,
+          compAllowancesEarned,
           hasOverride: m.pointsRewardOverride !== null || m.missedOverride !== null
         };
       });
 
-      // Sort: by default, show most attended points first (or athletes with missed practices)
       memberStats.sort((a, b) => b.attendancePoints - a.attendancePoints || a.missedPractices - b.missedPractices);
 
       if (memberStats.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No ${trackerSelectedTeam} members found.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No ${trackerSelectedTeam} members found.</td></tr>`;
         return;
       }
 
@@ -2144,32 +2985,32 @@
       memberStats.forEach(stat => {
         const teamClass = stat.team === "Comp Team" ? "comp" : "rec";
 
-        // Missed practices badge styling (highlighted if 2+ missed for comp reimbursement review)
-        let missedClass = "missed-badge ok";
-        if (stat.missedPractices >= 2) missedClass = "missed-badge danger";
-        else if (stat.missedPractices === 1) missedClass = "missed-badge";
+        let missedBtnClass = "missed-ok";
+        if (stat.missedPractices >= 2) missedBtnClass = "missed-danger";
+        else if (stat.missedPractices === 1) missedBtnClass = "missed-warn";
 
         html += `
           <tr>
+            <td><span class="team-badge ${teamClass}">${escapeHtml(stat.team)}</span></td>
             <td>
               <div class="athlete-name-group">
                 <span class="athlete-name">${escapeHtml(stat.fullName)}</span>
                 <button type="button" class="btn-info-icon" onclick="openAthleteInfo('${escapeHtml(stat.key)}')" title="View info & email">ⓘ Info</button>
               </div>
             </td>
-            <td><span class="team-badge ${teamClass}">${escapeHtml(stat.team)}</span></td>
             <td style="text-align: center;">
-              <span class="points-badge">🎯 ${stat.attendancePoints} pts</span>
+              <button type="button" class="stat-link-badge ${missedBtnClass}" onclick="openMissedDetails('${escapeHtml(stat.key)}')" title="Click to view dates and reasons for missed practices">
+                ${stat.missedPractices}
+              </button>
+            </td>
+            <td style="text-align: center;">
+              <span class="points-badge">${stat.attendancePoints}</span>
               ${stat.hasOverride ? `<span class="override-pill" style="margin-left:4px;">Override</span>` : ""}
             </td>
             <td style="text-align: center;">
-              <span class="${missedClass}">${stat.missedPractices} missed</span>
-            </td>
-            <td style="text-align: center; color: var(--excused-amber-text); font-weight: 600;">
-              ${stat.excused} excused
-            </td>
-            <td style="text-align: center; font-weight: 600;">
-              ${stat.rate}% <span style="font-size: 0.75rem; color: var(--text-muted);">(${stat.attended}/${eligibleDates.length})</span>
+              <button type="button" class="stat-link-badge excused-badge" onclick="openExcusedDetails('${escapeHtml(stat.key)}')" title="Click to view excused dates and reasons">
+                ${stat.excused}
+              </button>
             </td>
             <td class="col-action">
               <button type="button" class="btn btn-outline btn-sm" onclick="openAdjustModal('${escapeHtml(stat.key)}')">
@@ -2184,13 +3025,185 @@
     }
 
     // ──────────────────────────────────────────────
+    // VIEW 3: EVENTS & TRIPS LOGIC & RENDER
+    // ──────────────────────────────────────────────
+    function renderEventsView() {
+      const container = document.getElementById("eventsGrid");
+      const eventDates = Object.keys(eventsMap).sort();
+      if (eventDates.length === 0) {
+        container.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;">No special events or trips configured yet. Click "+ Add Event / Trip" to create one.</div>`;
+        return;
+      }
+
+      let html = "";
+      eventDates.forEach(dateStr => {
+        const ev = eventsMap[dateStr];
+        const categoryClass = ev.category === "Competition" ? "comp" : "rec";
+
+        let pills = "";
+        if (ev.countsForAttendance) {
+          pills += `<span class="event-rule-pill point">🎯 +1 Attendance Point</span>`;
+        }
+        if (ev.allowsMinusAbsence) {
+          pills += `<span class="event-rule-pill allowance">⭐ -1 Absence Point (Excused Allowance)</span>`;
+        }
+        if (ev.noMissedPenalty) {
+          pills += `<span class="event-rule-pill no-penalty">🛡️ No Missed Penalty</span>`;
+        }
+        if (ev.excuseEveryone) {
+          pills += `<span class="event-rule-pill excuse-all">📝 Excuses All Members</span>`;
+        }
+
+        let attendeesCount = 0;
+        Object.keys(membersMap).forEach(k => {
+          const rec = getAthleteRecordForDate(k, dateStr);
+          if (rec && rec.status === "present") attendeesCount++;
+        });
+
+        html += `
+          <div class="event-card">
+            <div class="event-card-header">
+              <div>
+                <div class="event-card-title">${escapeHtml(ev.name)}</div>
+                <div class="event-card-date">📅 ${formatDateForDisplay(ev.date)}</div>
+              </div>
+              <span class="team-badge ${categoryClass}">${escapeHtml(ev.category || 'Event')}</span>
+            </div>
+
+            ${ev.description ? `<p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.4;">${escapeHtml(ev.description)}</p>` : ''}
+
+            <div class="event-card-pills">
+              ${pills}
+            </div>
+
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
+              👥 <strong>${attendeesCount}</strong> attendee${attendeesCount === 1 ? '' : 's'} recorded
+            </div>
+
+            <div class="event-card-footer">
+              <button type="button" class="btn btn-outline btn-sm" onclick="jumpToEventDay('${escapeHtml(ev.date)}')">
+                📅 View Daily Check-In
+              </button>
+              <div style="display: flex; gap: 6px;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="openEditEventModal('${escapeHtml(ev.date)}')">
+                  ✏️ Edit
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    window.jumpToEventDay = (dateStr) => {
+      selectedPracticeDate = dateStr;
+      document.getElementById("practiceDatePicker").value = dateStr;
+      setActiveTab("daily");
+    };
+
+    document.getElementById("btnOpenAddEventModal").addEventListener("click", () => {
+      document.getElementById("eventForm").reset();
+      document.getElementById("eventEditId").value = "";
+      document.getElementById("eventModalTitle").innerText = "Add Special Event / Trip";
+      document.getElementById("btnDeleteEvent").classList.add("hidden");
+      document.getElementById("eventDateInput").value = getTodayString();
+      document.getElementById("eventCountsAttendanceCheck").checked = true;
+      document.getElementById("eventNoMissedPenaltyCheck").checked = true;
+      openModal("eventModal");
+    });
+
+    window.openEditEventModal = (dateStr) => {
+      const ev = eventsMap[dateStr];
+      if (!ev) return;
+      document.getElementById("eventEditId").value = dateStr;
+      document.getElementById("eventModalTitle").innerText = `Edit: ${ev.name}`;
+      document.getElementById("eventNameInput").value = ev.name || "";
+      document.getElementById("eventDateInput").value = ev.date || dateStr;
+      document.getElementById("eventCategoryInput").value = ev.category || "Competition";
+      document.getElementById("eventCountsAttendanceCheck").checked = Boolean(ev.countsForAttendance);
+      document.getElementById("eventMinusAbsenceCheck").checked = Boolean(ev.allowsMinusAbsence);
+      document.getElementById("eventNoMissedPenaltyCheck").checked = Boolean(ev.noMissedPenalty);
+      document.getElementById("eventExcuseEveryoneCheck").checked = Boolean(ev.excuseEveryone);
+      document.getElementById("eventDescriptionInput").value = ev.description || "";
+      document.getElementById("btnDeleteEvent").classList.remove("hidden");
+      openModal("eventModal");
+    };
+
+    document.getElementById("eventForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const origDate = document.getElementById("eventEditId").value;
+      const name = document.getElementById("eventNameInput").value.trim();
+      const date = document.getElementById("eventDateInput").value;
+      const category = document.getElementById("eventCategoryInput").value;
+      const countsAtt = document.getElementById("eventCountsAttendanceCheck").checked;
+      const minusAbs = document.getElementById("eventMinusAbsenceCheck").checked;
+      const noPenalty = document.getElementById("eventNoMissedPenaltyCheck").checked;
+      const excuseAll = document.getElementById("eventExcuseEveryoneCheck").checked;
+      const desc = document.getElementById("eventDescriptionInput").value.trim();
+
+      if (!name || !date) return;
+
+      const eventObj = {
+        type: "attendance_event",
+        id: `event_${safeIdKey(date)}`,
+        name,
+        date,
+        category,
+        countsForAttendance: countsAtt,
+        allowsMinusAbsence: minusAbs,
+        noMissedPenalty: noPenalty,
+        excuseEveryone: excuseAll,
+        description: desc,
+        lastUpdated: serverTimestamp()
+      };
+
+      try {
+        if (origDate && origDate !== date) {
+          delete eventsMap[origDate];
+          await deleteDoc(doc(db, "submissions", `event_${safeIdKey(origDate)}`));
+        }
+
+        eventsMap[date] = eventObj;
+        await setDoc(doc(db, "submissions", `event_${safeIdKey(date)}`), eventObj, { merge: true });
+
+        closeModal("eventModal");
+        showToast(`Saved event: ${name}`, "success");
+        renderEventsView();
+        if (!tabDailyView.classList.contains("hidden")) renderDailyView();
+        if (!tabTrackerView.classList.contains("hidden")) renderTrackerView();
+      } catch (err) {
+        console.error("Save event error:", err);
+        showToast("Error saving event", "error");
+      }
+    });
+
+    document.getElementById("btnDeleteEvent").addEventListener("click", async () => {
+      const date = document.getElementById("eventEditId").value;
+      if (!date || !confirm("Are you sure you want to delete this event configuration?")) return;
+
+      try {
+        delete eventsMap[date];
+        await deleteDoc(doc(db, "submissions", `event_${safeIdKey(date)}`));
+        closeModal("eventModal");
+        showToast("Event removed", "info");
+        renderEventsView();
+        if (!tabDailyView.classList.contains("hidden")) renderDailyView();
+        if (!tabTrackerView.classList.contains("hidden")) renderTrackerView();
+      } catch (err) {
+        console.error("Delete event error:", err);
+        showToast("Error deleting event", "error");
+      }
+    });
+
+    // ──────────────────────────────────────────────
     // ADJUST MODAL (OVERRIDE POINTS / MISSED)
     // ──────────────────────────────────────────────
-    window.openAdjustModal = (emailKey) => {
-      const m = membersMap[emailKey];
+    window.openAdjustModal = (nameKey) => {
+      const m = membersMap[nameKey];
       if (!m) return;
 
-      document.getElementById("adjustTargetEmail").value = emailKey;
+      document.getElementById("adjustTargetKey").value = nameKey;
       document.getElementById("adjustModalTitle").innerText = `Adjust Records for ${m.fullName}`;
       document.getElementById("adjustRewardPoints").value = m.pointsRewardOverride !== null ? m.pointsRewardOverride : "";
       document.getElementById("adjustMissedCount").value = m.missedOverride !== null ? m.missedOverride : "";
@@ -2200,8 +3213,8 @@
 
     document.getElementById("adjustPointsForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const emailKey = document.getElementById("adjustTargetEmail").value;
-      const m = membersMap[emailKey];
+      const nameKey = document.getElementById("adjustTargetKey").value;
+      const m = membersMap[nameKey];
       if (!m) return;
 
       const rawReward = document.getElementById("adjustRewardPoints").value.trim();
@@ -2211,10 +3224,13 @@
       const parsedMissed = rawMissed === "" ? null : Number(rawMissed);
 
       try {
-        const ptsDocRef = doc(db, "attendance_points", emailKey);
-        await setDoc(ptsDocRef, {
+        const overrideDocId = `override_${safeIdKey(nameKey)}`;
+        const docRef = doc(db, "submissions", overrideDocId);
+        await setDoc(docRef, {
+          type: "attendance_override",
+          nameKey: nameKey,
           fullName: m.fullName,
-          email: m.email,
+          email: m.email || "",
           team: m.team,
           pointsRewardOverride: parsedReward,
           missedOverride: parsedMissed,
@@ -2228,32 +3244,6 @@
         console.error("Adjust error:", err);
         showToast("Failed to save adjustments", "error");
       }
-    });
-
-    // ──────────────────────────────────────────────
-    // QUICK PRESETS FOR TRACKER
-    // ──────────────────────────────────────────────
-    document.getElementById("presetSemester").addEventListener("click", () => {
-      const currentYear = new Date().getFullYear();
-      document.getElementById("rangeStartDate").value = `${currentYear}-09-01`;
-      document.getElementById("rangeEndDate").value = getTodayString();
-      renderTrackerView();
-    });
-
-    document.getElementById("preset30Days").addEventListener("click", () => {
-      const d = new Date();
-      d.setDate(d.getDate() - 30);
-      document.getElementById("rangeStartDate").value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-      document.getElementById("rangeEndDate").value = getTodayString();
-      renderTrackerView();
-    });
-
-    document.getElementById("preset60Days").addEventListener("click", () => {
-      const d = new Date();
-      d.setDate(d.getDate() - 60);
-      document.getElementById("rangeStartDate").value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-      document.getElementById("rangeEndDate").value = getTodayString();
-      renderTrackerView();
     });
 
     document.getElementById("rangeStartDate").addEventListener("change", renderTrackerView);
@@ -2277,11 +3267,11 @@
       const endDate = document.getElementById("rangeEndDate").value;
       const friSunOnly = document.getElementById("checkFriSunOnly").checked;
 
-      const allDates = Array.from(new Set(recordsList.map(r => r.practiceDate).filter(Boolean)));
+      const allDates = getAllDates();
       const eligibleDates = allDates.filter(d => {
         if (startDate && d < startDate) return false;
         if (endDate && d > endDate) return false;
-        if (friSunOnly && !isFridayOrSunday(d)) return false;
+        if (friSunOnly && !isFridayOrSunday(d) && !eventsMap[d]) return false;
         return true;
       });
 
@@ -2290,23 +3280,53 @@
         return true;
       });
 
-      let csv = "Athlete Name,Email,Team,Attendance Points (Rewards),Missed Practices (Reimbursement),Excused Absences,Attendance Rate,Total Eligible Practices\n";
+      let csv = "Team,Athlete Name,Email,Missed Practices,Attendance Points,Excused Absences,Method Trip (10/11),Fight Knight Vol 2 (11/22),Total Eligible Practices\n";
 
       memberKeys.forEach(k => {
         const m = membersMap[k];
-        let attended = 0, excused = 0, missed = 0;
+        let attended = 0, excused = 0, rawMissed = 0;
+        let compAllowancesEarned = 0;
+        let attendedMethod = false, attendedFK = false;
+
         eligibleDates.forEach(dateStr => {
-          const rec = recordsList.find(r => r.practiceDate === dateStr && sanitizeEmailKey(r.email) === k);
-          if (rec && rec.status === "present") attended++;
-          else if (rec && rec.status === "excused") excused++;
-          else missed++;
+          const rec = getAthleteRecordForDate(k, dateStr);
+          const isPresent = Boolean(rec && rec.status === "present");
+          const isExcused = Boolean(rec && rec.status === "excused");
+          const ev = eventsMap[dateStr];
+
+          if (isPresent) {
+            attended++;
+            if (dateStr === "2026-10-11") attendedMethod = true;
+            if (dateStr === "2026-11-22") {
+              attendedFK = true;
+              compAllowancesEarned++;
+            }
+          } else if (isExcused) {
+            excused++;
+          } else {
+            if (ev) {
+              if (ev.excuseEveryone) excused++;
+              else if (!ev.noMissedPenalty) {
+                if (m.team === "Comp Team" || (rec && rec.status === "absent")) rawMissed++;
+              }
+            } else {
+              if (m.team === "Comp Team" || (rec && rec.status === "absent")) rawMissed++;
+            }
+          }
         });
 
-        const pts = m.pointsRewardOverride !== null ? m.pointsRewardOverride : attended;
-        const unexcused = m.missedOverride !== null ? m.missedOverride : missed;
-        const rate = eligibleDates.length > 0 ? Math.round((attended / eligibleDates.length) * 100) : 100;
+        let missedPractices = rawMissed;
+        let effectiveExcused = excused;
+        if (compAllowancesEarned > 0 && missedPractices > 0) {
+          const deduction = Math.min(missedPractices, compAllowancesEarned);
+          missedPractices -= deduction;
+          effectiveExcused += deduction;
+        }
 
-        csv += `"${m.fullName.replace(/"/g, '""')}","${m.email.replace(/"/g, '""')}","${m.team}",${pts},${unexcused},${excused},${rate}%,${eligibleDates.length}\n`;
+        const pts = m.pointsRewardOverride !== null ? m.pointsRewardOverride : attended;
+        const unexcused = m.missedOverride !== null ? m.missedOverride : missedPractices;
+
+        csv += `"${m.team}","${m.fullName.replace(/"/g, '""')}","${(m.email || '').replace(/"/g, '""')}",${unexcused},${pts},${effectiveExcused},"${attendedMethod ? 'Attended' : 'Absent'}","${attendedFK ? 'Attended (-1 Abs Allowance)' : 'Absent'}",${eligibleDates.length}\n`;
       });
 
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -2376,17 +3396,21 @@
 
     document.getElementById("addMemberForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const name = document.getElementById("newMemberName").value.trim();
+      const rawName = document.getElementById("newMemberName").value.trim().replace(/\s+/g, " ");
       const email = document.getElementById("newMemberEmail").value.trim();
       const team = document.getElementById("newMemberTeam").value;
 
-      if (!name || !email) return;
-      const emailKey = sanitizeEmailKey(email);
+      if (!rawName) return;
+      const cName = toCanonicalName(rawName);
+      const nameKey = canonicalKey(cName);
 
       try {
-        await setDoc(doc(db, "attendance_points", emailKey), {
-          fullName: name,
-          email: email,
+        const overrideDocId = `override_${safeIdKey(nameKey)}`;
+        await setDoc(doc(db, "submissions", overrideDocId), {
+          type: "attendance_override",
+          nameKey: nameKey,
+          fullName: cName,
+          email: email || "",
           team: team,
           pointsRewardOverride: null,
           missedOverride: null,
@@ -2394,7 +3418,7 @@
         }, { merge: true });
 
         closeModal("addMemberModal");
-        showToast(`Added ${name} to roster`, "success");
+        showToast(`Added ${cName} (${team})`, "success");
         await loadAllData();
       } catch (err) {
         console.error("Add member error:", err);
