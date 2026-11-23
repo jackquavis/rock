@@ -1,0 +1,2416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rutgers Climbing — Attendance Admin</title>
+  <link rel="icon" type="image/png" href="../assets/R.png" />
+  <style>
+    :root {
+      --scarlet: #cc0033;
+      --scarlet-hover: #e60039;
+      --scarlet-dark: #990026;
+      --scarlet-glow: rgba(204, 0, 51, 0.18);
+      --bg-dark: #0f0f12;
+      --bg-elevated: #17171c;
+      --card-bg: #1c1c22;
+      --card-hover: #23232b;
+      --input-bg: #131318;
+      --text-light: #f4f4f6;
+      --text-secondary: #c4c4cc;
+      --text-muted: #8b8b97;
+      --border-color: #2c2c35;
+      --border-subtle: #23232a;
+      --active-green: #2e7d32;
+      --active-green-hover: #388e3c;
+      --active-green-text: #81c784;
+      --danger-red: #c62828;
+      --danger-red-hover: #e53935;
+      --danger-red-text: #ff8a80;
+      --excused-amber: #b26a00;
+      --excused-amber-text: #ffd54f;
+      --gold-star: #ffca28;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.65);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at 50% 0%, rgba(204, 0, 51, 0.08) 0%, transparent 55%);
+      color: var(--text-light);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ==========================================
+       LOGIN VIEW
+       ========================================== */
+    .login-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .center-box {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      padding: 36px 32px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .login-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .login-brand img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+
+    .login-brand h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-light);
+      letter-spacing: -0.02em;
+    }
+
+    .login-brand p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ==========================================
+       LAYOUT & NAVBAR
+       ========================================== */
+    .wrapper {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 24px 48px;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .navbar-logo {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+    }
+
+    .navbar-title-group h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .user-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .user-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4caf50;
+      box-shadow: 0 0 6px #4caf50;
+    }
+
+    /* ==========================================
+       TOP NAVIGATION TABS
+       ========================================== */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .tab-btn:hover {
+      background: var(--card-hover);
+      color: var(--text-light);
+      border-color: #454552;
+    }
+
+    .tab-btn.active {
+      background: var(--scarlet);
+      border-color: var(--scarlet);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(204, 0, 51, 0.35);
+    }
+
+    /* ==========================================
+       TOOLBAR & FILTERS SECTION
+       ========================================== */
+    .toolbar-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filters-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .filter-field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-field label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .filter-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-left: auto;
+    }
+
+    .search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      min-width: 220px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: var(--text-muted);
+      pointer-events: none;
+      font-size: 0.9rem;
+    }
+
+    .search-wrapper input {
+      padding-left: 34px;
+      padding-right: 30px;
+    }
+
+    .clear-search-btn {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 4px;
+      line-height: 1;
+    }
+    .clear-search-btn:hover {
+      color: var(--text-light);
+    }
+
+    .date-input-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    /* ==========================================
+       BUTTONS & INPUTS
+       ========================================== */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0 12px;
+      height: 40px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-light);
+      font-size: 0.9rem;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--scarlet);
+      box-shadow: 0 0 0 3px var(--scarlet-glow);
+    }
+
+    textarea {
+      height: auto;
+      padding: 10px 12px;
+      resize: vertical;
+    }
+
+    .btn {
+      height: 38px;
+      padding: 0 14px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      white-space: nowrap;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .btn-sm {
+      height: 30px;
+      padding: 0 10px;
+      font-size: 0.78rem;
+    }
+
+    .btn-scarlet {
+      background: var(--scarlet);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(204, 0, 51, 0.3);
+    }
+    .btn-scarlet:hover {
+      background: var(--scarlet-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: var(--bg-elevated);
+      border-color: var(--border-color);
+      color: var(--text-secondary);
+    }
+    .btn-outline:hover {
+      background: var(--card-hover);
+      border-color: #454552;
+      color: #fff;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      padding: 0 10px;
+    }
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-light);
+    }
+
+    .btn-danger {
+      background: rgba(198, 40, 40, 0.15);
+      border-color: rgba(198, 40, 40, 0.4);
+      color: var(--danger-red-text);
+    }
+    .btn-danger:hover {
+      background: var(--danger-red);
+      border-color: var(--danger-red);
+      color: #fff;
+    }
+
+    .btn-danger-solid {
+      background: var(--danger-red);
+      color: #fff;
+    }
+    .btn-danger-solid:hover:not(:disabled) {
+      background: var(--danger-red-hover);
+    }
+
+    .btn-success {
+      background: rgba(46, 125, 50, 0.2);
+      border-color: rgba(46, 125, 50, 0.5);
+      color: var(--active-green-text);
+    }
+    .btn-success:hover {
+      background: var(--active-green);
+      color: #fff;
+    }
+
+    /* Check-In Toggle Button States */
+    .btn-toggle-checkin {
+      min-width: 125px;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .btn-toggle-checkin.checked {
+      background: rgba(46, 125, 50, 0.22);
+      border-color: rgba(46, 125, 50, 0.6);
+      color: var(--active-green-text);
+    }
+    .btn-toggle-checkin.checked:hover {
+      background: rgba(198, 40, 40, 0.25);
+      border-color: var(--danger-red);
+      color: var(--danger-red-text);
+    }
+
+    .btn-toggle-checkin.unchecked {
+      background: var(--bg-elevated);
+      border-color: var(--border-color);
+      color: var(--text-secondary);
+    }
+    .btn-toggle-checkin.unchecked:hover {
+      background: rgba(204, 0, 51, 0.18);
+      border-color: var(--scarlet);
+      color: #fff;
+    }
+
+    /* ==========================================
+       TABLES
+       ========================================== */
+    .table-container {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    th {
+      background: #16161b;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    th.col-action, td.col-action {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      transition: background-color 0.12s ease;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: var(--card-hover);
+    }
+
+    /* Name Cell with Info Button */
+    .athlete-name-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .athlete-name {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text-light);
+    }
+
+    .btn-info-icon {
+      height: 24px;
+      padding: 0 7px;
+      border-radius: 4px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s ease;
+    }
+    .btn-info-icon:hover {
+      background: var(--card-hover);
+      color: #fff;
+      border-color: #555566;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .badge-present {
+      background: rgba(46, 125, 50, 0.2);
+      border: 1px solid rgba(46, 125, 50, 0.5);
+      color: var(--active-green-text);
+    }
+
+    .badge-absent {
+      background: rgba(198, 40, 40, 0.16);
+      border: 1px solid rgba(198, 40, 40, 0.45);
+      color: var(--danger-red-text);
+    }
+
+    .badge-excused {
+      background: rgba(245, 127, 23, 0.18);
+      border: 1px solid rgba(245, 127, 23, 0.5);
+      color: var(--excused-amber-text);
+      cursor: pointer;
+    }
+    .badge-excused:hover {
+      background: rgba(245, 127, 23, 0.28);
+    }
+
+    .team-badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .team-badge.comp {
+      background: rgba(204, 0, 51, 0.15);
+      border: 1px solid rgba(204, 0, 51, 0.4);
+      color: #ff8099;
+    }
+
+    .team-badge.rec {
+      background: rgba(33, 150, 243, 0.15);
+      border: 1px solid rgba(33, 150, 243, 0.4);
+      color: #90caf9;
+    }
+
+    /* Points & Absence Tracker badges */
+    .points-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: rgba(255, 202, 40, 0.12);
+      color: var(--gold-star);
+      border: 1px solid rgba(255, 202, 40, 0.35);
+    }
+
+    .missed-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: #23232c;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+    }
+
+    .missed-badge.danger {
+      background: rgba(198, 40, 40, 0.2);
+      border-color: rgba(198, 40, 40, 0.5);
+      color: #ff8a80;
+    }
+
+    .missed-badge.ok {
+      background: rgba(46, 125, 50, 0.15);
+      border-color: rgba(46, 125, 50, 0.4);
+      color: var(--active-green-text);
+    }
+
+    .override-pill {
+      font-size: 0.68rem;
+      color: var(--gold-star);
+      background: rgba(255, 202, 40, 0.12);
+      border: 1px solid rgba(255, 202, 40, 0.35);
+      padding: 1px 6px;
+      border-radius: 999px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* ==========================================
+       SUB-TABS & PILLS (Tracker tab)
+       ========================================== */
+    .pill-selector {
+      display: inline-flex;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .pill-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 5px 14px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pill-btn:hover {
+      color: var(--text-light);
+    }
+
+    .pill-btn.active {
+      background: var(--card-bg);
+      color: var(--text-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pill-btn.active.comp {
+      background: rgba(204, 0, 51, 0.25);
+      color: #ff8099;
+    }
+
+    .pill-btn.active.rec {
+      background: rgba(33, 150, 243, 0.25);
+      color: #90caf9;
+    }
+
+    .info-callout {
+      background: rgba(255, 202, 40, 0.08);
+      border: 1px solid rgba(255, 202, 40, 0.25);
+      border-left: 3px solid var(--gold-star);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* ==========================================
+       MODALS
+       ========================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 540px;
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPop {
+      from {
+        opacity: 0;
+        transform: scale(0.96) translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 14px;
+    }
+
+    .modal-header h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .close-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .detail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      gap: 12px;
+    }
+
+    .detail-label {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .detail-value {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      word-break: break-all;
+    }
+
+    .warning-box {
+      background: rgba(198, 40, 40, 0.14);
+      border: 1px solid rgba(198, 40, 40, 0.45);
+      color: #ff8a80;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+
+    /* ==========================================
+       TOAST NOTIFICATIONS
+       ========================================== */
+    #toastContainer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: #23232c;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--scarlet);
+      box-shadow: var(--shadow-md);
+      font-size: 0.875rem;
+      font-weight: 500;
+      animation: fadeIn 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast-success { border-left-color: #4caf50; }
+    .toast-error { border-left-color: var(--danger-red-hover); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+    }
+    .empty-state h4 {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer"></div>
+
+  <!-- ==========================================
+       1. LOGIN VIEW
+       ========================================== -->
+  <div id="loginView" class="login-wrapper">
+    <div class="center-box">
+      <div class="login-brand">
+        <img src="../assets/RURC_Logo_Transparent.png" alt="Rutgers Climbing Logo" onerror="this.src='../assets/R.png'" />
+        <h2>Attendance Portal</h2>
+        <p>Rutgers Climbing Team Admin Dashboard</p>
+      </div>
+      <div id="loginError" class="warning-box hidden"></div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="adminEmail">Admin Email</label>
+          <input type="email" id="adminEmail" placeholder="admin@rutgers.edu" required autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="adminPassword">Password</label>
+          <input type="password" id="adminPassword" placeholder="Enter password" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-scarlet" style="width: 100%; height: 42px; margin-top: 8px; font-size: 0.95rem;">
+          Sign In to Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       2. DASHBOARD VIEW
+       ========================================== -->
+  <div id="dashboardView" class="wrapper hidden">
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <div class="navbar-brand">
+        <img src="../assets/RURC_Logo_Transparent.png" alt="RURC" class="navbar-logo" onerror="this.src='../assets/R.png'" />
+        <div class="navbar-title-group">
+          <h1>Rutgers Climbing Attendance</h1>
+          <span class="navbar-subtitle">Practice Attendance & Comp Tracker</span>
+        </div>
+      </div>
+      <div class="navbar-actions">
+        <a href="../attendance/" target="_blank" class="btn btn-ghost" title="Open public athlete check-in page">
+          Check-In Form ↗
+        </a>
+        <div class="user-pill">
+          <span class="user-dot"></span>
+          <span id="userEmail">admin@rutgers.edu</span>
+        </div>
+        <button id="logoutBtn" class="btn btn-outline">Sign Out</button>
+      </div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <nav class="nav-tabs">
+      <button type="button" class="tab-btn active" id="tabBtnDaily" data-tab="tabDaily">
+        📅 Daily Practice
+      </button>
+      <button type="button" class="tab-btn" id="tabBtnTracker" data-tab="tabTracker">
+        🏆 Comp & Rec Team Tracker
+      </button>
+    </nav>
+
+    <!-- ========================================================
+         VIEW 1: DAILY PRACTICE (DAY-OF MANAGEMENT)
+         ======================================================== -->
+    <div id="tabDailyView">
+      <!-- Toolbar Section -->
+      <section class="toolbar-section">
+        <div class="filters-row">
+          <!-- Practice Date Picker -->
+          <div class="filter-field">
+            <label for="practiceDatePicker">Practice Date</label>
+            <div class="date-input-group">
+              <input type="date" id="practiceDatePicker" style="height: 38px;" />
+              <button type="button" id="btnPrevFriSun" class="btn btn-outline" style="height: 38px; padding: 0 10px;" title="Jump to previous Friday or Sunday">
+                ‹ Last Fri/Sun
+              </button>
+              <button type="button" id="btnJumpToday" class="btn btn-outline" style="height: 38px; padding: 0 10px;" title="Jump to Today">
+                Today
+              </button>
+              <button type="button" id="btnNextFriSun" class="btn btn-outline" style="height: 38px; padding: 0 10px;" title="Jump to next Friday or Sunday">
+                Next Fri/Sun ›
+              </button>
+            </div>
+          </div>
+
+          <!-- Team Filter -->
+          <div class="filter-field" style="min-width: 140px;">
+            <label for="dailyTeamFilter">Team</label>
+            <select id="dailyTeamFilter" style="height: 38px;">
+              <option value="ALL">All Teams</option>
+              <option value="Comp Team">Comp Team</option>
+              <option value="Rec Team">Rec Team</option>
+            </select>
+          </div>
+
+          <!-- Search Member -->
+          <div class="filter-field">
+            <label for="dailySearchInput">Search Athlete</label>
+            <div class="search-wrapper">
+              <span class="search-icon">⌕</span>
+              <input type="text" id="dailySearchInput" placeholder="Filter by name..." style="height: 38px;" />
+              <button type="button" id="clearDailySearchBtn" class="clear-search-btn hidden" title="Clear">✕</button>
+            </div>
+          </div>
+
+          <!-- Batch Action Buttons -->
+          <div class="filter-actions-group">
+            <button type="button" id="btnExcuseAllCompModal" class="btn btn-outline" style="height: 38px;" title="Excuse all comp team members for this practice day">
+              🛡️ Excuse All Comp
+            </button>
+            <button type="button" id="btnTripCheckInModal" class="btn btn-outline" style="height: 38px;" title="Check everyone in for this trip / practice date">
+              🚐 Trip Check-In (All In)
+            </button>
+            <button type="button" id="btnAddMemberBtn" class="btn btn-outline" style="height: 38px;" title="Add new athlete to roster">
+              + Add Member
+            </button>
+            <button type="button" id="btnRefreshDaily" class="btn btn-scarlet" style="height: 38px;" title="Reload from database">
+              ⟳ Refresh
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Practice Info Banner -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 4px; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <span style="font-weight: 700; font-size: 1.05rem; color: var(--text-light);" id="dailyPracticeDayTitle">Friday Practice</span>
+          <span style="color: var(--text-muted); font-size: 0.85rem; margin-left: 8px;" id="dailyPracticeDateFormatted">Loading date...</span>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);" id="dailyAttendanceCountSummary">
+          0 Present · 0 Excused · 0 Absent
+        </div>
+      </div>
+
+      <!-- Main Daily Attendance Table -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Athlete</th>
+              <th>Team</th>
+              <th>Status</th>
+              <th>Check-In Action</th>
+              <th class="col-action">Excuse Action</th>
+            </tr>
+          </thead>
+          <tbody id="dailyTableBody">
+            <tr>
+              <td colspan="5" class="empty-state">Loading attendance records...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         VIEW 2: COMP & REC TEAM TRACKER (DATE RANGE & METRICS)
+         ======================================================== -->
+    <div id="tabTrackerView" class="hidden">
+      <!-- Callout Explanation -->
+      <div class="info-callout">
+        <div>
+          <strong>📊 Two Independent Trackers:</strong>
+          <span style="margin-left: 6px;">
+            <strong>🎯 Attendance Points</strong> = Points earned from attending practices (end-of-semester rewards).
+            &nbsp;|&nbsp;
+            <strong>⚠️ Missed Practices</strong> = Unexcused missed practices (used for competition reimbursement eligibility).
+          </span>
+        </div>
+        <button type="button" id="btnExportTrackerCSV" class="btn btn-outline btn-sm">
+          📥 Export CSV
+        </button>
+      </div>
+
+      <!-- Tracker Filter Section -->
+      <section class="toolbar-section">
+        <div class="filters-row">
+          <!-- Date Range Pickers -->
+          <div class="filter-field">
+            <label for="rangeStartDate">From Date</label>
+            <input type="date" id="rangeStartDate" style="height: 38px;" />
+          </div>
+
+          <div class="filter-field">
+            <label for="rangeEndDate">To Date</label>
+            <input type="date" id="rangeEndDate" style="height: 38px;" />
+          </div>
+
+          <!-- Quick Range Presets -->
+          <div class="filter-field">
+            <label>Quick Presets</label>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" id="presetSemester" class="btn btn-outline btn-sm" style="height: 38px;">Semester</button>
+              <button type="button" id="preset30Days" class="btn btn-outline btn-sm" style="height: 38px;">30 Days</button>
+              <button type="button" id="preset60Days" class="btn btn-outline btn-sm" style="height: 38px;">60 Days</button>
+            </div>
+          </div>
+
+          <!-- Team Selector Pills -->
+          <div class="filter-field">
+            <label>Filter Team</label>
+            <div class="pill-selector">
+              <button type="button" class="pill-btn active comp" id="pillTeamComp" data-team="Comp Team">Comp Team</button>
+              <button type="button" class="pill-btn" id="pillTeamRec" data-team="Rec Team">Rec Team</button>
+              <button type="button" class="pill-btn" id="pillTeamAll" data-team="ALL">All Teams</button>
+            </div>
+          </div>
+
+          <!-- Fridays & Sundays Only Checkbox -->
+          <div class="filter-field" style="justify-content: flex-end; padding-bottom: 8px;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; margin: 0;">
+              <input type="checkbox" id="checkFriSunOnly" checked style="width: 18px; height: 18px; accent-color: var(--scarlet);" />
+              <span style="font-size: 0.85rem; color: var(--text-light); font-weight: 500;">Fridays & Sundays Only</span>
+            </label>
+          </div>
+
+          <!-- Search -->
+          <div class="filter-field" style="margin-left: auto;">
+            <label for="trackerSearchInput">Search Athlete</label>
+            <div class="search-wrapper">
+              <span class="search-icon">⌕</span>
+              <input type="text" id="trackerSearchInput" placeholder="Search..." style="height: 38px;" />
+              <button type="button" id="clearTrackerSearchBtn" class="clear-search-btn hidden" title="Clear">✕</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Meta Bar for Tracker -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 4px; flex-wrap: wrap; gap: 8px;">
+        <span style="font-size: 0.85rem; color: var(--text-muted);" id="trackerMetaText">
+          Analyzing practice sessions...
+        </span>
+        <div style="font-size: 0.8rem; color: var(--text-muted);" id="trackerPracticesListSummary">
+          0 practice dates in selected window
+        </div>
+      </div>
+
+      <!-- Tracker Table -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Athlete</th>
+              <th>Team</th>
+              <th style="text-align: center;">🎯 Attendance Points (Rewards)</th>
+              <th style="text-align: center;">⚠️ Missed Practices (Reimbursement)</th>
+              <th style="text-align: center;">📝 Excused</th>
+              <th style="text-align: center;">Attendance %</th>
+              <th class="col-action">Adjust</th>
+            </tr>
+          </thead>
+          <tbody id="trackerTableBody">
+            <tr>
+              <td colspan="7" class="empty-state">Loading tracker data...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==========================================
+       MODALS
+       ========================================== -->
+
+  <!-- MODAL 1: ATHLETE INFO MODAL (SHOWS EMAIL) -->
+  <div id="athleteInfoModal" class="modal-overlay">
+    <div class="modal" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 id="infoModalAthleteName">Athlete Information</h3>
+        <button type="button" class="close-btn" data-close="athleteInfoModal">&times;</button>
+      </div>
+
+      <div class="detail-list">
+        <div class="detail-row">
+          <span class="detail-label">Rutgers Email</span>
+          <div class="detail-value">
+            <span id="infoModalEmailText">—</span>
+            <button type="button" class="btn btn-outline btn-sm" id="btnCopyEmail">Copy</button>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Team Assignment</span>
+          <div class="detail-value">
+            <span id="infoModalTeamBadge" class="team-badge comp">Comp Team</span>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Attendance Points (Rewards)</span>
+          <div class="detail-value">
+            <span id="infoModalAttendancePoints" style="color: var(--gold-star); font-weight: 700;">0 pts</span>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Unexcused Missed Practices</span>
+          <div class="detail-value">
+            <span id="infoModalMissedCount" style="color: var(--danger-red-text); font-weight: 700;">0</span>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Excused Absences</span>
+          <div class="detail-value">
+            <span id="infoModalExcusedCount" style="color: var(--excused-amber-text); font-weight: 700;">0</span>
+          </div>
+        </div>
+
+        <div>
+          <label style="margin-top: 6px; font-size: 0.76rem; text-transform: uppercase; color: var(--text-muted);">
+            Check-In Notes / Comments (Selected Practice)
+          </label>
+          <div id="infoModalNotesBox" style="background: var(--bg-elevated); border: 1px solid var(--border-color); padding: 12px; border-radius: var(--radius-sm); font-size: 0.88rem; color: var(--text-secondary); min-height: 50px;">
+            No notes logged for this practice.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close="athleteInfoModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: EXCUSE SINGLE ATHLETE MODAL -->
+  <div id="excuseSingleModal" class="modal-overlay">
+    <div class="modal" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 id="excuseModalTitle">Excuse Absence</h3>
+        <button type="button" class="close-btn" data-close="excuseSingleModal">&times;</button>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">
+        Excused absences do <strong style="color: #fff;">not count as a missed practice</strong> for reimbursement eligibility.
+      </p>
+
+      <form id="excuseSingleForm">
+        <input type="hidden" id="excuseTargetEmail" />
+        <input type="hidden" id="excuseTargetDate" />
+
+        <div class="form-group">
+          <label for="excuseReasonInput">Excuse Reason / Short Description</label>
+          <textarea id="excuseReasonInput" rows="3" placeholder="e.g. Sick, midterm exam, class conflict, family event..." required></textarea>
+        </div>
+
+        <div class="modal-footer" style="justify-content: space-between;">
+          <button type="button" id="btnRemoveExcuse" class="btn btn-danger btn-sm hidden">Remove Excuse</button>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-outline" data-close="excuseSingleModal">Cancel</button>
+            <button type="submit" class="btn btn-scarlet">Save Excuse</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: EXCUSE ALL COMP TEAM MODAL -->
+  <div id="excuseAllCompModal" class="modal-overlay">
+    <div class="modal" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3>Excuse All Comp Team Members</h3>
+        <button type="button" class="close-btn" data-close="excuseAllCompModal">&times;</button>
+      </div>
+
+      <div class="warning-box">
+        <strong>🛡️ Team Action:</strong> This will automatically mark <strong>all Comp Team members</strong> as <strong>Excused</strong> for <span id="excuseAllCompDateText" style="font-weight: 700; color: #fff;">this date</span>.
+      </div>
+
+      <form id="excuseAllCompForm">
+        <div class="form-group">
+          <label for="excuseAllCompReason">Reason / Note for Comp Team</label>
+          <input type="text" id="excuseAllCompReason" value="Away at competition / Comp travel" required />
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close="excuseAllCompModal">Cancel</button>
+          <button type="submit" class="btn btn-scarlet">Confirm & Excuse All Comp</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 4: TRIP CHECK-IN (ALL IN) MODAL -->
+  <div id="tripCheckInModal" class="modal-overlay">
+    <div class="modal" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3>🚐 Trip Check-In (All In)</h3>
+        <button type="button" class="close-btn" data-close="tripCheckInModal">&times;</button>
+      </div>
+
+      <div class="info-callout" style="margin-bottom: 16px;">
+        Automatically check in all roster members for <strong id="tripModalDateText" style="color: #fff;">this date</strong>. You can then quickly toggle off any outliers with one click!
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close="tripCheckInModal">Cancel</button>
+        <button type="button" id="btnConfirmTripCheckIn" class="btn btn-scarlet">Check Everyone In</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: ADJUST POINTS & ABSENCES OVERRIDE -->
+  <div id="adjustPointsModal" class="modal-overlay">
+    <div class="modal" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 id="adjustModalTitle">Adjust Attendance Record</h3>
+        <button type="button" class="close-btn" data-close="adjustPointsModal">&times;</button>
+      </div>
+
+      <form id="adjustPointsForm">
+        <input type="hidden" id="adjustTargetEmail" />
+
+        <div class="form-group">
+          <label for="adjustRewardPoints">Attendance Points (Rewards)</label>
+          <input type="number" id="adjustRewardPoints" min="0" step="1" placeholder="Leave empty for auto-calculated" />
+          <p style="font-size: 0.74rem; color: var(--text-muted); margin-top: 4px;">
+            1 point earned per attended practice. Enter a number to override reward points.
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label for="adjustMissedCount">Missed Practices (Comp Reimbursement)</label>
+          <input type="number" id="adjustMissedCount" min="0" step="1" placeholder="Leave empty for auto-calculated" />
+          <p style="font-size: 0.74rem; color: var(--text-muted); margin-top: 4px;">
+            Count of unexcused missed practices. Enter a number to override unexcused absences.
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close="adjustPointsModal">Cancel</button>
+          <button type="submit" class="btn btn-scarlet">Save Overrides</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 6: QUICK ADD MEMBER MODAL -->
+  <div id="addMemberModal" class="modal-overlay">
+    <div class="modal" style="max-width: 460px;">
+      <div class="modal-header">
+        <h3>Add Team Member</h3>
+        <button type="button" class="close-btn" data-close="addMemberModal">&times;</button>
+      </div>
+      <form id="addMemberForm">
+        <div class="form-group">
+          <label for="newMemberName">Full Name</label>
+          <input type="text" id="newMemberName" placeholder="e.g. Jane Doe" required />
+        </div>
+        <div class="form-group">
+          <label for="newMemberEmail">Email Address</label>
+          <input type="email" id="newMemberEmail" placeholder="e.g. netid@rutgers.edu" required />
+        </div>
+        <div class="form-group">
+          <label for="newMemberTeam">Team</label>
+          <select id="newMemberTeam" required>
+            <option value="Comp Team">Comp Team</option>
+            <option value="Rec Team">Rec Team</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close="addMemberModal">Cancel</button>
+          <button type="submit" class="btn btn-scarlet">Add Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       APPLICATION CODE
+       ========================================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      doc,
+      getDocs,
+      setDoc,
+      deleteDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDIIbSN2nBnpf946yLNCS9vfq41dWb-w2I",
+      authDomain: "tryouts-scoring.firebaseapp.com",
+      projectId: "tryouts-scoring",
+      storageBucket: "tryouts-scoring.firebasestorage.app",
+      messagingSenderId: "56954072644",
+      appId: "1:56954072644:web:5c95da0c0edf35be649611"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // State
+    let currentUser = null;
+    let selectedPracticeDate = getTodayString();
+    let membersMap = {}; // emailKey -> { fullName, email, team, pointsOverride, missedOverride }
+    let rawRosterList = [];
+    let recordsList = []; // all attendance_records docs
+    let overridesMap = {}; // emailKey -> { pointsOverride, missedOverride }
+
+    // Helpers
+    function getTodayString() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function sanitizeEmailKey(email) {
+      if (!email) return "";
+      return email.trim().toLowerCase();
+    }
+
+    function formatDateForDisplay(dateStr) {
+      if (!dateStr) return "No Date";
+      try {
+        const parts = dateStr.split("-");
+        if (parts.length === 3) {
+          const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+          return d.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric", year: "numeric" });
+        }
+      } catch (e) {}
+      return dateStr;
+    }
+
+    function getDayOfWeek(dateStr) {
+      try {
+        const parts = dateStr.split("-");
+        const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        return d.getDay(); // 0 = Sunday, 5 = Friday
+      } catch {
+        return -1;
+      }
+    }
+
+    function isFridayOrSunday(dateStr) {
+      const day = getDayOfWeek(dateStr);
+      return day === 0 || day === 5;
+    }
+
+    // Step to nearest Friday or Sunday
+    function stepToFriSun(dateStr, forward = true) {
+      const parts = dateStr.split("-");
+      let d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      for (let i = 0; i < 7; i++) {
+        d.setDate(d.getDate() + (forward ? 1 : -1));
+        const day = d.getDay();
+        if (day === 0 || day === 5) {
+          const y = d.getFullYear();
+          const m = String(d.getMonth() + 1).padStart(2, "0");
+          const dayNum = String(d.getDate()).padStart(2, "0");
+          return `${y}-${m}-${dayNum}`;
+        }
+      }
+      return dateStr;
+    }
+
+    // Toast
+    function showToast(message, type = "info") {
+      const container = document.getElementById("toastContainer");
+      if (!container) return;
+      const toast = document.createElement("div");
+      toast.className = `toast toast-${type}`;
+      const icon = type === "success" ? "✓" : type === "error" ? "⚠️" : "ℹ️";
+      toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(-10px)";
+        toast.style.transition = "all 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Modal Helpers
+    function openModal(id) {
+      const m = document.getElementById(id);
+      if (m) m.classList.add("active");
+    }
+
+    function closeModal(id) {
+      const m = document.getElementById(id);
+      if (m) m.classList.remove("active");
+    }
+
+    document.querySelectorAll("[data-close]").forEach(btn => {
+      btn.addEventListener("click", () => closeModal(btn.getAttribute("data-close")));
+    });
+
+    document.querySelectorAll(".modal-overlay").forEach(overlay => {
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) overlay.classList.remove("active");
+      });
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        document.querySelectorAll(".modal-overlay.active").forEach(m => m.classList.remove("active"));
+      }
+    });
+
+    // Copy to clipboard
+    async function copyToClipboard(text, label, btnEl = null) {
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(`Copied ${label}!`, "success");
+        if (btnEl) {
+          const orig = btnEl.innerText;
+          btnEl.innerText = "✓";
+          setTimeout(() => { btnEl.innerText = orig; }, 1500);
+        }
+      } catch {
+        showToast("Copy failed", "error");
+      }
+    }
+
+    // Auth Listeners
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      if (user) {
+        document.getElementById("loginView").classList.add("hidden");
+        document.getElementById("dashboardView").classList.remove("hidden");
+        document.getElementById("userEmail").innerText = user.email || "Admin";
+        initDashboard();
+      } else {
+        document.getElementById("loginView").classList.remove("hidden");
+        document.getElementById("dashboardView").classList.add("hidden");
+      }
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("adminEmail").value.trim();
+      const pass = document.getElementById("adminPassword").value;
+      const errBox = document.getElementById("loginError");
+      errBox.classList.add("hidden");
+
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        showToast("Signed in", "success");
+      } catch (err) {
+        console.error("Login error:", err);
+        errBox.innerText = "Invalid credentials. Please check your email and password.";
+        errBox.classList.remove("hidden");
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      signOut(auth).then(() => showToast("Signed out", "info"));
+    });
+
+    // Tab Switching
+    const tabBtnDaily = document.getElementById("tabBtnDaily");
+    const tabBtnTracker = document.getElementById("tabBtnTracker");
+    const tabDailyView = document.getElementById("tabDailyView");
+    const tabTrackerView = document.getElementById("tabTrackerView");
+
+    tabBtnDaily.addEventListener("click", () => {
+      tabBtnDaily.classList.add("active");
+      tabBtnTracker.classList.remove("active");
+      tabDailyView.classList.remove("hidden");
+      tabTrackerView.classList.add("hidden");
+      renderDailyView();
+    });
+
+    tabBtnTracker.addEventListener("click", () => {
+      tabBtnTracker.classList.add("active");
+      tabBtnDaily.classList.remove("active");
+      tabTrackerView.classList.remove("hidden");
+      tabDailyView.classList.add("hidden");
+      renderTrackerView();
+    });
+
+    // ──────────────────────────────────────────────
+    // DATA INITIALIZATION & ROSTER MERGE
+    // ──────────────────────────────────────────────
+    async function initDashboard() {
+      // Default practice date to today if Friday or Sunday, else previous Fri/Sun
+      const todayStr = getTodayString();
+      if (isFridayOrSunday(todayStr)) {
+        selectedPracticeDate = todayStr;
+      } else {
+        selectedPracticeDate = stepToFriSun(todayStr, false);
+      }
+      document.getElementById("practiceDatePicker").value = selectedPracticeDate;
+
+      // Default Tracker date range: semester start to today
+      const currentYear = new Date().getFullYear();
+      document.getElementById("rangeStartDate").value = `${currentYear}-09-01`;
+      document.getElementById("rangeEndDate").value = todayStr;
+
+      await loadRosterJson();
+      await loadAllData();
+    }
+
+    async function loadRosterJson() {
+      try {
+        const res = await fetch("../data/roster.json");
+        if (res.ok) {
+          const data = await res.json();
+          rawRosterList = data.members || [];
+        }
+      } catch (err) {
+        console.warn("Could not load ../data/roster.json:", err);
+      }
+    }
+
+    async function loadAllData() {
+      try {
+        // 1. Fetch overrides from attendance_points
+        try {
+          const ptsSnap = await getDocs(collection(db, "attendance_points"));
+          overridesMap = {};
+          ptsSnap.forEach(d => {
+            overridesMap[sanitizeEmailKey(d.id)] = d.data();
+          });
+        } catch (e) {
+          console.warn("Error loading attendance_points:", e);
+        }
+
+        // 2. Fetch all attendance_records
+        const recSnap = await getDocs(collection(db, "attendance_records"));
+        recordsList = [];
+        recSnap.forEach(d => {
+          recordsList.push({ id: d.id, ...d.data() });
+        });
+
+        // 3. Assemble unified members
+        assembleMembersMap();
+
+        // 4. Render active tab
+        if (!tabDailyView.classList.contains("hidden")) {
+          renderDailyView();
+        } else {
+          renderTrackerView();
+        }
+      } catch (err) {
+        console.error("Load all data error:", err);
+        showToast("Error loading records from database", "error");
+      }
+    }
+
+    function assembleMembersMap() {
+      membersMap = {};
+
+      // A. Populate from static roster (Comp Team members)
+      rawRosterList.forEach(m => {
+        if (!m.name) return;
+        const nameClean = m.name.trim();
+        const placeholderEmail = nameClean.toLowerCase().replace(/[^a-z0-9]/g, ".") + "@rutgers.edu";
+        const emailKey = sanitizeEmailKey(placeholderEmail);
+        membersMap[emailKey] = {
+          fullName: nameClean,
+          email: placeholderEmail,
+          team: "Comp Team"
+        };
+      });
+
+      // B. Merge saved overrides & stored points
+      Object.keys(overridesMap).forEach(emailKey => {
+        const o = overridesMap[emailKey];
+        if (!o) return;
+        if (o.fullName) {
+          const found = Object.keys(membersMap).find(k => membersMap[k].fullName.toLowerCase() === o.fullName.toLowerCase());
+          if (found) delete membersMap[found];
+        }
+        membersMap[emailKey] = {
+          fullName: o.fullName || "Athlete",
+          email: o.email || emailKey,
+          team: o.team || "Comp Team",
+          pointsRewardOverride: (o.pointsRewardOverride !== undefined && o.pointsRewardOverride !== null && o.pointsRewardOverride !== "") ? Number(o.pointsRewardOverride) : null,
+          missedOverride: (o.missedOverride !== undefined && o.missedOverride !== null && o.missedOverride !== "") ? Number(o.missedOverride) : null
+        };
+      });
+
+      // C. Merge checked-in athletes from attendance_records (including Rec Team athletes)
+      recordsList.forEach(r => {
+        if (!r.email) return;
+        const emailKey = sanitizeEmailKey(r.email);
+        if (!membersMap[emailKey]) {
+          if (r.fullName) {
+            const found = Object.keys(membersMap).find(k => membersMap[k].fullName.toLowerCase() === r.fullName.toLowerCase());
+            if (found) delete membersMap[found];
+          }
+          membersMap[emailKey] = {
+            fullName: r.fullName || "Athlete",
+            email: r.email,
+            team: r.team || "Rec Team",
+            pointsRewardOverride: null,
+            missedOverride: null
+          };
+        } else {
+          if (r.team) membersMap[emailKey].team = r.team;
+          if (r.fullName) membersMap[emailKey].fullName = r.fullName;
+        }
+      });
+    }
+
+    // ──────────────────────────────────────────────
+    // VIEW 1: DAILY PRACTICE LOGIC & RENDER
+    // ──────────────────────────────────────────────
+    function renderDailyView() {
+      const tbody = document.getElementById("dailyTableBody");
+      const teamFilter = document.getElementById("dailyTeamFilter").value;
+      const search = document.getElementById("dailySearchInput").value.trim().toLowerCase();
+
+      // Formatted date and header
+      const dayOfWeek = getDayOfWeek(selectedPracticeDate);
+      const isFri = dayOfWeek === 5;
+      const isSun = dayOfWeek === 0;
+      let dayTitle = isFri ? "Friday Practice" : (isSun ? "Sunday Practice" : "Team Practice");
+      document.getElementById("dailyPracticeDayTitle").innerText = dayTitle;
+      document.getElementById("dailyPracticeDateFormatted").innerText = formatDateForDisplay(selectedPracticeDate);
+
+      // Collect records for selected date
+      const dateRecords = recordsList.filter(r => r.practiceDate === selectedPracticeDate);
+      const recordMap = {}; // emailKey -> record
+      dateRecords.forEach(r => {
+        if (r.email) recordMap[sanitizeEmailKey(r.email)] = r;
+      });
+
+      // Filter members
+      const memberKeys = Object.keys(membersMap).filter(key => {
+        const m = membersMap[key];
+        if (teamFilter !== "ALL" && m.team !== teamFilter) return false;
+        if (search && !m.fullName.toLowerCase().includes(search)) return false;
+        return true;
+      });
+
+      // Sort alphabetically by name
+      memberKeys.sort((a, b) => membersMap[a].fullName.localeCompare(membersMap[b].fullName));
+
+      // Stats counters
+      let presentCount = 0;
+      let excusedCount = 0;
+      let absentCount = 0;
+
+      memberKeys.forEach(k => {
+        const r = recordMap[k];
+        if (r && r.status === "present") presentCount++;
+        else if (r && r.status === "excused") excusedCount++;
+        else absentCount++;
+      });
+
+      document.getElementById("dailyAttendanceCountSummary").innerText =
+        `${presentCount} Present · ${excusedCount} Excused · ${absentCount} Absent (${memberKeys.length} listed)`;
+
+      if (memberKeys.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state">No athletes found matching filters.</td></tr>`;
+        return;
+      }
+
+      let rowsHtml = "";
+      memberKeys.forEach(emailKey => {
+        const m = membersMap[emailKey];
+        const r = recordMap[emailKey];
+        const isPresent = Boolean(r && r.status === "present");
+        const isExcused = Boolean(r && r.status === "excused");
+        const excuseNote = (r && r.excuseNote) || "";
+
+        // Status badge
+        let statusBadge = `<span class="badge badge-absent">❌ Absent</span>`;
+        if (isPresent) {
+          statusBadge = `<span class="badge badge-present">✅ Present</span>`;
+        } else if (isExcused) {
+          statusBadge = `<span class="badge badge-excused" onclick="openExcuseModal('${escapeHtml(emailKey)}')">📝 Excused ${excuseNote ? `(${escapeHtml(excuseNote.slice(0, 20))}${excuseNote.length > 20 ? '...' : ''})` : ''}</span>`;
+        }
+
+        const teamClass = m.team === "Comp Team" ? "comp" : "rec";
+
+        // Check-in toggle button: 1-click
+        const checkInBtn = isPresent
+          ? `<button type="button" class="btn btn-toggle-checkin checked btn-sm" onclick="toggleCheckIn('${escapeHtml(emailKey)}', false)" title="Click to remove check-in">✓ Checked In</button>`
+          : `<button type="button" class="btn btn-toggle-checkin unchecked btn-sm" onclick="toggleCheckIn('${escapeHtml(emailKey)}', true)" title="Click to check in">+ Check In</button>`;
+
+        // Excuse button
+        const excuseBtn = isExcused
+          ? `<button type="button" class="btn btn-outline btn-sm" onclick="openExcuseModal('${escapeHtml(emailKey)}')">Edit Excuse</button>`
+          : `<button type="button" class="btn btn-outline btn-sm" onclick="openExcuseModal('${escapeHtml(emailKey)}')">📝 Excuse</button>`;
+
+        rowsHtml += `
+          <tr>
+            <td>
+              <div class="athlete-name-group">
+                <span class="athlete-name">${escapeHtml(m.fullName)}</span>
+                <button type="button" class="btn-info-icon" onclick="openAthleteInfo('${escapeHtml(emailKey)}')" title="View info & email">ⓘ Info</button>
+              </div>
+            </td>
+            <td><span class="team-badge ${teamClass}">${escapeHtml(m.team)}</span></td>
+            <td>${statusBadge}</td>
+            <td>${checkInBtn}</td>
+            <td class="col-action">${excuseBtn}</td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = rowsHtml;
+    }
+
+    // ──────────────────────────────────────────────
+    // ONE-CLICK CHECK-IN TOGGLE
+    // ──────────────────────────────────────────────
+    window.toggleCheckIn = async (emailKey, markPresent) => {
+      const m = membersMap[emailKey];
+      if (!m) return;
+
+      const recordId = `${selectedPracticeDate}_${emailKey}`.replace(/[^a-zA-Z0-9_-]/g, "_");
+      const recordDocRef = doc(db, "attendance_records", recordId);
+
+      try {
+        if (markPresent) {
+          // Check in
+          await setDoc(recordDocRef, {
+            fullName: m.fullName,
+            email: m.email,
+            team: m.team,
+            practiceDate: selectedPracticeDate,
+            practiceName: isFridayOrSunday(selectedPracticeDate) ? (getDayOfWeek(selectedPracticeDate) === 5 ? "Friday Practice" : "Sunday Practice") : "Practice",
+            status: "present",
+            checkedInAt: serverTimestamp(),
+            notes: ""
+          });
+          showToast(`Checked in ${m.fullName}`, "success");
+        } else {
+          // Remove check in (delete or unmark)
+          await deleteDoc(recordDocRef);
+          showToast(`Removed check-in for ${m.fullName}`, "info");
+        }
+        await loadAllData();
+      } catch (err) {
+        console.error("Toggle check-in error:", err);
+        showToast("Error updating check-in", "error");
+      }
+    };
+
+    // ──────────────────────────────────────────────
+    // EXCUSE ATHLETE MODAL & LOGIC
+    // ──────────────────────────────────────────────
+    window.openExcuseModal = (emailKey) => {
+      const m = membersMap[emailKey];
+      if (!m) return;
+
+      const recordId = `${selectedPracticeDate}_${emailKey}`.replace(/[^a-zA-Z0-9_-]/g, "_");
+      const existing = recordsList.find(r => r.practiceDate === selectedPracticeDate && sanitizeEmailKey(r.email) === emailKey);
+      const isAlreadyExcused = existing && existing.status === "excused";
+
+      document.getElementById("excuseTargetEmail").value = emailKey;
+      document.getElementById("excuseTargetDate").value = selectedPracticeDate;
+      document.getElementById("excuseModalTitle").innerText = `Excuse ${m.fullName}`;
+      document.getElementById("excuseReasonInput").value = isAlreadyExcused ? (existing.excuseNote || "") : "";
+
+      const removeBtn = document.getElementById("btnRemoveExcuse");
+      if (isAlreadyExcused) {
+        removeBtn.classList.remove("hidden");
+        removeBtn.onclick = async () => {
+          try {
+            await deleteDoc(doc(db, "attendance_records", recordId));
+            closeModal("excuseSingleModal");
+            showToast(`Cleared excuse for ${m.fullName}`, "info");
+            await loadAllData();
+          } catch (e) {
+            showToast("Failed to remove excuse", "error");
+          }
+        };
+      } else {
+        removeBtn.classList.add("hidden");
+      }
+
+      openModal("excuseSingleModal");
+    };
+
+    document.getElementById("excuseSingleForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const emailKey = document.getElementById("excuseTargetEmail").value;
+      const targetDate = document.getElementById("excuseTargetDate").value;
+      const reason = document.getElementById("excuseReasonInput").value.trim();
+      const m = membersMap[emailKey];
+      if (!m) return;
+
+      const recordId = `${targetDate}_${emailKey}`.replace(/[^a-zA-Z0-9_-]/g, "_");
+      const recordDocRef = doc(db, "attendance_records", recordId);
+
+      try {
+        await setDoc(recordDocRef, {
+          fullName: m.fullName,
+          email: m.email,
+          team: m.team,
+          practiceDate: targetDate,
+          practiceName: isFridayOrSunday(targetDate) ? (getDayOfWeek(targetDate) === 5 ? "Friday Practice" : "Sunday Practice") : "Practice",
+          status: "excused",
+          excuseNote: reason,
+          checkedInAt: serverTimestamp()
+        });
+        closeModal("excuseSingleModal");
+        showToast(`Excused ${m.fullName} (0 missed practice points)`, "success");
+        await loadAllData();
+      } catch (err) {
+        console.error("Excuse save error:", err);
+        showToast("Error saving excuse", "error");
+      }
+    });
+
+    // ──────────────────────────────────────────────
+    // EXCUSE ALL COMP TEAM MODAL
+    // ──────────────────────────────────────────────
+    document.getElementById("btnExcuseAllCompModal").addEventListener("click", () => {
+      document.getElementById("excuseAllCompDateText").innerText = formatDateForDisplay(selectedPracticeDate);
+      openModal("excuseAllCompModal");
+    });
+
+    document.getElementById("excuseAllCompForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const reason = document.getElementById("excuseAllCompReason").value.trim();
+      const compKeys = Object.keys(membersMap).filter(k => membersMap[k].team === "Comp Team");
+
+      if (compKeys.length === 0) {
+        showToast("No Comp Team members found", "error");
+        return;
+      }
+
+      try {
+        for (const k of compKeys) {
+          const m = membersMap[k];
+          const recordId = `${selectedPracticeDate}_${k}`.replace(/[^a-zA-Z0-9_-]/g, "_");
+          await setDoc(doc(db, "attendance_records", recordId), {
+            fullName: m.fullName,
+            email: m.email,
+            team: "Comp Team",
+            practiceDate: selectedPracticeDate,
+            practiceName: isFridayOrSunday(selectedPracticeDate) ? (getDayOfWeek(selectedPracticeDate) === 5 ? "Friday Practice" : "Sunday Practice") : "Practice",
+            status: "excused",
+            excuseNote: reason,
+            checkedInAt: serverTimestamp()
+          });
+        }
+        closeModal("excuseAllCompModal");
+        showToast(`Excused all ${compKeys.length} Comp Team members for ${formatDateForDisplay(selectedPracticeDate)}!`, "success");
+        await loadAllData();
+      } catch (err) {
+        console.error("Error excusing comp team:", err);
+        showToast("Error excusing comp team members", "error");
+      }
+    });
+
+    // ──────────────────────────────────────────────
+    // TRIP CHECK-IN (ALL IN)
+    // ──────────────────────────────────────────────
+    document.getElementById("btnTripCheckInModal").addEventListener("click", () => {
+      document.getElementById("tripModalDateText").innerText = formatDateForDisplay(selectedPracticeDate);
+      openModal("tripCheckInModal");
+    });
+
+    document.getElementById("btnConfirmTripCheckIn").addEventListener("click", async () => {
+      const keys = Object.keys(membersMap);
+      if (keys.length === 0) return;
+
+      try {
+        for (const k of keys) {
+          const m = membersMap[k];
+          const recordId = `${selectedPracticeDate}_${k}`.replace(/[^a-zA-Z0-9_-]/g, "_");
+          await setDoc(doc(db, "attendance_records", recordId), {
+            fullName: m.fullName,
+            email: m.email,
+            team: m.team,
+            practiceDate: selectedPracticeDate,
+            practiceName: "Trip / Practice",
+            status: "present",
+            checkedInAt: serverTimestamp()
+          });
+        }
+        closeModal("tripCheckInModal");
+        showToast(`Checked in all ${keys.length} athletes! You can adjust any outliers.`, "success");
+        await loadAllData();
+      } catch (err) {
+        console.error("Trip check-in error:", err);
+        showToast("Error during trip check-in", "error");
+      }
+    });
+
+    // ──────────────────────────────────────────────
+    // ATHLETE INFO MODAL (SHOWS EMAIL)
+    // ──────────────────────────────────────────────
+    window.openAthleteInfo = (emailKey) => {
+      const m = membersMap[emailKey];
+      if (!m) return;
+
+      document.getElementById("infoModalAthleteName").innerText = m.fullName;
+      document.getElementById("infoModalEmailText").innerText = m.email;
+
+      const teamBadge = document.getElementById("infoModalTeamBadge");
+      teamBadge.innerText = m.team;
+      teamBadge.className = `team-badge ${m.team === 'Comp Team' ? 'comp' : 'rec'}`;
+
+      // Calculate overall stats for this athlete
+      let attended = 0;
+      let excused = 0;
+      let missed = 0;
+
+      // Scan distinct practice dates recorded
+      const distinctDates = Array.from(new Set(recordsList.map(r => r.practiceDate).filter(Boolean)));
+      distinctDates.forEach(d => {
+        const r = recordsList.find(rec => rec.practiceDate === d && sanitizeEmailKey(rec.email) === emailKey);
+        if (r && r.status === "present") attended++;
+        else if (r && r.status === "excused") excused++;
+        else missed++;
+      });
+
+      const pointsReward = m.pointsRewardOverride !== null ? m.pointsRewardOverride : attended;
+      const missedCount = m.missedOverride !== null ? m.missedOverride : missed;
+
+      document.getElementById("infoModalAttendancePoints").innerText = `${pointsReward} pts`;
+      document.getElementById("infoModalMissedCount").innerText = `${missedCount} unexcused missed`;
+      document.getElementById("infoModalExcusedCount").innerText = `${excused} excused`;
+
+      // Selected practice check-in notes
+      const selectedRec = recordsList.find(r => r.practiceDate === selectedPracticeDate && sanitizeEmailKey(r.email) === emailKey);
+      const notesBox = document.getElementById("infoModalNotesBox");
+      if (selectedRec && selectedRec.notes) {
+        notesBox.innerText = selectedRec.notes;
+      } else if (selectedRec && selectedRec.excuseNote) {
+        notesBox.innerText = `Excuse Note: ${selectedRec.excuseNote}`;
+      } else {
+        notesBox.innerText = "No notes logged for this practice date.";
+      }
+
+      document.getElementById("btnCopyEmail").onclick = () => copyToClipboard(m.email, "Email", document.getElementById("btnCopyEmail"));
+
+      openModal("athleteInfoModal");
+    };
+
+    // ──────────────────────────────────────────────
+    // VIEW 2: COMP & REC TEAM TRACKER
+    // ──────────────────────────────────────────────
+    let trackerSelectedTeam = "Comp Team"; // default to Comp Team as requested!
+
+    document.querySelectorAll(".pill-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".pill-btn").forEach(b => b.classList.remove("active", "comp", "rec"));
+        btn.classList.add("active");
+        if (btn.getAttribute("data-team") === "Comp Team") btn.classList.add("comp");
+        if (btn.getAttribute("data-team") === "Rec Team") btn.classList.add("rec");
+        trackerSelectedTeam = btn.getAttribute("data-team");
+        renderTrackerView();
+      });
+    });
+
+    function renderTrackerView() {
+      const tbody = document.getElementById("trackerTableBody");
+      const startDate = document.getElementById("rangeStartDate").value;
+      const endDate = document.getElementById("rangeEndDate").value;
+      const friSunOnly = document.getElementById("checkFriSunOnly").checked;
+      const search = document.getElementById("trackerSearchInput").value.trim().toLowerCase();
+
+      // Find all distinct practice dates within [startDate, endDate]
+      const allDates = Array.from(new Set(recordsList.map(r => r.practiceDate).filter(Boolean)));
+      if (selectedPracticeDate && !allDates.includes(selectedPracticeDate)) allDates.push(selectedPracticeDate);
+
+      // Filter dates
+      const eligibleDates = allDates.filter(d => {
+        if (startDate && d < startDate) return false;
+        if (endDate && d > endDate) return false;
+        if (friSunOnly && !isFridayOrSunday(d)) return false;
+        return true;
+      });
+
+      eligibleDates.sort();
+
+      document.getElementById("trackerMetaText").innerText =
+        `Showing ${trackerSelectedTeam} from ${formatDateForDisplay(startDate)} to ${formatDateForDisplay(endDate)}`;
+      document.getElementById("trackerPracticesListSummary").innerText =
+        `${eligibleDates.length} practice session${eligibleDates.length === 1 ? '' : 's'} scheduled in window`;
+
+      // Filter members for tracker
+      const memberKeys = Object.keys(membersMap).filter(key => {
+        const m = membersMap[key];
+        if (trackerSelectedTeam !== "ALL" && m.team !== trackerSelectedTeam) return false;
+        if (search && !m.fullName.toLowerCase().includes(search)) return false;
+        return true;
+      });
+
+      // Compute statistics for each member in this date window
+      const memberStats = memberKeys.map(key => {
+        const m = membersMap[key];
+        let attended = 0;
+        let excused = 0;
+        let missed = 0;
+
+        eligibleDates.forEach(dateStr => {
+          const rec = recordsList.find(r => r.practiceDate === dateStr && sanitizeEmailKey(r.email) === key);
+          if (rec && rec.status === "present") {
+            attended++;
+          } else if (rec && rec.status === "excused") {
+            excused++;
+          } else {
+            // Unexcused absence
+            missed++;
+          }
+        });
+
+        // 🎯 Attendance Points: +1 point per practice attended (or manual override)
+        const attendancePoints = m.pointsRewardOverride !== null ? m.pointsRewardOverride : attended;
+
+        // ⚠️ Missed Practices: unexcused absences (or manual override)
+        const missedPractices = m.missedOverride !== null ? m.missedOverride : missed;
+
+        const rate = eligibleDates.length > 0 ? Math.round((attended / eligibleDates.length) * 100) : 100;
+
+        return {
+          key,
+          fullName: m.fullName,
+          email: m.email,
+          team: m.team,
+          attendancePoints,
+          missedPractices,
+          excused,
+          attended,
+          rate,
+          hasOverride: m.pointsRewardOverride !== null || m.missedOverride !== null
+        };
+      });
+
+      // Sort: by default, show most attended points first (or athletes with missed practices)
+      memberStats.sort((a, b) => b.attendancePoints - a.attendancePoints || a.missedPractices - b.missedPractices);
+
+      if (memberStats.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No ${trackerSelectedTeam} members found.</td></tr>`;
+        return;
+      }
+
+      let html = "";
+      memberStats.forEach(stat => {
+        const teamClass = stat.team === "Comp Team" ? "comp" : "rec";
+
+        // Missed practices badge styling (highlighted if 2+ missed for comp reimbursement review)
+        let missedClass = "missed-badge ok";
+        if (stat.missedPractices >= 2) missedClass = "missed-badge danger";
+        else if (stat.missedPractices === 1) missedClass = "missed-badge";
+
+        html += `
+          <tr>
+            <td>
+              <div class="athlete-name-group">
+                <span class="athlete-name">${escapeHtml(stat.fullName)}</span>
+                <button type="button" class="btn-info-icon" onclick="openAthleteInfo('${escapeHtml(stat.key)}')" title="View info & email">ⓘ Info</button>
+              </div>
+            </td>
+            <td><span class="team-badge ${teamClass}">${escapeHtml(stat.team)}</span></td>
+            <td style="text-align: center;">
+              <span class="points-badge">🎯 ${stat.attendancePoints} pts</span>
+              ${stat.hasOverride ? `<span class="override-pill" style="margin-left:4px;">Override</span>` : ""}
+            </td>
+            <td style="text-align: center;">
+              <span class="${missedClass}">${stat.missedPractices} missed</span>
+            </td>
+            <td style="text-align: center; color: var(--excused-amber-text); font-weight: 600;">
+              ${stat.excused} excused
+            </td>
+            <td style="text-align: center; font-weight: 600;">
+              ${stat.rate}% <span style="font-size: 0.75rem; color: var(--text-muted);">(${stat.attended}/${eligibleDates.length})</span>
+            </td>
+            <td class="col-action">
+              <button type="button" class="btn btn-outline btn-sm" onclick="openAdjustModal('${escapeHtml(stat.key)}')">
+                Adjust
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    // ──────────────────────────────────────────────
+    // ADJUST MODAL (OVERRIDE POINTS / MISSED)
+    // ──────────────────────────────────────────────
+    window.openAdjustModal = (emailKey) => {
+      const m = membersMap[emailKey];
+      if (!m) return;
+
+      document.getElementById("adjustTargetEmail").value = emailKey;
+      document.getElementById("adjustModalTitle").innerText = `Adjust Records for ${m.fullName}`;
+      document.getElementById("adjustRewardPoints").value = m.pointsRewardOverride !== null ? m.pointsRewardOverride : "";
+      document.getElementById("adjustMissedCount").value = m.missedOverride !== null ? m.missedOverride : "";
+
+      openModal("adjustPointsModal");
+    };
+
+    document.getElementById("adjustPointsForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const emailKey = document.getElementById("adjustTargetEmail").value;
+      const m = membersMap[emailKey];
+      if (!m) return;
+
+      const rawReward = document.getElementById("adjustRewardPoints").value.trim();
+      const rawMissed = document.getElementById("adjustMissedCount").value.trim();
+
+      const parsedReward = rawReward === "" ? null : Number(rawReward);
+      const parsedMissed = rawMissed === "" ? null : Number(rawMissed);
+
+      try {
+        const ptsDocRef = doc(db, "attendance_points", emailKey);
+        await setDoc(ptsDocRef, {
+          fullName: m.fullName,
+          email: m.email,
+          team: m.team,
+          pointsRewardOverride: parsedReward,
+          missedOverride: parsedMissed,
+          lastUpdated: serverTimestamp()
+        }, { merge: true });
+
+        closeModal("adjustPointsModal");
+        showToast(`Saved adjustments for ${m.fullName}`, "success");
+        await loadAllData();
+      } catch (err) {
+        console.error("Adjust error:", err);
+        showToast("Failed to save adjustments", "error");
+      }
+    });
+
+    // ──────────────────────────────────────────────
+    // QUICK PRESETS FOR TRACKER
+    // ──────────────────────────────────────────────
+    document.getElementById("presetSemester").addEventListener("click", () => {
+      const currentYear = new Date().getFullYear();
+      document.getElementById("rangeStartDate").value = `${currentYear}-09-01`;
+      document.getElementById("rangeEndDate").value = getTodayString();
+      renderTrackerView();
+    });
+
+    document.getElementById("preset30Days").addEventListener("click", () => {
+      const d = new Date();
+      d.setDate(d.getDate() - 30);
+      document.getElementById("rangeStartDate").value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      document.getElementById("rangeEndDate").value = getTodayString();
+      renderTrackerView();
+    });
+
+    document.getElementById("preset60Days").addEventListener("click", () => {
+      const d = new Date();
+      d.setDate(d.getDate() - 60);
+      document.getElementById("rangeStartDate").value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      document.getElementById("rangeEndDate").value = getTodayString();
+      renderTrackerView();
+    });
+
+    document.getElementById("rangeStartDate").addEventListener("change", renderTrackerView);
+    document.getElementById("rangeEndDate").addEventListener("change", renderTrackerView);
+    document.getElementById("checkFriSunOnly").addEventListener("change", renderTrackerView);
+    document.getElementById("trackerSearchInput").addEventListener("input", (e) => {
+      document.getElementById("clearTrackerSearchBtn").classList.toggle("hidden", e.target.value.length === 0);
+      renderTrackerView();
+    });
+    document.getElementById("clearTrackerSearchBtn").addEventListener("click", () => {
+      document.getElementById("trackerSearchInput").value = "";
+      document.getElementById("clearTrackerSearchBtn").classList.add("hidden");
+      renderTrackerView();
+    });
+
+    // ──────────────────────────────────────────────
+    // CSV EXPORT (TRACKER)
+    // ──────────────────────────────────────────────
+    document.getElementById("btnExportTrackerCSV").addEventListener("click", () => {
+      const startDate = document.getElementById("rangeStartDate").value;
+      const endDate = document.getElementById("rangeEndDate").value;
+      const friSunOnly = document.getElementById("checkFriSunOnly").checked;
+
+      const allDates = Array.from(new Set(recordsList.map(r => r.practiceDate).filter(Boolean)));
+      const eligibleDates = allDates.filter(d => {
+        if (startDate && d < startDate) return false;
+        if (endDate && d > endDate) return false;
+        if (friSunOnly && !isFridayOrSunday(d)) return false;
+        return true;
+      });
+
+      const memberKeys = Object.keys(membersMap).filter(k => {
+        if (trackerSelectedTeam !== "ALL" && membersMap[k].team !== trackerSelectedTeam) return false;
+        return true;
+      });
+
+      let csv = "Athlete Name,Email,Team,Attendance Points (Rewards),Missed Practices (Reimbursement),Excused Absences,Attendance Rate,Total Eligible Practices\n";
+
+      memberKeys.forEach(k => {
+        const m = membersMap[k];
+        let attended = 0, excused = 0, missed = 0;
+        eligibleDates.forEach(dateStr => {
+          const rec = recordsList.find(r => r.practiceDate === dateStr && sanitizeEmailKey(r.email) === k);
+          if (rec && rec.status === "present") attended++;
+          else if (rec && rec.status === "excused") excused++;
+          else missed++;
+        });
+
+        const pts = m.pointsRewardOverride !== null ? m.pointsRewardOverride : attended;
+        const unexcused = m.missedOverride !== null ? m.missedOverride : missed;
+        const rate = eligibleDates.length > 0 ? Math.round((attended / eligibleDates.length) * 100) : 100;
+
+        csv += `"${m.fullName.replace(/"/g, '""')}","${m.email.replace(/"/g, '""')}","${m.team}",${pts},${unexcused},${excused},${rate}%,${eligibleDates.length}\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Rutgers_Climbing_${trackerSelectedTeam.replace(/\s+/g, '_')}_Attendance_${getTodayString()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("CSV Exported successfully", "success");
+    });
+
+    // ──────────────────────────────────────────────
+    // DATE PICKER SHORTCUTS (DAY VIEW)
+    // ──────────────────────────────────────────────
+    const practiceDatePicker = document.getElementById("practiceDatePicker");
+
+    practiceDatePicker.addEventListener("change", () => {
+      selectedPracticeDate = practiceDatePicker.value || getTodayString();
+      renderDailyView();
+    });
+
+    document.getElementById("btnJumpToday").addEventListener("click", () => {
+      selectedPracticeDate = getTodayString();
+      practiceDatePicker.value = selectedPracticeDate;
+      renderDailyView();
+    });
+
+    document.getElementById("btnPrevFriSun").addEventListener("click", () => {
+      selectedPracticeDate = stepToFriSun(selectedPracticeDate, false);
+      practiceDatePicker.value = selectedPracticeDate;
+      renderDailyView();
+    });
+
+    document.getElementById("btnNextFriSun").addEventListener("click", () => {
+      selectedPracticeDate = stepToFriSun(selectedPracticeDate, true);
+      practiceDatePicker.value = selectedPracticeDate;
+      renderDailyView();
+    });
+
+    document.getElementById("dailyTeamFilter").addEventListener("change", renderDailyView);
+    document.getElementById("dailySearchInput").addEventListener("input", (e) => {
+      document.getElementById("clearDailySearchBtn").classList.toggle("hidden", e.target.value.length === 0);
+      renderDailyView();
+    });
+    document.getElementById("clearDailySearchBtn").addEventListener("click", () => {
+      document.getElementById("dailySearchInput").value = "";
+      document.getElementById("clearDailySearchBtn").classList.add("hidden");
+      renderDailyView();
+    });
+
+    document.getElementById("btnRefreshDaily").addEventListener("click", async () => {
+      showToast("Refreshing records...", "info");
+      await loadAllData();
+      showToast("Records refreshed", "success");
+    });
+
+    // ──────────────────────────────────────────────
+    // ADD MEMBER MODAL
+    // ──────────────────────────────────────────────
+    document.getElementById("btnAddMemberBtn").addEventListener("click", () => {
+      document.getElementById("addMemberForm").reset();
+      openModal("addMemberModal");
+    });
+
+    document.getElementById("addMemberForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("newMemberName").value.trim();
+      const email = document.getElementById("newMemberEmail").value.trim();
+      const team = document.getElementById("newMemberTeam").value;
+
+      if (!name || !email) return;
+      const emailKey = sanitizeEmailKey(email);
+
+      try {
+        await setDoc(doc(db, "attendance_points", emailKey), {
+          fullName: name,
+          email: email,
+          team: team,
+          pointsRewardOverride: null,
+          missedOverride: null,
+          lastUpdated: serverTimestamp()
+        }, { merge: true });
+
+        closeModal("addMemberModal");
+        showToast(`Added ${name} to roster`, "success");
+        await loadAllData();
+      } catch (err) {
+        console.error("Add member error:", err);
+        showToast("Error adding member", "error");
+      }
+    });
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>

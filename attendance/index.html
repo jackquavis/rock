@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Check-In | Rutgers Climbing Team</title>
+    <link rel="icon" type="image/png" href="../assets/R.png">
+    <style>
+        :root {
+            --bg-dark: #0f0f12;
+            --card-bg: #1c1c22;
+            --input-bg: #131318;
+            --scarlet: #cc0033;
+            --scarlet-hover: #e60039;
+            --text-light: #f4f4f6;
+            --text-muted: #8b8b97;
+            --text-secondary: #c4c4cc;
+            --border-color: #2c2c35;
+            --success-green: #22c55e;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 0%, rgba(204, 0, 51, 0.1) 0%, transparent 55%);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem 3rem;
+        }
+
+        .logo-container {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .logo-container img {
+            height: 72px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 520px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Practice banner */
+        .practice-banner {
+            background: linear-gradient(135deg, rgba(204, 0, 51, 0.15) 0%, rgba(204, 0, 51, 0.05) 100%);
+            border: 1px solid rgba(204, 0, 51, 0.25);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.75rem;
+            text-align: center;
+        }
+
+        .practice-banner .practice-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--scarlet);
+            margin-bottom: 0.35rem;
+        }
+
+        .practice-banner .practice-name {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .practice-banner .practice-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+            text-align: center;
+        }
+
+        .form-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 1.75rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group label .required {
+            color: var(--scarlet);
+            margin-left: 2px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--text-light);
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--scarlet);
+            box-shadow: 0 0 0 3px rgba(204, 0, 51, 0.15);
+        }
+
+        .form-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%238b8b97' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+
+        .form-group select option {
+            background: var(--card-bg);
+            color: var(--text-light);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group .field-hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.85rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            color: #fff;
+            background: var(--scarlet);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease, opacity 0.2s ease;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: var(--scarlet-hover);
+        }
+
+        .submit-btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .submit-btn .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2.5px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .submit-btn.loading .spinner {
+            display: block;
+        }
+
+        .submit-btn.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Closed state */
+        .closed-container {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+        }
+
+        .closed-container .closed-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .closed-container h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .closed-container p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Error banner */
+        .error-banner {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.88rem;
+            color: #fca5a5;
+            display: none;
+        }
+
+        .error-banner.visible {
+            display: block;
+        }
+
+        /* Loading state */
+        .loading-container {
+            text-align: center;
+            padding: 3rem 1.5rem;
+        }
+
+        .loading-container .loader {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--scarlet);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1.25rem;
+        }
+
+        .loading-container p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Success Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.visible {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            animation: modalSlideIn 0.35s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .checkmark-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(34, 197, 94, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+        }
+
+        .checkmark-circle svg {
+            width: 44px;
+            height: 44px;
+        }
+
+        .checkmark-circle .checkmark-path {
+            stroke: var(--success-green);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            stroke-dasharray: 50;
+            stroke-dashoffset: 50;
+            animation: drawCheck 0.5s ease 0.2s forwards;
+        }
+
+        @keyframes drawCheck {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .modal-content h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.4rem;
+        }
+
+        .modal-content p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .modal-close-btn {
+            padding: 0.7rem 2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            color: #fff;
+            background: var(--scarlet);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: var(--scarlet-hover);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 540px) {
+            body {
+                padding: 1.25rem 0.75rem 2rem;
+            }
+
+            .card {
+                padding: 1.5rem 1.25rem;
+            }
+
+            .form-title {
+                font-size: 1.3rem;
+            }
+
+            .practice-banner .practice-name {
+                font-size: 1.15rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="../assets/RURC_Logo_Transparent.png" alt="Rutgers Climbing Team"
+             onerror="this.onerror=null;this.src='../assets/R.png';">
+    </div>
+
+    <div class="card" id="mainCard">
+        <!-- Loading state -->
+        <div id="loadingState" class="loading-container">
+            <div class="loader"></div>
+            <p>Loading practice info…</p>
+        </div>
+
+        <!-- Closed state -->
+        <div id="closedState" class="closed-container" style="display:none;">
+            <div class="closed-icon">🔒</div>
+            <h2>Check-In Not Open</h2>
+            <p>Attendance check-in automatically opens every <strong>Friday</strong> and <strong>Sunday</strong> for team practice.</p>
+        </div>
+
+        <!-- Form state -->
+        <div id="formState" style="display:none;">
+            <div class="practice-banner">
+                <div class="practice-label">Now Checking In</div>
+                <div class="practice-name" id="practiceName"></div>
+                <div class="practice-date" id="practiceDate"></div>
+            </div>
+
+            <h1 class="form-title">Attendance Check-In</h1>
+            <p class="form-subtitle">Mark your attendance for today's practice.</p>
+
+            <div class="error-banner" id="errorBanner"></div>
+
+            <form id="attendanceForm" novalidate>
+                <div class="form-group">
+                    <label for="fullName">Full Name <span class="required">*</span></label>
+                    <input type="text" id="fullName" name="fullName" placeholder="e.g. Jane Doe" required autocomplete="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Rutgers Email <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" placeholder="e.g. jd1234@rutgers.edu" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="team">Team <span class="required">*</span></label>
+                    <select id="team" name="team" required>
+                        <option value="" disabled selected>Select your team</option>
+                        <option value="Rec Team">Rec Team</option>
+                        <option value="Comp Team">Comp Team</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Notes <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
+                    <textarea id="notes" name="notes" placeholder="e.g. Leaving early at 9pm, have an injury, etc."></textarea>
+                    <div class="field-hint">Let us know if you're arriving late, leaving early, or anything else.</div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="btn-text">Check In</span>
+                    <span class="spinner"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer">Rutgers University Rock Climbing</div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="checkmark-circle">
+                <svg viewBox="0 0 44 44">
+                    <path class="checkmark-path" d="M10 22 L19 31 L34 13"/>
+                </svg>
+            </div>
+            <h2>You're Checked In!</h2>
+            <p id="successMessage">Your attendance has been recorded.</p>
+            <button class="modal-close-btn" id="modalCloseBtn">Done</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIIbSN2nBnpf946yLNCS9vfq41dWb-w2I",
+            authDomain: "tryouts-scoring.firebaseapp.com",
+            projectId: "tryouts-scoring",
+            storageBucket: "tryouts-scoring.firebasestorage.app",
+            messagingSenderId: "56954072644",
+            appId: "1:56954072644:web:5c95da0c0edf35be649611"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // DOM refs
+        const loadingState = document.getElementById("loadingState");
+        const closedState = document.getElementById("closedState");
+        const formState = document.getElementById("formState");
+        const practiceNameEl = document.getElementById("practiceName");
+        const practiceDateEl = document.getElementById("practiceDate");
+        const attendanceForm = document.getElementById("attendanceForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const errorBanner = document.getElementById("errorBanner");
+        const successModal = document.getElementById("successModal");
+        const modalCloseBtn = document.getElementById("modalCloseBtn");
+        const successMessage = document.getElementById("successMessage");
+
+        const fullNameInput = document.getElementById("fullName");
+        const emailInput = document.getElementById("email");
+        const teamSelect = document.getElementById("team");
+        const notesInput = document.getElementById("notes");
+
+        let currentPracticeDate = "";
+        let currentPracticeName = "";
+
+        // ── LocalStorage Draft ──
+        const DRAFT_KEY = "rurc_attendance_draft";
+
+        function loadDraft() {
+            try {
+                const draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
+                if (draft) {
+                    if (draft.fullName) fullNameInput.value = draft.fullName;
+                    if (draft.email) emailInput.value = draft.email;
+                    if (draft.team) teamSelect.value = draft.team;
+                }
+            } catch {}
+        }
+
+        function saveDraft() {
+            try {
+                localStorage.setItem(DRAFT_KEY, JSON.stringify({
+                    fullName: fullNameInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    team: teamSelect.value
+                }));
+            } catch {}
+        }
+
+        fullNameInput.addEventListener("input", saveDraft);
+        emailInput.addEventListener("input", saveDraft);
+        teamSelect.addEventListener("change", saveDraft);
+
+        // ── Format date for display ──
+        function formatDate(dateStr) {
+            try {
+                const [year, month, day] = dateStr.split("-").map(Number);
+                const d = new Date(year, month - 1, day);
+                return d.toLocaleDateString("en-US", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                });
+            } catch {
+                return dateStr;
+            }
+        }
+
+        function getTodayString() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, "0");
+            const day = String(now.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        }
+
+        // ── Fetch practice settings ──
+        async function fetchPracticeSettings() {
+            const now = new Date();
+            const dayOfWeek = now.getDay(); // 0 = Sunday, 5 = Friday
+            const isFridayOrSunday = (dayOfWeek === 0 || dayOfWeek === 5);
+            const todayStr = getTodayString();
+            const defaultPracticeName = dayOfWeek === 5 ? "Friday Practice" : (dayOfWeek === 0 ? "Sunday Practice" : "Team Practice");
+
+            try {
+                const snap = await getDoc(doc(db, "attendance_settings", "current"));
+                const data = snap.exists() ? snap.data() : null;
+
+                // Open automatically on Friday and Sunday!
+                let shouldBeOpen = false;
+
+                if (isFridayOrSunday) {
+                    shouldBeOpen = true;
+                    // Check if explicit override closing today
+                    if (data && data.practiceDate === todayStr && data.isOpen === false) {
+                        shouldBeOpen = false;
+                    }
+                } else if (data && data.isOpen && data.practiceDate === todayStr) {
+                    // Open for special clinic/trip/makeup
+                    shouldBeOpen = true;
+                }
+
+                if (!shouldBeOpen) {
+                    showClosed();
+                    return;
+                }
+
+                if (data && data.practiceDate === todayStr && data.practiceName) {
+                    currentPracticeDate = data.practiceDate;
+                    currentPracticeName = data.practiceName;
+                } else {
+                    currentPracticeDate = todayStr;
+                    currentPracticeName = defaultPracticeName;
+                }
+
+                practiceNameEl.textContent = currentPracticeName;
+                practiceDateEl.textContent = formatDate(currentPracticeDate);
+                showForm();
+            } catch (err) {
+                console.error("Error fetching practice settings:", err);
+                if (isFridayOrSunday) {
+                    currentPracticeDate = todayStr;
+                    currentPracticeName = defaultPracticeName;
+                    practiceNameEl.textContent = currentPracticeName;
+                    practiceDateEl.textContent = formatDate(currentPracticeDate);
+                    showForm();
+                } else {
+                    showClosed();
+                }
+            }
+        }
+
+        function showClosed() {
+            loadingState.style.display = "none";
+            closedState.style.display = "block";
+            formState.style.display = "none";
+        }
+
+        function showForm() {
+            loadingState.style.display = "none";
+            closedState.style.display = "none";
+            formState.style.display = "block";
+            loadDraft();
+        }
+
+        function showError(msg) {
+            errorBanner.textContent = msg;
+            errorBanner.classList.add("visible");
+        }
+
+        function hideError() {
+            errorBanner.classList.remove("visible");
+        }
+
+        // ── Form submission ──
+        attendanceForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            hideError();
+
+            const fullName = fullNameInput.value.trim();
+            const email = emailInput.value.trim();
+            const team = teamSelect.value;
+            const notes = notesInput.value.trim();
+
+            if (!fullName) { showError("Please enter your full name."); fullNameInput.focus(); return; }
+            if (!email) { showError("Please enter your Rutgers email."); emailInput.focus(); return; }
+            if (!email.includes("@")) { showError("Please enter a valid email address."); emailInput.focus(); return; }
+            if (!team) { showError("Please select your team."); teamSelect.focus(); return; }
+
+            submitBtn.classList.add("loading");
+            submitBtn.disabled = true;
+
+            try {
+                await addDoc(collection(db, "attendance_records"), {
+                    fullName,
+                    email,
+                    team,
+                    notes,
+                    practiceDate: currentPracticeDate,
+                    practiceName: currentPracticeName,
+                    checkedInAt: serverTimestamp(),
+                    status: "present"
+                });
+
+                // Show success
+                successMessage.textContent = `${fullName}, your attendance for ${currentPracticeName} has been recorded.`;
+                successModal.classList.add("visible");
+
+                // Reset notes only
+                notesInput.value = "";
+
+            } catch (err) {
+                console.error("Submission error:", err);
+                showError("Something went wrong. Please try again.");
+            } finally {
+                submitBtn.classList.remove("loading");
+                submitBtn.disabled = false;
+            }
+        });
+
+        // ── Modal close ──
+        modalCloseBtn.addEventListener("click", () => {
+            successModal.classList.remove("visible");
+        });
+
+        successModal.addEventListener("click", (e) => {
+            if (e.target === successModal) {
+                successModal.classList.remove("visible");
+            }
+        });
+
+        // ── Init ──
+        fetchPracticeSettings();
+    </script>
+</body>
+</html>
