@@ -725,6 +725,42 @@
       border-color: rgba(178, 106, 0, 0.45);
     }
 
+    .date-filter-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: var(--text-light);
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      font-family: inherit;
+      text-align: left;
+    }
+
+    .date-filter-btn:hover {
+      background: var(--scarlet);
+      color: #fff;
+      border-color: var(--scarlet);
+      transform: translateX(2px);
+      box-shadow: 0 2px 8px rgba(204, 0, 51, 0.35);
+    }
+
+    .date-filter-btn .jump-arrow {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      transition: transform 0.15s ease;
+    }
+
+    .date-filter-btn:hover .jump-arrow {
+      opacity: 1;
+      transform: translate(2px, -2px);
+    }
+
     /* Event Cards in Events Tab */
     .event-card {
       background: var(--card-bg);
@@ -2601,6 +2637,35 @@
     };
 
     // ──────────────────────────────────────────────
+    // SHORTCUT: NAVIGATE TO DAILY PRACTICE TAB FOR SELECTED DATE
+    // ──────────────────────────────────────────────
+    window.jumpToDailyPracticeDate = (dateStr, nameKey) => {
+      closeModal("attendanceDetailsModal");
+
+      // 1. Set Daily practice date & date picker
+      selectedPracticeDate = dateStr;
+      const dailyPicker = document.getElementById("practiceDatePicker");
+      if (dailyPicker) dailyPicker.value = dateStr;
+
+      // 2. Pre-filter by athlete name if available, so they are immediately visible
+      if (nameKey && membersMap[nameKey]) {
+        const searchInput = document.getElementById("dailySearchInput");
+        if (searchInput) {
+          searchInput.value = membersMap[nameKey].fullName;
+          const clearBtn = document.getElementById("clearDailySearchBtn");
+          if (clearBtn) clearBtn.classList.remove("hidden");
+        }
+      }
+
+      // 3. Switch to Daily Practice tab and render
+      setActiveTab("daily");
+
+      showToast(`Opened Daily Practice: ${formatDateForDisplay(dateStr)}`, "info");
+    };
+
+    window.filterTrackerToDate = window.jumpToDailyPracticeDate;
+
+    // ──────────────────────────────────────────────
     // EXCUSED PRACTICES BREAKDOWN MODAL
     // ──────────────────────────────────────────────
     window.openExcusedDetails = (nameKey) => {
@@ -2685,12 +2750,17 @@
       const banner = document.getElementById("detailsModalSummaryBanner");
       banner.innerHTML = `
         <div style="background: rgba(178, 106, 0, 0.15); border: 1px solid rgba(178, 106, 0, 0.35); border-radius: var(--radius-sm); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-          <span style="color: var(--excused-amber-text); font-weight: 700; font-size: 0.95rem;">
-            Total Excused Absences: ${excusedItems.length}
-          </span>
-          <span style="font-size: 0.78rem; color: var(--text-muted);">
-            Excused absences do not count against missed practices
-          </span>
+          <div>
+            <span style="color: var(--excused-amber-text); font-weight: 700; font-size: 0.95rem;">
+              Total Excused Absences: ${excusedItems.length}
+            </span>
+            <div style="font-size: 0.76rem; color: var(--text-muted); margin-top: 2px;">
+              Excused absences do not count against missed practices
+            </div>
+          </div>
+          <div style="font-size: 0.75rem; color: #ffd54f;">
+            💡 Click any date to open in Daily Practice
+          </div>
         </div>
       `;
 
@@ -2706,10 +2776,13 @@
       } else {
         listEl.innerHTML = excusedItems.map(item => `
           <div style="background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px 14px;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; flex-wrap: wrap;">
               <div>
-                <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-light);">${item.dateFormatted}</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">${escapeHtml(item.sessionName)}</div>
+                <button type="button" class="date-filter-btn" onclick="jumpToDailyPracticeDate('${item.dateStr}', '${escapeHtml(nameKey)}')" title="Open Daily Practice for ${escapeHtml(item.dateFormatted)}">
+                  <span>📅 ${item.dateFormatted}</span>
+                  <span class="jump-arrow">↗</span>
+                </button>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">${escapeHtml(item.sessionName)}</div>
               </div>
               <span class="badge ${item.badgeClass}">${item.badgeText}</span>
             </div>
@@ -2743,6 +2816,8 @@
       });
 
       const missedItems = [];
+      let directExcusedCount = 0;
+      let tripExcusedCount = 0;
       let compAllowancesEarned = 0;
       let forgivenCount = 0;
 
@@ -2757,12 +2832,12 @@
         if (isPresent) {
           if (ev && ev.allowsMinusAbsence) compAllowancesEarned++;
         } else if (isExcused) {
-          // Excused, not missed
+          directExcusedCount++;
         } else {
           // Absent
           if (ev) {
             if (ev.excuseEveryone) {
-              // Excused for whole-team trip
+              tripExcusedCount++;
             } else if (!ev.noMissedPenalty) {
               if (m.team === "Comp Team" || (rec && rec.status === "absent")) {
                 missedItems.push({
@@ -2795,10 +2870,12 @@
         forgivenCount = Math.min(missedItems.length, compAllowancesEarned);
       }
 
-      let netMissed = Math.max(0, missedItems.length - forgivenCount);
-      if (m.missedOverride !== null) {
-        netMissed = m.missedOverride;
-      }
+      // Calculations before and after excuses
+      const rawMissedCount = missedItems.length;
+      const missedBeforeExcuses = rawMissedCount + directExcusedCount + tripExcusedCount;
+      const totalExcusesApplied = directExcusedCount + tripExcusedCount + forgivenCount;
+      const missedAfterExcuses = Math.max(0, rawMissedCount - forgivenCount);
+      const finalDisplayMissed = m.missedOverride !== null ? m.missedOverride : missedAfterExcuses;
 
       document.getElementById("detailsModalTitle").innerText = `Missed Practices Breakdown`;
       const dateSubtitle = startDate && endDate ? `${formatDateForDisplay(startDate)} to ${formatDateForDisplay(endDate)}` : "All Time";
@@ -2806,25 +2883,36 @@
 
       const banner = document.getElementById("detailsModalSummaryBanner");
       let bannerHtml = `
-        <div style="background: ${netMissed >= 2 ? 'rgba(198, 40, 40, 0.15)' : 'rgba(255, 202, 40, 0.12)'}; border: 1px solid ${netMissed >= 2 ? 'rgba(198, 40, 40, 0.35)' : 'rgba(255, 202, 40, 0.35)'}; border-radius: var(--radius-sm); padding: 10px 14px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
-            <span style="font-weight: 700; font-size: 0.95rem; color: ${netMissed >= 2 ? 'var(--danger-red-text)' : 'var(--gold-star)'};">
-              Total Missed Practices: ${netMissed}
-            </span>
-            <span style="font-size: 0.78rem; color: var(--text-muted);">
-              ${m.team === 'Comp Team' ? 'Comp Team unexcused absences count toward reimbursement eligibility' : 'Rec Team attendance'}
-            </span>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px;">
+          <!-- Before Excuses -->
+          <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: var(--radius-sm); padding: 10px 8px; text-align: center;">
+            <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.02em;">Missed Before Excuses</div>
+            <div style="font-size: 1.55rem; font-weight: 800; color: #f87171; margin-top: 2px;">${missedBeforeExcuses}</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">Total absences</div>
           </div>
-          ${forgivenCount > 0 ? `
-            <div style="margin-top: 6px; font-size: 0.8rem; color: #ffd54f;">
-              🥊 ${forgivenCount} missed practice forgiven by competition allowance (Fight Knight Volume 2 credit).
-            </div>
-          ` : ''}
-          ${m.missedOverride !== null ? `
-            <div style="margin-top: 4px; font-size: 0.78rem; color: #90caf9;">
-              ⚙️ Manual Admin Override active: set to ${m.missedOverride} (Raw calculated: ${missedItems.length - forgivenCount})
-            </div>
-          ` : ''}
+
+          <!-- Excuses & Deductions Applied -->
+          <div style="background: rgba(255, 202, 40, 0.12); border: 1px solid rgba(255, 202, 40, 0.35); border-radius: var(--radius-sm); padding: 10px 8px; text-align: center;">
+            <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.02em;">Excuses Applied</div>
+            <div style="font-size: 1.55rem; font-weight: 800; color: var(--gold-star); margin-top: 2px;">-${totalExcusesApplied}</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">Excuses & credits</div>
+          </div>
+
+          <!-- After Excuses -->
+          <div style="background: ${finalDisplayMissed === 0 ? 'rgba(34, 197, 94, 0.15)' : (finalDisplayMissed >= 2 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255, 202, 40, 0.18)')}; border: 1px solid ${finalDisplayMissed === 0 ? 'rgba(34, 197, 94, 0.4)' : (finalDisplayMissed >= 2 ? 'rgba(239, 68, 68, 0.45)' : 'rgba(255, 202, 40, 0.45)')}; border-radius: var(--radius-sm); padding: 10px 8px; text-align: center;">
+            <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.02em;">Missed After Excuses</div>
+            <div style="font-size: 1.55rem; font-weight: 800; color: ${finalDisplayMissed === 0 ? 'var(--active-green-text)' : (finalDisplayMissed >= 2 ? 'var(--danger-red-text)' : '#ffd54f')}; margin-top: 2px;">${finalDisplayMissed}</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">${m.missedOverride !== null ? 'Admin Override' : (finalDisplayMissed === 0 ? 'Reimbursement eligible' : (finalDisplayMissed >= 2 ? 'Reimbursement at risk' : '1 warning'))}</div>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem; color: var(--text-secondary);">
+          ${(directExcusedCount + tripExcusedCount) > 0 ? `<div>📝 <strong>${directExcusedCount + tripExcusedCount}</strong> practice absence(s) excused by admin note or team trip.</div>` : ''}
+          ${forgivenCount > 0 ? `<div>🥊 <strong>${forgivenCount}</strong> missed practice(s) forgiven by competition allowance (Fight Knight Volume 2 credit).</div>` : ''}
+          ${m.missedOverride !== null ? `<div>⚙️ <strong>Manual Admin Override:</strong> set to ${m.missedOverride} (Raw calculated: ${missedAfterExcuses}).</div>` : ''}
+          <div style="color: #ffd54f; font-size: 0.76rem; margin-top: 2px;">
+            💡 <em>Click any practice date below to open it directly in the Daily Practice tab.</em>
+          </div>
         </div>
       `;
       banner.innerHTML = bannerHtml;
@@ -2843,11 +2931,14 @@
         listEl.innerHTML = missedItems.map((item, idx) => {
           const isForgiven = idx >= (missedItems.length - forgivenCount);
           return `
-            <div style="background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px 14px; ${isForgiven ? 'opacity: 0.75;' : ''}">
-              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+            <div style="background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px 14px; ${isForgiven ? 'opacity: 0.8;' : ''}">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; flex-wrap: wrap;">
                 <div>
-                  <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-light);">${item.dateFormatted}</div>
-                  <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">${escapeHtml(item.sessionName)}</div>
+                  <button type="button" class="date-filter-btn" onclick="jumpToDailyPracticeDate('${item.dateStr}', '${escapeHtml(nameKey)}')" title="Open Daily Practice for ${escapeHtml(item.dateFormatted)}">
+                    <span>📅 ${item.dateFormatted}</span>
+                    <span class="jump-arrow">↗</span>
+                  </button>
+                  <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">${escapeHtml(item.sessionName)}</div>
                 </div>
                 ${isForgiven 
                   ? `<span class="badge" style="background: rgba(255, 202, 40, 0.15); color: #ffd54f; border: 1px solid rgba(255, 202, 40, 0.4);">Forgiven by Comp Credit</span>`
