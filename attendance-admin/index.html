@@ -303,6 +303,244 @@
       align-items: center;
     }
 
+    /* Custom Theme Date Input & Calendar Popup */
+    .custom-date-field-group {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .custom-date-input {
+      cursor: pointer;
+      background-color: var(--input-bg);
+      color: var(--text-light);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0 34px 0 12px !important;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      width: 100%;
+    }
+
+    .custom-date-input:focus,
+    .custom-date-input:hover {
+      border-color: var(--scarlet);
+      outline: none;
+    }
+
+    .btn-cal-icon {
+      position: absolute;
+      right: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.05rem;
+      padding: 4px 6px;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .btn-cal-icon:hover {
+      color: var(--scarlet);
+      transform: scale(1.15);
+    }
+
+    /* Rutgers Theme Calendar Popup */
+    .rutgers-calendar-popup {
+      position: absolute;
+      z-index: 99999;
+      background: #17171c;
+      border: 1px solid #383846;
+      border-radius: var(--radius-md);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(204, 0, 51, 0.35);
+      width: 310px;
+      padding: 14px;
+      color: var(--text-light);
+      user-select: none;
+      font-family: inherit;
+      animation: calendarFadeIn 0.15s ease-out;
+    }
+
+    @keyframes calendarFadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .cal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 6px;
+    }
+
+    .cal-nav-btn {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      border-radius: var(--radius-sm);
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 700;
+      transition: all 0.15s ease;
+      line-height: 1;
+    }
+
+    .cal-nav-btn:hover {
+      border-color: var(--scarlet);
+      background: var(--scarlet-glow);
+      color: #fff;
+    }
+
+    .cal-title-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+    }
+
+    .cal-month-select, .cal-year-select {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      border-radius: var(--radius-sm);
+      padding: 4px 6px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      height: 30px;
+      width: auto;
+    }
+
+    .cal-month-select:focus, .cal-year-select:focus {
+      border-color: var(--scarlet);
+    }
+
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .cal-weekday.practice-day {
+      color: #ffd54f;
+    }
+
+    .cal-days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      height: 34px;
+      width: 34px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      position: relative;
+      transition: all 0.12s ease;
+      color: var(--text-secondary);
+      background: transparent;
+      padding: 0;
+    }
+
+    .cal-day:hover:not(.disabled) {
+      background: #23232c;
+      border-color: rgba(204, 0, 51, 0.45);
+      color: #fff;
+      transform: scale(1.06);
+    }
+
+    .cal-day.other-month {
+      opacity: 0.35;
+    }
+
+    .cal-day.today {
+      border-color: #ffd54f !important;
+      color: #ffd54f;
+      font-weight: 800;
+    }
+
+    .cal-day.selected {
+      background: var(--scarlet) !important;
+      color: #fff !important;
+      font-weight: 800;
+      border-color: var(--scarlet) !important;
+      box-shadow: 0 0 10px rgba(204, 0, 51, 0.55);
+    }
+
+    .cal-day.practice-badge::after {
+      content: "";
+      position: absolute;
+      bottom: 2px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #ffd54f;
+    }
+
+    .cal-day.selected.practice-badge::after {
+      background: #fff;
+    }
+
+    .cal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-color);
+      gap: 6px;
+    }
+
+    .cal-quick-btn {
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      font-size: 0.74rem;
+      padding: 3px 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      width: auto;
+      height: auto;
+    }
+
+    .cal-quick-btn:hover {
+      background: #23232c;
+      border-color: var(--scarlet);
+      color: #fff;
+    }
+
     /* ==========================================
        BUTTONS & INPUTS
        ========================================== */
@@ -761,6 +999,114 @@
       transform: translate(2px, -2px);
     }
 
+    /* Setting Team Badge */
+    .badge-setter {
+      font-size: 0.72rem;
+      color: #ce93d8;
+      background: rgba(206, 147, 216, 0.16);
+      border: 1px solid rgba(206, 147, 216, 0.45);
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      letter-spacing: 0.02em;
+    }
+
+    /* Setters Tab & Calendar Graphic */
+    .setter-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: border-color 0.2s ease;
+    }
+
+    .setter-card:hover {
+      border-color: #4c4c5a;
+    }
+
+    .setter-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .weeks-calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
+      gap: 8px;
+    }
+
+    .week-tile {
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: all 0.15s ease;
+      user-select: none;
+      border: 1px solid transparent;
+      text-align: left;
+      background: none;
+      font-family: inherit;
+    }
+
+    .week-tile:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.2);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.35);
+    }
+
+    /* Week Tile States */
+    .week-tile.green {
+      background: rgba(46, 125, 50, 0.15);
+      border-color: rgba(46, 125, 50, 0.4);
+      color: var(--active-green-text);
+    }
+
+    .week-tile.yellow {
+      background: rgba(255, 202, 40, 0.16);
+      border-color: rgba(255, 202, 40, 0.5);
+      color: #ffd54f;
+      box-shadow: 0 0 6px rgba(255, 202, 40, 0.2);
+    }
+
+    .week-tile.red {
+      background: rgba(198, 40, 40, 0.18);
+      border-color: rgba(198, 40, 40, 0.5);
+      color: var(--danger-red-text);
+    }
+
+    .week-tile-title {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .week-tile-status {
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .week-tile-preview {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      display: flex;
+      gap: 6px;
+    }
+
     /* Event Cards in Events Tab */
     .event-card {
       background: var(--card-bg);
@@ -1132,16 +1478,26 @@
     </header>
 
     <!-- NAVIGATION TABS -->
-    <nav class="nav-tabs">
-      <button type="button" class="tab-btn active" id="tabBtnDaily" data-tab="tabDaily">
-        📅 Daily Practice
-      </button>
-      <button type="button" class="tab-btn" id="tabBtnTracker" data-tab="tabTracker">
-        🏆 Comp & Rec Team Tracker
-      </button>
-      <button type="button" class="tab-btn" id="tabBtnEvents" data-tab="tabEvents">
-        🎪 Events & Trips
-      </button>
+    <nav class="nav-tabs" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <button type="button" class="tab-btn active" id="tabBtnDaily" data-tab="tabDaily">
+          📅 Daily Practice
+        </button>
+        <button type="button" class="tab-btn" id="tabBtnTracker" data-tab="tabTracker">
+          🏆 Comp & Rec Team Tracker
+        </button>
+        <button type="button" class="tab-btn" id="tabBtnSetters" data-tab="tabSetters">
+          🧗 Setting Team
+        </button>
+        <button type="button" class="tab-btn" id="tabBtnEvents" data-tab="tabEvents">
+          🎪 Events & Trips
+        </button>
+      </div>
+      <div>
+        <button type="button" id="btnHeaderManageTeams" class="btn btn-outline" style="height: 38px; display: inline-flex; align-items: center; gap: 6px;" title="Manage Comp Team and Setting Team rosters">
+          ⚙️ Manage Teams & Roles
+        </button>
+      </div>
     </nav>
 
     <!-- ========================================================
@@ -1155,7 +1511,10 @@
           <div class="filter-field">
             <label for="practiceDatePicker">Practice Date</label>
             <div class="date-input-group">
-              <input type="date" id="practiceDatePicker" style="height: 38px;" />
+              <div class="custom-date-field-group" style="width: 145px;">
+                <input type="text" id="practiceDatePicker" class="custom-date-input" readonly placeholder="YYYY-MM-DD" style="height: 38px;" />
+                <button type="button" class="btn-cal-icon" data-for="practiceDatePicker" title="Open Calendar">📅</button>
+              </div>
               <button type="button" id="btnPrevFriSun" class="btn btn-outline" style="height: 38px; padding: 0 10px;" title="Jump to previous Friday or Sunday">
                 ‹ Last Fri/Sun
               </button>
@@ -1175,6 +1534,7 @@
               <option value="ALL">All Teams</option>
               <option value="Comp Team">Comp Team</option>
               <option value="Rec Team">Rec Team</option>
+              <option value="Setting Team">Setting Team</option>
             </select>
           </div>
 
@@ -1248,12 +1608,18 @@
           <!-- Date Range Pickers -->
           <div class="filter-field">
             <label for="rangeStartDate">From Date</label>
-            <input type="date" id="rangeStartDate" style="height: 38px;" />
+            <div class="custom-date-field-group" style="width: 140px;">
+              <input type="text" id="rangeStartDate" class="custom-date-input" readonly placeholder="YYYY-MM-DD" style="height: 38px;" />
+              <button type="button" class="btn-cal-icon" data-for="rangeStartDate" title="Open Calendar">📅</button>
+            </div>
           </div>
 
           <div class="filter-field">
             <label for="rangeEndDate">To Date</label>
-            <input type="date" id="rangeEndDate" style="height: 38px;" />
+            <div class="custom-date-field-group" style="width: 140px;">
+              <input type="text" id="rangeEndDate" class="custom-date-input" readonly placeholder="YYYY-MM-DD" style="height: 38px;" />
+              <button type="button" class="btn-cal-icon" data-for="rangeEndDate" title="Open Calendar">📅</button>
+            </div>
           </div>
 
           <!-- Team Selector Pills -->
@@ -1262,6 +1628,7 @@
             <div class="pill-selector">
               <button type="button" class="pill-btn active comp" id="pillTeamComp" data-team="Comp Team">Comp Team</button>
               <button type="button" class="pill-btn" id="pillTeamRec" data-team="Rec Team">Rec Team</button>
+              <button type="button" class="pill-btn" id="pillTeamSetter" data-team="Setting Team">Setting Team</button>
               <button type="button" class="pill-btn" id="pillTeamAll" data-team="ALL">All Teams</button>
             </div>
           </div>
@@ -1326,7 +1693,102 @@
     </div>
 
     <!-- ========================================================
-         VIEW 3: EVENTS & TRIPS (SPECIAL COMPETITIONS & TRIPS)
+         VIEW 3: SETTING TEAM (WEEKLY ABSENCES & CALENDAR GRAPHIC)
+         ======================================================== -->
+    <div id="tabSettersView" class="hidden">
+      <!-- Toolbar Section -->
+      <section class="toolbar-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 style="font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px;">
+              🧗 Setting Team Attendance & Calendar
+            </h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">
+              Setting team members receive 1 excused absence per week. Weeks are color-coded: <span style="color: var(--active-green-text); font-weight: 700;">Green (0 Absent)</span>, <span style="color: #ffd54f; font-weight: 700;">Yellow (1 Absent · Excusable)</span>, and <span style="color: var(--danger-red-text); font-weight: 700;">Red (2 Absent)</span>. Click any week to excuse with one click.
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" id="btnOpenRosterSettingsFromSetters" class="btn btn-outline" style="height: 38px;">
+              ⚙️ Manage Setters & Roster
+            </button>
+            <button type="button" id="btnRefreshSetters" class="btn btn-scarlet" style="height: 38px;">
+              ⟳ Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- Date Range Filter Row (Carries over & syncs with Tracker) -->
+        <div class="filters-row" style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-color); display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end;">
+          <div class="filter-field">
+            <label for="settersStartDate">From Date</label>
+            <div class="custom-date-field-group" style="width: 140px;">
+              <input type="text" id="settersStartDate" class="custom-date-input" readonly placeholder="YYYY-MM-DD" style="height: 38px;" />
+              <button type="button" class="btn-cal-icon" data-for="settersStartDate" title="Open Calendar">📅</button>
+            </div>
+          </div>
+
+          <div class="filter-field">
+            <label for="settersEndDate">To Date</label>
+            <div class="custom-date-field-group" style="width: 140px;">
+              <input type="text" id="settersEndDate" class="custom-date-input" readonly placeholder="YYYY-MM-DD" style="height: 38px;" />
+              <button type="button" class="btn-cal-icon" data-for="settersEndDate" title="Open Calendar">📅</button>
+            </div>
+          </div>
+
+          <!-- Team Filter (Defaults to Comp Team) -->
+          <div class="filter-field">
+            <label>Filter Team (Default: Comp)</label>
+            <div class="pill-selector">
+              <button type="button" class="pill-btn active comp" id="pillSetterTeamComp" data-setter-team="Comp Team">Comp Team</button>
+              <button type="button" class="pill-btn" id="pillSetterTeamAll" data-setter-team="ALL">All Setters</button>
+              <button type="button" class="pill-btn" id="pillSetterTeamRec" data-setter-team="Rec Team">Rec Team</button>
+            </div>
+          </div>
+
+          <!-- Fridays & Sundays Only Checkbox -->
+          <div class="filter-field" style="justify-content: flex-end; padding-bottom: 8px;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; margin: 0;">
+              <input type="checkbox" id="checkSettersFriSunOnly" checked style="width: 18px; height: 18px; accent-color: var(--scarlet);" />
+              <span style="font-size: 0.85rem; color: var(--text-light); font-weight: 500;">Fridays & Sundays Only</span>
+            </label>
+          </div>
+
+          <div style="font-size: 0.78rem; color: var(--text-muted); padding-bottom: 8px;">
+            ⚡ <em>Synced with Tracker Date Range</em>
+          </div>
+        </div>
+
+        <!-- Filter Sub-bar (Search, Status Filter, Meta Text) -->
+        <div style="display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; flex: 1;">
+            <div class="search-wrapper" style="max-width: 260px; flex: 1;">
+              <span class="search-icon">⌕</span>
+              <input type="text" id="settersSearchInput" placeholder="Filter setters..." style="height: 38px;" />
+              <button type="button" id="clearSettersSearchBtn" class="clear-search-btn hidden" title="Clear">✕</button>
+            </div>
+
+            <div class="pill-selector">
+              <button type="button" class="pill-btn active" id="pillSetterAll" data-setter-status="ALL">All Statuses</button>
+              <button type="button" class="pill-btn" id="pillSetterYellow" data-setter-status="YELLOW">⚠️ Has 1-Absent Week (Excusable)</button>
+              <button type="button" class="pill-btn" id="pillSetterRed" data-setter-status="RED">❌ Has 2-Absent Week</button>
+            </div>
+          </div>
+
+          <div id="settersDateRangeMeta" style="font-size: 0.82rem; color: var(--gold-star); font-weight: 600;">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Setters Cards List -->
+      <div id="settersGrid" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="empty-state">Loading Setting Team attendance...</div>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         VIEW 4: EVENTS & TRIPS (SPECIAL COMPETITIONS & TRIPS)
          ======================================================== -->
     <div id="tabEventsView" class="hidden">
       <!-- Toolbar Section -->
@@ -1379,6 +1841,7 @@
           <span class="detail-label">Team Assignment</span>
           <div class="detail-value">
             <span id="infoModalTeamBadge" class="team-badge comp">Comp Team</span>
+            <span id="infoModalSetterBadge" class="badge-setter hidden" style="margin-left: 6px;">🧗 Setting Team</span>
           </div>
         </div>
 
@@ -1570,6 +2033,12 @@
             <option value="Rec Team">Rec Team</option>
           </select>
         </div>
+        <div class="form-group">
+          <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 4px;">
+            <input type="checkbox" id="newMemberIsSetting" style="width: 17px; height: 17px; accent-color: #ce93d8;" />
+            <span>Assign to <strong>Setting Team</strong></span>
+          </label>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" data-close="addMemberModal">Cancel</button>
           <button type="submit" class="btn btn-scarlet">Add Member</button>
@@ -1597,7 +2066,10 @@
         <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
           <div class="form-group" style="margin-bottom: 0;">
             <label for="eventDateInput">Event Date</label>
-            <input type="date" id="eventDateInput" required style="width: 100%; height: 38px;" />
+            <div class="custom-date-field-group">
+              <input type="text" id="eventDateInput" class="custom-date-input" readonly required placeholder="YYYY-MM-DD" style="width: 100%; height: 38px;" />
+              <button type="button" class="btn-cal-icon" data-for="eventDateInput" title="Open Calendar">📅</button>
+            </div>
           </div>
 
           <div class="form-group" style="margin-bottom: 0;">
@@ -1681,6 +2153,84 @@
 
       <div class="modal-footer" style="justify-content: flex-end; margin-top: 16px;">
         <button type="button" class="btn btn-outline" data-close="attendanceDetailsModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 9: MANAGE TEAMS & ROLES (COMP & SETTING TEAM) -->
+  <div id="rosterSettingsModal" class="modal-overlay">
+    <div class="modal" style="max-width: 680px; max-height: 85vh; display: flex; flex-direction: column;">
+      <div class="modal-header">
+        <div>
+          <h3>⚙️ Manage Teams & Roles</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 3px;">
+            Add or remove athletes from Comp Team and Setting Team. Changes persist immediately.
+          </p>
+        </div>
+        <button type="button" class="close-btn" data-close="rosterSettingsModal">&times;</button>
+      </div>
+
+      <!-- Search & Add Bar -->
+      <div style="display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; align-items: center;">
+        <div class="search-wrapper" style="flex: 1; min-width: 200px;">
+          <span class="search-icon">⌕</span>
+          <input type="text" id="rosterSettingsSearchInput" placeholder="Filter athletes..." style="height: 38px;" />
+          <button type="button" id="clearRosterSettingsSearchBtn" class="clear-search-btn hidden">✕</button>
+        </div>
+        <div class="pill-selector">
+          <button type="button" class="pill-btn active" id="pillSettingsFilterAll" data-role-filter="ALL">All</button>
+          <button type="button" class="pill-btn" id="pillSettingsFilterComp" data-role-filter="Comp">Comp</button>
+          <button type="button" class="pill-btn" id="pillSettingsFilterSetter" data-role-filter="Setter">Setters</button>
+          <button type="button" class="pill-btn" id="pillSettingsFilterRec" data-role-filter="Rec">Rec</button>
+        </div>
+        <button type="button" class="btn btn-scarlet btn-sm" id="btnSettingsAddNewMember" style="height: 38px;">
+          + Add Member
+        </button>
+      </div>
+
+      <!-- Scrollable Athlete List -->
+      <div style="overflow-y: auto; flex: 1; border: 1px solid var(--border-color); border-radius: var(--radius-sm); max-height: 400px;">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background: var(--bg-elevated); position: sticky; top: 0; z-index: 2;">
+              <th style="padding: 10px 12px; text-align: left; font-size: 0.8rem;">Athlete</th>
+              <th style="padding: 10px 12px; text-align: center; font-size: 0.8rem; width: 140px;">Comp Team</th>
+              <th style="padding: 10px 12px; text-align: center; font-size: 0.8rem; width: 140px;">Setting Team</th>
+            </tr>
+          </thead>
+          <tbody id="rosterSettingsTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer" style="margin-top: 14px; justify-content: flex-end;">
+        <button type="button" class="btn btn-outline" data-close="rosterSettingsModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 10: SETTER WEEK DETAILS & ONE-CLICK EXCUSE -->
+  <div id="setterWeekModal" class="modal-overlay">
+    <div class="modal" style="max-width: 520px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="setterWeekModalTitle">Week Practices</h3>
+          <p id="setterWeekModalSubtitle" style="font-size: 0.84rem; color: var(--text-muted); margin-top: 3px;"></p>
+        </div>
+        <button type="button" class="close-btn" data-close="setterWeekModal">&times;</button>
+      </div>
+
+      <div style="background: rgba(206, 147, 216, 0.12); border: 1px solid rgba(206, 147, 216, 0.35); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 14px; font-size: 0.83rem; color: #f3e5f5;">
+        🧗 <strong>Setting Team Rule:</strong> Setters are entitled to <strong>1 excused absence per week</strong>. Click the button below to excuse an absence with one click (autofills reason as <em>"setting team"</em>).
+      </div>
+
+      <div id="setterWeekPracticesList" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+        <!-- Dynamically rendered practices -->
+      </div>
+
+      <div class="modal-footer" style="justify-content: flex-end;">
+        <button type="button" class="btn btn-outline" data-close="setterWeekModal">Close</button>
       </div>
     </div>
   </div>
@@ -1804,15 +2354,297 @@
       return dateStr;
     }
 
-    // Clicking anywhere on date inputs pops up the calendar
-    ["practiceDatePicker", "rangeStartDate", "rangeEndDate", "eventDateInput"].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.addEventListener("click", () => {
-          try {
-            if (typeof el.showPicker === "function") el.showPicker();
-          } catch (e) {}
+    // ──────────────────────────────────────────────
+    // RUTGERS THEME CALENDAR POPUP CLASS & CONTROLLER
+    // ──────────────────────────────────────────────
+    class RutgersCalendar {
+      constructor() {
+        this.activeInput = null;
+        this.currentYear = new Date().getFullYear();
+        this.currentMonth = new Date().getMonth();
+        this.selectedDateStr = "";
+        this.createPopupEl();
+        this.bindGlobalEvents();
+      }
+
+      createPopupEl() {
+        let popup = document.getElementById("rutgersCalendarPopup");
+        if (!popup) {
+          popup = document.createElement("div");
+          popup.id = "rutgersCalendarPopup";
+          popup.className = "rutgers-calendar-popup hidden";
+          document.body.appendChild(popup);
+        }
+        this.popup = popup;
+      }
+
+      open(inputEl) {
+        if (!inputEl) return;
+        this.activeInput = inputEl;
+
+        let d = new Date();
+        if (inputEl.value && /^\d{4}-\d{2}-\d{2}$/.test(inputEl.value)) {
+          const parts = inputEl.value.split("-");
+          d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        }
+        this.currentYear = d.getFullYear();
+        this.currentMonth = d.getMonth();
+        this.selectedDateStr = inputEl.value || "";
+
+        this.render();
+        this.position(inputEl);
+        this.popup.classList.remove("hidden");
+      }
+
+      close() {
+        if (this.popup) this.popup.classList.add("hidden");
+        this.activeInput = null;
+      }
+
+      isOpen() {
+        return this.popup && !this.popup.classList.contains("hidden");
+      }
+
+      position(targetEl) {
+        const rect = targetEl.getBoundingClientRect();
+        const popupHeight = 355;
+        const popupWidth = 310;
+
+        let top = rect.bottom + window.scrollY + 6;
+        let left = rect.left + window.scrollX;
+
+        // Keep inside right window boundary
+        if (left + popupWidth > window.innerWidth - 12) {
+          left = Math.max(12, window.innerWidth - popupWidth - 12 + window.scrollX);
+        }
+
+        // Flip above if near bottom of viewport
+        if (rect.bottom + popupHeight > window.innerHeight && rect.top > popupHeight) {
+          top = rect.top + window.scrollY - popupHeight - 6;
+        }
+
+        this.popup.style.top = `${Math.max(10, top)}px`;
+        this.popup.style.left = `${Math.max(10, left)}px`;
+      }
+
+      selectDate(year, month, day) {
+        const yStr = String(year);
+        const mStr = String(month + 1).padStart(2, "0");
+        const dStr = String(day).padStart(2, "0");
+        const dateStr = `${yStr}-${mStr}-${dStr}`;
+
+        if (this.activeInput) {
+          this.activeInput.value = dateStr;
+          this.activeInput.dispatchEvent(new Event("change", { bubbles: true }));
+          this.activeInput.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+        this.close();
+      }
+
+      render() {
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const firstDayIndex = new Date(this.currentYear, this.currentMonth, 1).getDay(); // 0=Sun
+        const totalDaysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+        const prevMonthDays = new Date(this.currentYear, this.currentMonth, 0).getDate();
+
+        const todayStr = getTodayString();
+
+        let monthOptions = "";
+        months.forEach((mName, idx) => {
+          monthOptions += `<option value="${idx}" ${idx === this.currentMonth ? 'selected' : ''}>${mName}</option>`;
         });
+
+        let yearOptions = "";
+        for (let y = 2024; y <= 2030; y++) {
+          yearOptions += `<option value="${y}" ${y === this.currentYear ? 'selected' : ''}>${y}</option>`;
+        }
+
+        let daysHtml = "";
+
+        // Previous month days
+        for (let x = firstDayIndex; x > 0; x--) {
+          const prevD = prevMonthDays - x + 1;
+          const prevM = this.currentMonth === 0 ? 11 : this.currentMonth - 1;
+          const prevY = this.currentMonth === 0 ? this.currentYear - 1 : this.currentYear;
+          const dtStr = `${prevY}-${String(prevM + 1).padStart(2, "0")}-${String(prevD).padStart(2, "0")}`;
+          const dayOfWeek = (firstDayIndex - x) % 7;
+          const isPracticeDay = (dayOfWeek === 0 || dayOfWeek === 5 || Boolean(eventsMap[dtStr]));
+          daysHtml += `
+            <button type="button" class="cal-day other-month ${isPracticeDay ? 'practice-badge' : ''}" data-year="${prevY}" data-month="${prevM}" data-day="${prevD}" title="${dtStr}">
+              ${prevD}
+            </button>
+          `;
+        }
+
+        // Current month days
+        for (let d = 1; d <= totalDaysInMonth; d++) {
+          const dtStr = `${this.currentYear}-${String(this.currentMonth + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+          const dayOfWeek = new Date(this.currentYear, this.currentMonth, d).getDay();
+          const isPracticeDay = (dayOfWeek === 0 || dayOfWeek === 5 || Boolean(eventsMap[dtStr]));
+          const isToday = dtStr === todayStr;
+          const isSelected = dtStr === this.selectedDateStr;
+
+          let cls = "cal-day";
+          if (isSelected) cls += " selected";
+          if (isToday) cls += " today";
+          if (isPracticeDay) cls += " practice-badge";
+
+          daysHtml += `
+            <button type="button" class="${cls}" data-year="${this.currentYear}" data-month="${this.currentMonth}" data-day="${d}" title="${formatDateForDisplay(dtStr)}${isPracticeDay ? ' (Practice)' : ''}">
+              ${d}
+            </button>
+          `;
+        }
+
+        // Trailing days
+        const totalCells = firstDayIndex + totalDaysInMonth;
+        const nextDays = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+        for (let n = 1; n <= nextDays; n++) {
+          const nextM = this.currentMonth === 11 ? 0 : this.currentMonth + 1;
+          const nextY = this.currentMonth === 11 ? this.currentYear + 1 : this.currentYear;
+          const dtStr = `${nextY}-${String(nextM + 1).padStart(2, "0")}-${String(n).padStart(2, "0")}`;
+          const dayOfWeek = (totalCells + n - 1) % 7;
+          const isPracticeDay = (dayOfWeek === 0 || dayOfWeek === 5 || Boolean(eventsMap[dtStr]));
+          daysHtml += `
+            <button type="button" class="cal-day other-month ${isPracticeDay ? 'practice-badge' : ''}" data-year="${nextY}" data-month="${nextM}" data-day="${n}" title="${dtStr}">
+              ${n}
+            </button>
+          `;
+        }
+
+        this.popup.innerHTML = `
+          <div class="cal-header">
+            <button type="button" class="cal-nav-btn" id="calPrevMonthBtn" title="Previous Month">‹</button>
+            <div class="cal-title-group">
+              <select class="cal-month-select" id="calMonthSelect">${monthOptions}</select>
+              <select class="cal-year-select" id="calYearSelect">${yearOptions}</select>
+            </div>
+            <button type="button" class="cal-nav-btn" id="calNextMonthBtn" title="Next Month">›</button>
+          </div>
+
+          <div class="cal-weekdays">
+            <div class="cal-weekday practice-day" title="Sunday (Practice)">Su</div>
+            <div class="cal-weekday">Mo</div>
+            <div class="cal-weekday">Tu</div>
+            <div class="cal-weekday">We</div>
+            <div class="cal-weekday">Th</div>
+            <div class="cal-weekday practice-day" title="Friday (Practice)">Fr</div>
+            <div class="cal-weekday">Sa</div>
+          </div>
+
+          <div class="cal-days-grid" id="calDaysGrid">
+            ${daysHtml}
+          </div>
+
+          <div class="cal-footer">
+            <div style="display: flex; gap: 4px;">
+              <button type="button" class="cal-quick-btn" id="calQuickToday">Today</button>
+              <button type="button" class="cal-quick-btn" id="calQuickSep1">Sep 1</button>
+            </div>
+            <button type="button" class="cal-quick-btn" id="calCloseBtn" style="color: var(--text-light); font-weight: 600;">Close</button>
+          </div>
+        `;
+
+        this.popup.querySelector("#calPrevMonthBtn").addEventListener("click", (e) => {
+          e.stopPropagation();
+          this.currentMonth--;
+          if (this.currentMonth < 0) {
+            this.currentMonth = 11;
+            this.currentYear--;
+          }
+          this.render();
+        });
+
+        this.popup.querySelector("#calNextMonthBtn").addEventListener("click", (e) => {
+          e.stopPropagation();
+          this.currentMonth++;
+          if (this.currentMonth > 11) {
+            this.currentMonth = 0;
+            this.currentYear++;
+          }
+          this.render();
+        });
+
+        this.popup.querySelector("#calMonthSelect").addEventListener("change", (e) => {
+          e.stopPropagation();
+          this.currentMonth = Number(e.target.value);
+          this.render();
+        });
+
+        this.popup.querySelector("#calYearSelect").addEventListener("change", (e) => {
+          e.stopPropagation();
+          this.currentYear = Number(e.target.value);
+          this.render();
+        });
+
+        this.popup.querySelector("#calQuickToday").addEventListener("click", (e) => {
+          e.stopPropagation();
+          const now = new Date();
+          this.selectDate(now.getFullYear(), now.getMonth(), now.getDate());
+        });
+
+        this.popup.querySelector("#calQuickSep1").addEventListener("click", (e) => {
+          e.stopPropagation();
+          this.selectDate(2026, 8, 1); // 2026-09-01
+        });
+
+        this.popup.querySelector("#calCloseBtn").addEventListener("click", (e) => {
+          e.stopPropagation();
+          this.close();
+        });
+
+        this.popup.querySelector("#calDaysGrid").addEventListener("click", (e) => {
+          const dayBtn = e.target.closest(".cal-day");
+          if (!dayBtn) return;
+          e.stopPropagation();
+          const y = Number(dayBtn.getAttribute("data-year"));
+          const m = Number(dayBtn.getAttribute("data-month"));
+          const d = Number(dayBtn.getAttribute("data-day"));
+          this.selectDate(y, m, d);
+        });
+      }
+
+      bindGlobalEvents() {
+        document.addEventListener("click", (e) => {
+          if (!this.isOpen()) return;
+          if (this.popup.contains(e.target)) return;
+          if (this.activeInput && (e.target === this.activeInput || this.activeInput.contains(e.target))) return;
+          if (e.target.closest(".btn-cal-icon")) return;
+          this.close();
+        });
+
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && this.isOpen()) {
+            this.close();
+          }
+        });
+
+        window.addEventListener("resize", () => {
+          if (this.isOpen() && this.activeInput) {
+            this.position(this.activeInput);
+          }
+        });
+      }
+    }
+
+    const rutgersCal = new RutgersCalendar();
+
+    // Clicking anywhere on date inputs or clicking the calendar icon opens custom Rutgers Calendar
+    document.addEventListener("click", (e) => {
+      const iconBtn = e.target.closest(".btn-cal-icon");
+      if (iconBtn) {
+        e.stopPropagation();
+        const targetId = iconBtn.getAttribute("data-for");
+        const targetInput = document.getElementById(targetId);
+        if (targetInput) rutgersCal.open(targetInput);
+        return;
+      }
+
+      const dateInput = e.target.closest(".custom-date-input");
+      if (dateInput) {
+        e.stopPropagation();
+        rutgersCal.open(dateInput);
+        return;
       }
     });
 
@@ -1911,18 +2743,20 @@
     });
 
     // ──────────────────────────────────────────────
-    // TAB SWITCHING (Daily Practice / Tracker / Events)
+    // TAB SWITCHING (Daily Practice / Tracker / Setters / Events)
     // ──────────────────────────────────────────────
     const tabBtnDaily = document.getElementById("tabBtnDaily");
     const tabBtnTracker = document.getElementById("tabBtnTracker");
+    const tabBtnSetters = document.getElementById("tabBtnSetters");
     const tabBtnEvents = document.getElementById("tabBtnEvents");
     const tabDailyView = document.getElementById("tabDailyView");
     const tabTrackerView = document.getElementById("tabTrackerView");
+    const tabSettersView = document.getElementById("tabSettersView");
     const tabEventsView = document.getElementById("tabEventsView");
 
     function setActiveTab(tab) {
-      [tabBtnDaily, tabBtnTracker, tabBtnEvents].forEach(b => b.classList.remove("active"));
-      [tabDailyView, tabTrackerView, tabEventsView].forEach(v => v.classList.add("hidden"));
+      [tabBtnDaily, tabBtnTracker, tabBtnSetters, tabBtnEvents].forEach(b => { if (b) b.classList.remove("active"); });
+      [tabDailyView, tabTrackerView, tabSettersView, tabEventsView].forEach(v => { if (v) v.classList.add("hidden"); });
 
       if (tab === "daily") {
         tabBtnDaily.classList.add("active");
@@ -1932,6 +2766,10 @@
         tabBtnTracker.classList.add("active");
         tabTrackerView.classList.remove("hidden");
         renderTrackerView();
+      } else if (tab === "setters") {
+        tabBtnSetters.classList.add("active");
+        tabSettersView.classList.remove("hidden");
+        renderSettersView();
       } else if (tab === "events") {
         tabBtnEvents.classList.add("active");
         tabEventsView.classList.remove("hidden");
@@ -1941,6 +2779,7 @@
 
     tabBtnDaily.addEventListener("click", () => setActiveTab("daily"));
     tabBtnTracker.addEventListener("click", () => setActiveTab("tracker"));
+    if (tabBtnSetters) tabBtnSetters.addEventListener("click", () => setActiveTab("setters"));
     tabBtnEvents.addEventListener("click", () => setActiveTab("events"));
 
     // ──────────────────────────────────────────────
@@ -1958,9 +2797,15 @@
       }
       document.getElementById("practiceDatePicker").value = selectedPracticeDate;
 
-      // Default Tracker date range: full semester
-      document.getElementById("rangeStartDate").value = "2026-09-01";
-      document.getElementById("rangeEndDate").value = "2026-11-30";
+      // Shared date filter initialization: defaults end date to current date and loads saved states
+      const savedStart = localStorage.getItem("rutgers_att_start_date") || "2026-09-01";
+      const savedEnd = localStorage.getItem("rutgers_att_end_date") || todayStr;
+      const savedFriSun = localStorage.getItem("rutgers_att_frisun_only") !== null
+        ? localStorage.getItem("rutgers_att_frisun_only") === "true"
+        : true;
+
+      setSharedDateFilter(savedStart, savedEnd, savedFriSun, false);
+      if (typeof initSetterTeamPills === "function") initSetterTeamPills();
 
       await loadRosterJson();
       await loadHistoricalJson();
@@ -1984,7 +2829,16 @@
         const res = await fetch("../data/historical_attendance.json");
         if (res.ok) {
           historicalData = await res.json();
-          canonicalAliases = { ...historicalData.canonicalAliases };
+          canonicalAliases = {
+            ...historicalData.canonicalAliases,
+            "alie yan": "Alison Yan",
+            "gigi keil": "Gigi Keil",
+            "gabriella keil": "Gigi Keil",
+            "gabby": "Gabby Cruz",
+            "nick s": "Nick Shelhoff",
+            "akhil": "Akhil Beere",
+            "sunday": "Sunday Cai"
+          };
 
           if (historicalData.specialEvents) {
             eventsMap = { ...historicalData.specialEvents };
@@ -2043,6 +2897,8 @@
           renderDailyView();
         } else if (!tabTrackerView.classList.contains("hidden")) {
           renderTrackerView();
+        } else if (!tabSettersView.classList.contains("hidden")) {
+          renderSettersView();
         } else if (!tabEventsView.classList.contains("hidden")) {
           renderEventsView();
         }
@@ -2051,6 +2907,26 @@
         showToast("Error processing attendance data", "error");
       }
     }
+
+    const defaultSettingTeamNames = [
+      "Akhil Beere",
+      "Alison Yan",
+      "Alon",
+      "Ben Yavin",
+      "Devon De Sanctis",
+      "Gabby Cruz",
+      "Gigi Keil",
+      "Izzi",
+      "Jeffrey Han",
+      "Josh Lim",
+      "Logan Sharrott",
+      "Maximillian Zubiria",
+      "Nick Shelhoff",
+      "Pierce Jackson",
+      "Sunday Cai",
+      "Wyatt Jaeger",
+      "Zoe Yen"
+    ];
 
     function assembleMembersMap() {
       membersMap = {};
@@ -2065,6 +2941,7 @@
           fullName: cName,
           email: "",
           team: "Comp Team",
+          isSettingTeam: false,
           pointsRewardOverride: null,
           missedOverride: null
         };
@@ -2081,6 +2958,7 @@
               fullName: cName,
               email: "",
               team: a.team || "Rec Team",
+              isSettingTeam: false,
               pointsRewardOverride: null,
               missedOverride: null
             };
@@ -2092,7 +2970,26 @@
         });
       }
 
-      // C. Merge saved overrides
+      // C. Populate default Setting Team role
+      defaultSettingTeamNames.forEach(rawName => {
+        const cName = toCanonicalName(rawName);
+        const nameKey = canonicalKey(cName);
+        if (!membersMap[nameKey]) {
+          membersMap[nameKey] = {
+            nameKey,
+            fullName: cName,
+            email: "",
+            team: "Rec Team",
+            isSettingTeam: true,
+            pointsRewardOverride: null,
+            missedOverride: null
+          };
+        } else {
+          membersMap[nameKey].isSettingTeam = true;
+        }
+      });
+
+      // D. Merge saved overrides
       Object.keys(overridesMap).forEach(key => {
         const o = overridesMap[key];
         if (!o) return;
@@ -2100,24 +2997,30 @@
         const nameKey = canonicalKey(cName);
         if (!nameKey) return;
 
+        const isSetting = (o.isSettingTeam !== undefined && o.isSettingTeam !== null) ? Boolean(o.isSettingTeam) : false;
+
         if (!membersMap[nameKey]) {
           membersMap[nameKey] = {
             nameKey,
             fullName: cName,
             email: o.email || "",
             team: o.team || "Comp Team",
+            isSettingTeam: isSetting,
             pointsRewardOverride: (o.pointsRewardOverride !== undefined && o.pointsRewardOverride !== null && o.pointsRewardOverride !== "") ? Number(o.pointsRewardOverride) : null,
             missedOverride: (o.missedOverride !== undefined && o.missedOverride !== null && o.missedOverride !== "") ? Number(o.missedOverride) : null
           };
         } else {
           if (o.email) membersMap[nameKey].email = o.email;
           if (o.team) membersMap[nameKey].team = o.team;
+          if (o.isSettingTeam !== undefined && o.isSettingTeam !== null) {
+            membersMap[nameKey].isSettingTeam = Boolean(o.isSettingTeam);
+          }
           membersMap[nameKey].pointsRewardOverride = (o.pointsRewardOverride !== undefined && o.pointsRewardOverride !== null && o.pointsRewardOverride !== "") ? Number(o.pointsRewardOverride) : null;
           membersMap[nameKey].missedOverride = (o.missedOverride !== undefined && o.missedOverride !== null && o.missedOverride !== "") ? Number(o.missedOverride) : null;
         }
       });
 
-      // D. Merge live checked-in athletes from attendance records
+      // E. Merge live checked-in athletes from attendance records
       recordsList.forEach(r => {
         const cName = toCanonicalName(r.fullName || (r.firstName && r.lastName ? `${r.firstName} ${r.lastName}` : "") || r.name);
         if (!cName) return;
@@ -2130,6 +3033,7 @@
             fullName: cName,
             email: r.email || "",
             team: r.team || "Rec Team",
+            isSettingTeam: false,
             pointsRewardOverride: null,
             missedOverride: null
           };
@@ -2196,7 +3100,11 @@
 
       const memberKeys = Object.keys(membersMap).filter(key => {
         const m = membersMap[key];
-        if (teamFilter !== "ALL" && m.team !== teamFilter) return false;
+        if (teamFilter === "Setting Team") {
+          if (!m.isSettingTeam) return false;
+        } else if (teamFilter !== "ALL" && m.team !== teamFilter) {
+          return false;
+        }
         if (search && !m.fullName.toLowerCase().includes(search)) return false;
         return true;
       });
@@ -2268,6 +3176,7 @@
             <td>
               <div class="athlete-name-group">
                 <span class="athlete-name">${escapeHtml(m.fullName)}</span>
+                ${m.isSettingTeam ? `<span class="badge-setter">🧗 Setter</span>` : ''}
                 <button type="button" class="btn-info-icon" onclick="openAthleteInfo('${escapeHtml(nameKey)}')" title="View info & email">ⓘ Info</button>
               </div>
             </td>
@@ -2527,6 +3436,15 @@
       const teamBadge = document.getElementById("infoModalTeamBadge");
       teamBadge.innerText = m.team;
       teamBadge.className = `team-badge ${m.team === 'Comp Team' ? 'comp' : 'rec'}`;
+
+      const setterBadge = document.getElementById("infoModalSetterBadge");
+      if (setterBadge) {
+        if (m.isSettingTeam) {
+          setterBadge.classList.remove("hidden");
+        } else {
+          setterBadge.classList.add("hidden");
+        }
+      }
 
       let attended = 0;
       let excused = 0;
@@ -2997,7 +3915,11 @@
 
       const memberKeys = Object.keys(membersMap).filter(key => {
         const m = membersMap[key];
-        if (trackerSelectedTeam !== "ALL" && m.team !== trackerSelectedTeam) return false;
+        if (trackerSelectedTeam === "Setting Team") {
+          if (!m.isSettingTeam) return false;
+        } else if (trackerSelectedTeam !== "ALL" && m.team !== trackerSelectedTeam) {
+          return false;
+        }
         if (search && !m.fullName.toLowerCase().includes(search)) return false;
         return true;
       });
@@ -3086,6 +4008,7 @@
             <td>
               <div class="athlete-name-group">
                 <span class="athlete-name">${escapeHtml(stat.fullName)}</span>
+                ${membersMap[stat.key].isSettingTeam ? `<span class="badge-setter">🧗 Setter</span>` : ''}
                 <button type="button" class="btn-info-icon" onclick="openAthleteInfo('${escapeHtml(stat.key)}')" title="View info & email">ⓘ Info</button>
               </div>
             </td>
@@ -3337,9 +4260,64 @@
       }
     });
 
-    document.getElementById("rangeStartDate").addEventListener("change", renderTrackerView);
-    document.getElementById("rangeEndDate").addEventListener("change", renderTrackerView);
-    document.getElementById("checkFriSunOnly").addEventListener("change", renderTrackerView);
+    // ──────────────────────────────────────────────
+    // SHARED DATE RANGE FILTER SYNCHRONIZATION
+    // ──────────────────────────────────────────────
+    function setSharedDateFilter(start, end, friSun, saveToStorage = true) {
+      if (saveToStorage) {
+        localStorage.setItem("rutgers_att_start_date", start);
+        localStorage.setItem("rutgers_att_end_date", end);
+        localStorage.setItem("rutgers_att_frisun_only", String(friSun));
+      }
+
+      // Sync Tracker inputs
+      const rStart = document.getElementById("rangeStartDate");
+      const rEnd = document.getElementById("rangeEndDate");
+      const rFriSun = document.getElementById("checkFriSunOnly");
+      if (rStart && rStart.value !== start) rStart.value = start;
+      if (rEnd && rEnd.value !== end) rEnd.value = end;
+      if (rFriSun && rFriSun.checked !== friSun) rFriSun.checked = friSun;
+
+      // Sync Setting Team inputs
+      const sStart = document.getElementById("settersStartDate");
+      const sEnd = document.getElementById("settersEndDate");
+      const sFriSun = document.getElementById("checkSettersFriSunOnly");
+      if (sStart && sStart.value !== start) sStart.value = start;
+      if (sEnd && sEnd.value !== end) sEnd.value = end;
+      if (sFriSun && sFriSun.checked !== friSun) sFriSun.checked = friSun;
+    }
+
+    function syncDateFiltersFromTracker() {
+      const start = document.getElementById("rangeStartDate").value;
+      const end = document.getElementById("rangeEndDate").value;
+      const friSun = document.getElementById("checkFriSunOnly").checked;
+      setSharedDateFilter(start, end, friSun, true);
+      renderTrackerView();
+      if (!tabSettersView.classList.contains("hidden")) renderSettersView();
+    }
+
+    function syncDateFiltersFromSetters() {
+      const start = document.getElementById("settersStartDate").value;
+      const end = document.getElementById("settersEndDate").value;
+      const friSun = document.getElementById("checkSettersFriSunOnly").checked;
+      setSharedDateFilter(start, end, friSun, true);
+      renderSettersView();
+      if (!tabTrackerView.classList.contains("hidden")) renderTrackerView();
+    }
+
+    document.getElementById("rangeStartDate").addEventListener("change", syncDateFiltersFromTracker);
+    document.getElementById("rangeEndDate").addEventListener("change", syncDateFiltersFromTracker);
+    document.getElementById("checkFriSunOnly").addEventListener("change", syncDateFiltersFromTracker);
+
+    const settersStartDateEl = document.getElementById("settersStartDate");
+    if (settersStartDateEl) settersStartDateEl.addEventListener("change", syncDateFiltersFromSetters);
+
+    const settersEndDateEl = document.getElementById("settersEndDate");
+    if (settersEndDateEl) settersEndDateEl.addEventListener("change", syncDateFiltersFromSetters);
+
+    const checkSettersFriSunOnlyEl = document.getElementById("checkSettersFriSunOnly");
+    if (checkSettersFriSunOnlyEl) checkSettersFriSunOnlyEl.addEventListener("change", syncDateFiltersFromSetters);
+
     document.getElementById("trackerSearchInput").addEventListener("input", (e) => {
       document.getElementById("clearTrackerSearchBtn").classList.toggle("hidden", e.target.value.length === 0);
       renderTrackerView();
@@ -3490,6 +4468,7 @@
       const rawName = document.getElementById("newMemberName").value.trim().replace(/\s+/g, " ");
       const email = document.getElementById("newMemberEmail").value.trim();
       const team = document.getElementById("newMemberTeam").value;
+      const isSetting = document.getElementById("newMemberIsSetting") ? document.getElementById("newMemberIsSetting").checked : false;
 
       if (!rawName) return;
       const cName = toCanonicalName(rawName);
@@ -3503,19 +4482,648 @@
           fullName: cName,
           email: email || "",
           team: team,
+          isSettingTeam: Boolean(isSetting),
           pointsRewardOverride: null,
           missedOverride: null,
           lastUpdated: serverTimestamp()
         }, { merge: true });
 
         closeModal("addMemberModal");
-        showToast(`Added ${cName} (${team})`, "success");
+        showToast(`Added ${cName} (${team}${isSetting ? ', Setting Team' : ''})`, "success");
         await loadAllData();
       } catch (err) {
         console.error("Add member error:", err);
         showToast("Error adding member", "error");
       }
     });
+
+    // ──────────────────────────────────────────────
+    // WEEK GROUPING HELPERS FOR SETTING TEAM CALENDAR
+    // ──────────────────────────────────────────────
+    function getWeekRange(dateStr) {
+      const parts = dateStr.split("-");
+      const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      const day = d.getDay(); // 0 = Sunday, 1 = Monday, ..., 5 = Friday, 6 = Saturday
+      const diffToMonday = (day === 0 ? -6 : 1 - day);
+
+      const monday = new Date(d);
+      monday.setDate(d.getDate() + diffToMonday);
+
+      const sunday = new Date(monday);
+      sunday.setDate(monday.getDate() + 6);
+
+      const formatYMD = (date) => {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, "0");
+        const dayNum = String(date.getDate()).padStart(2, "0");
+        return `${y}-${m}-${dayNum}`;
+      };
+
+      const monStr = formatYMD(monday);
+      const sunStr = formatYMD(sunday);
+
+      const monShort = monday.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      const sunShort = sunday.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+      return {
+        weekKey: `${monStr}_${sunStr}`,
+        mondayStr: monStr,
+        sundayStr: sunStr,
+        label: `${monShort} – ${sunShort}`
+      };
+    }
+
+    function getSemesterWeeks(startDate = null, endDate = null, friSunOnly = true) {
+      const allDates = getAllDates();
+      const practiceDates = allDates.filter(d => {
+        if (startDate && d < startDate) return false;
+        if (endDate && d > endDate) return false;
+        if (friSunOnly && !isFridayOrSunday(d) && !eventsMap[d]) return false;
+        return true;
+      });
+
+      const weeksMap = {};
+      practiceDates.forEach(d => {
+        const w = getWeekRange(d);
+        if (!weeksMap[w.weekKey]) {
+          weeksMap[w.weekKey] = {
+            weekKey: w.weekKey,
+            mondayStr: w.mondayStr,
+            sundayStr: w.sundayStr,
+            label: w.label,
+            dates: []
+          };
+        }
+        if (!weeksMap[w.weekKey].dates.includes(d)) {
+          weeksMap[w.weekKey].dates.push(d);
+        }
+      });
+
+      const sortedWeeks = Object.values(weeksMap).sort((a, b) => a.mondayStr.localeCompare(b.mondayStr));
+      sortedWeeks.forEach(w => w.dates.sort());
+      return sortedWeeks;
+    }
+
+    // ──────────────────────────────────────────────
+    // VIEW 3: SETTING TEAM WEEKLY CALENDAR & EXCUSES
+    // ──────────────────────────────────────────────
+    let setterStatusFilter = "ALL"; // ALL, YELLOW, RED
+    let setterTeamFilter = localStorage.getItem("rutgers_att_setter_team") || "Comp Team"; // Defaults to Comp Team
+
+    function initSetterTeamPills() {
+      const compPill = document.getElementById("pillSetterTeamComp");
+      const allPill = document.getElementById("pillSetterTeamAll");
+      const recPill = document.getElementById("pillSetterTeamRec");
+
+      [compPill, allPill, recPill].forEach(p => {
+        if (p) p.classList.remove("active", "comp", "rec");
+      });
+
+      if (setterTeamFilter === "Comp Team" && compPill) {
+        compPill.classList.add("active", "comp");
+      } else if (setterTeamFilter === "Rec Team" && recPill) {
+        recPill.classList.add("active", "rec");
+      } else if (allPill) {
+        allPill.classList.add("active");
+      }
+    }
+
+    function renderSettersView() {
+      const container = document.getElementById("settersGrid");
+      if (!container) return;
+      const search = (document.getElementById("settersSearchInput") ? document.getElementById("settersSearchInput").value : "").trim().toLowerCase();
+
+      // Read synchronized date range filter
+      const startDate = document.getElementById("settersStartDate") ? document.getElementById("settersStartDate").value : (localStorage.getItem("rutgers_att_start_date") || "2026-09-01");
+      const endDate = document.getElementById("settersEndDate") ? document.getElementById("settersEndDate").value : (localStorage.getItem("rutgers_att_end_date") || getTodayString());
+      const friSunOnly = document.getElementById("checkSettersFriSunOnly") ? document.getElementById("checkSettersFriSunOnly").checked : true;
+
+      const weeks = getSemesterWeeks(startDate, endDate, friSunOnly);
+
+      const setterKeys = Object.keys(membersMap).filter(k => {
+        const m = membersMap[k];
+        if (!m.isSettingTeam) return false;
+        if (setterTeamFilter !== "ALL" && m.team !== setterTeamFilter) return false;
+        if (search && !m.fullName.toLowerCase().includes(search)) return false;
+        return true;
+      });
+
+      setterKeys.sort((a, b) => membersMap[a].fullName.localeCompare(membersMap[b].fullName));
+
+      // Update summary meta
+      const metaEl = document.getElementById("settersDateRangeMeta");
+      if (metaEl) {
+        metaEl.innerText = `Showing ${setterTeamFilter === 'ALL' ? 'All Setters' : setterTeamFilter} (${setterKeys.length} setters) · ${weeks.length} week${weeks.length === 1 ? '' : 's'} (${formatDateForDisplay(startDate)} – ${formatDateForDisplay(endDate)})`;
+      }
+
+      if (setterKeys.length === 0) {
+        container.innerHTML = `<div class="empty-state">No setters found matching filters (${setterTeamFilter}). Click "All Setters" or "⚙️ Manage Setters & Roster".</div>`;
+        return;
+      }
+
+      // Precompute each setter's weekly status
+      const setterDataList = setterKeys.map(k => {
+        const m = membersMap[k];
+        let yellowWeeksCount = 0;
+        let redWeeksCount = 0;
+
+        const weekStats = weeks.map(w => {
+          let unexcusedCount = 0;
+          let attendedCount = 0;
+          let excusedCount = 0;
+          const practices = [];
+
+          w.dates.forEach(dateStr => {
+            const rec = getAthleteRecordForDate(k, dateStr);
+            const isPresent = Boolean(rec && rec.status === "present");
+            const isExcused = Boolean(rec && rec.status === "excused");
+            const ev = eventsMap[dateStr];
+            const dayOfWeek = getDayOfWeek(dateStr);
+            const dayName = dayOfWeek === 5 ? "Fri" : (dayOfWeek === 0 ? "Sun" : "Day");
+
+            if (isPresent) {
+              attendedCount++;
+              practices.push({ dateStr, dayName, status: "present", icon: "✅" });
+            } else if (isExcused) {
+              excusedCount++;
+              practices.push({ dateStr, dayName, status: "excused", icon: "📝" });
+            } else {
+              if (ev) {
+                if (ev.excuseEveryone) {
+                  excusedCount++;
+                  practices.push({ dateStr, dayName, status: "excused", icon: "📝" });
+                } else if (ev.noMissedPenalty) {
+                  practices.push({ dateStr, dayName, status: "optional", icon: "⚪" });
+                } else {
+                  unexcusedCount++;
+                  practices.push({ dateStr, dayName, status: "absent", icon: "❌" });
+                }
+              } else {
+                unexcusedCount++;
+                practices.push({ dateStr, dayName, status: "absent", icon: "❌" });
+              }
+            }
+          });
+
+          let colorClass = "green";
+          let statusText = "✅ Clean";
+          if (unexcusedCount === 1) {
+            colorClass = "yellow";
+            statusText = "⚠️ 1 Absent";
+            yellowWeeksCount++;
+          } else if (unexcusedCount >= 2) {
+            colorClass = "red";
+            statusText = `❌ ${unexcusedCount} Missed`;
+            redWeeksCount++;
+          }
+
+          return {
+            week: w,
+            unexcusedCount,
+            attendedCount,
+            excusedCount,
+            colorClass,
+            statusText,
+            practices
+          };
+        });
+
+        return {
+          key: k,
+          member: m,
+          yellowWeeksCount,
+          redWeeksCount,
+          weekStats
+        };
+      });
+
+      // Filter by status pill (ALL, YELLOW, RED)
+      const filteredSetters = setterDataList.filter(item => {
+        if (setterStatusFilter === "YELLOW") return item.yellowWeeksCount > 0;
+        if (setterStatusFilter === "RED") return item.redWeeksCount > 0;
+        return true;
+      });
+
+      if (filteredSetters.length === 0) {
+        container.innerHTML = `<div class="empty-state">No setters match the selected status filter (${setterStatusFilter}).</div>`;
+        return;
+      }
+
+      let cardsHtml = "";
+      filteredSetters.forEach(item => {
+        const m = item.member;
+        const teamBadgeClass = m.team === "Comp Team" ? "comp" : "rec";
+
+        let tilesHtml = "";
+        item.weekStats.forEach(ws => {
+          const previewHtml = ws.practices.map(p => `${p.dayName}: ${p.icon}`).join(" · ");
+          tilesHtml += `
+            <button type="button" class="week-tile ${ws.colorClass}" onclick="openSetterWeekModal('${escapeHtml(item.key)}', '${escapeHtml(ws.week.weekKey)}')" title="Click to view practice breakdown and excuse">
+              <div class="week-tile-title">${escapeHtml(ws.week.label)}</div>
+              <div class="week-tile-status">${ws.statusText}</div>
+              <div class="week-tile-preview">${previewHtml}</div>
+            </button>
+          `;
+        });
+
+        cardsHtml += `
+          <div class="setter-card">
+            <div class="setter-card-header">
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <span class="team-badge ${teamBadgeClass}">${escapeHtml(m.team)}</span>
+                <span class="badge-setter">🧗 Setting Team</span>
+                <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">${escapeHtml(m.fullName)}</span>
+                <button type="button" class="btn-info-icon" onclick="openAthleteInfo('${escapeHtml(item.key)}')" title="View info">ⓘ Info</button>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 0.82rem;">
+                ${item.yellowWeeksCount > 0 ? `<span style="background: rgba(255, 202, 40, 0.15); border: 1px solid rgba(255, 202, 40, 0.45); color: #ffd54f; padding: 2px 8px; border-radius: 999px; font-weight: 700;">⚠️ ${item.yellowWeeksCount} Week(s) Excusable</span>` : ''}
+                ${item.redWeeksCount > 0 ? `<span style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.45); color: #f87171; padding: 2px 8px; border-radius: 999px; font-weight: 700;">❌ ${item.redWeeksCount} Week(s) 2+ Absent</span>` : ''}
+                ${item.yellowWeeksCount === 0 && item.redWeeksCount === 0 ? `<span style="background: rgba(46, 125, 50, 0.15); border: 1px solid rgba(46, 125, 50, 0.45); color: var(--active-green-text); padding: 2px 8px; border-radius: 999px; font-weight: 700;">✅ Perfect Attendance</span>` : ''}
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size: 0.76rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.03em; font-weight: 700;">
+                Weekly Attendance Calendar (Click week to excuse)
+              </div>
+              <div class="weeks-calendar-grid">
+                ${tilesHtml}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = cardsHtml;
+    }
+
+    // Modal 10: Setter Week Details & One-Click Excuse
+    window.openSetterWeekModal = (nameKey, weekKey) => {
+      const m = membersMap[nameKey];
+      if (!m) return;
+
+      const startDate = document.getElementById("settersStartDate") ? document.getElementById("settersStartDate").value : (localStorage.getItem("rutgers_att_start_date") || "2026-09-01");
+      const endDate = document.getElementById("settersEndDate") ? document.getElementById("settersEndDate").value : (localStorage.getItem("rutgers_att_end_date") || getTodayString());
+      const friSunOnly = document.getElementById("checkSettersFriSunOnly") ? document.getElementById("checkSettersFriSunOnly").checked : true;
+
+      const weeks = getSemesterWeeks(startDate, endDate, friSunOnly);
+      const w = weeks.find(item => item.weekKey === weekKey) || getSemesterWeeks().find(item => item.weekKey === weekKey);
+      if (!w) return;
+
+      document.getElementById("setterWeekModalTitle").innerText = `${m.fullName} · ${w.label}`;
+
+      let practicesHtml = "";
+      let unexcusedCount = 0;
+
+      w.dates.forEach(dateStr => {
+        const rec = getAthleteRecordForDate(nameKey, dateStr);
+        const isPresent = Boolean(rec && rec.status === "present");
+        const isExcused = Boolean(rec && rec.status === "excused");
+        const ev = eventsMap[dateStr];
+        const dayOfWeek = getDayOfWeek(dateStr);
+        const dayFormatted = formatDateForDisplay(dateStr);
+        const sessionName = ev ? ev.name : (dayOfWeek === 5 ? "Friday Practice" : (dayOfWeek === 0 ? "Sunday Practice" : "Team Practice"));
+
+        let statusBadge = "";
+        let actionBtn = "";
+
+        if (isPresent) {
+          statusBadge = `<span class="badge badge-present">✅ Present</span>`;
+        } else if (isExcused) {
+          statusBadge = `<span class="badge badge-excused">📝 Excused (${escapeHtml(rec.excuseNote || 'setting team')})</span>`;
+          actionBtn = `<button type="button" class="btn btn-outline btn-sm" onclick="removeExcuseSettingTeam('${escapeHtml(nameKey)}', '${escapeHtml(dateStr)}', '${escapeHtml(weekKey)}')">Remove Excuse</button>`;
+        } else {
+          // Absent
+          if (ev && ev.excuseEveryone) {
+            statusBadge = `<span class="badge badge-excused">📝 Trip Excused</span>`;
+          } else if (ev && ev.noMissedPenalty) {
+            statusBadge = `<span class="badge" style="background: #23232c; border: 1px solid var(--border-color); color: var(--text-muted);">Optional (No Penalty)</span>`;
+          } else {
+            unexcusedCount++;
+            statusBadge = `<span class="badge badge-absent">❌ Absent</span>`;
+            actionBtn = `
+              <button type="button" class="btn btn-sm" style="background: linear-gradient(135deg, #7b1fa2, #ab47bc); border: 1px solid #ce93d8; color: #fff; font-weight: 700;" onclick="oneClickExcuseSettingTeam('${escapeHtml(nameKey)}', '${escapeHtml(dateStr)}', '${escapeHtml(weekKey)}')">
+                🛡️ Excuse ("setting team")
+              </button>
+            `;
+          }
+        }
+
+        practicesHtml += `
+          <div style="background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div>
+              <button type="button" class="date-filter-btn" onclick="jumpToDailyPracticeDate('${dateStr}', '${escapeHtml(nameKey)}')" title="Open Daily Practice for ${escapeHtml(dayFormatted)}">
+                <span>📅 ${dayFormatted}</span>
+                <span class="jump-arrow">↗</span>
+              </button>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 3px;">${escapeHtml(sessionName)}</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              ${statusBadge}
+              ${actionBtn}
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById("setterWeekModalSubtitle").innerText =
+        `Week: ${w.label} · ${unexcusedCount === 0 ? '✅ 0 Unexcused Absences (Clean)' : (unexcusedCount === 1 ? '⚠️ 1 Unexcused Absence (Eligible for 1-per-week setter excuse)' : `❌ ${unexcusedCount} Unexcused Absences`)}`;
+
+      document.getElementById("setterWeekPracticesList").innerHTML = practicesHtml;
+      openModal("setterWeekModal");
+    };
+
+    window.oneClickExcuseSettingTeam = async (nameKey, dateStr, weekKey) => {
+      const m = membersMap[nameKey];
+      if (!m) return;
+
+      const recordDocId = `att_${dateStr}_${safeIdKey(nameKey)}`;
+      const dayOfWeek = getDayOfWeek(dateStr);
+      const practiceName = isFridayOrSunday(dateStr) ? (dayOfWeek === 5 ? "Friday Practice" : "Sunday Practice") : "Practice";
+
+      try {
+        await setDoc(doc(db, "submissions", recordDocId), {
+          type: "attendance",
+          nameKey: nameKey,
+          fullName: m.fullName,
+          email: m.email || "",
+          team: m.team,
+          practiceDate: dateStr,
+          practiceName: practiceName,
+          status: "excused",
+          excuseNote: "setting team",
+          checkedInAt: serverTimestamp()
+        });
+
+        showToast(`Excused ${m.fullName} for ${formatDateForDisplay(dateStr)} ("setting team")`, "success");
+        await loadAllData();
+        openSetterWeekModal(nameKey, weekKey);
+      } catch (err) {
+        console.error("One click excuse error:", err);
+        showToast("Error excusing setter", "error");
+      }
+    };
+
+    window.removeExcuseSettingTeam = async (nameKey, dateStr, weekKey) => {
+      const m = membersMap[nameKey];
+      if (!m) return;
+
+      const recordDocId = `att_${dateStr}_${safeIdKey(nameKey)}`;
+      try {
+        const existing = recordsList.find(r => r.practiceDate === dateStr && r.nameKey === nameKey);
+        if (existing && existing.id) {
+          await deleteDoc(doc(db, "submissions", existing.id));
+        }
+        await deleteDoc(doc(db, "submissions", recordDocId));
+
+        if (historicalRecordsMap[dateStr] && historicalRecordsMap[dateStr][nameKey]) {
+          await setDoc(doc(db, "submissions", recordDocId), {
+            type: "attendance",
+            nameKey: nameKey,
+            fullName: m.fullName,
+            practiceDate: dateStr,
+            status: "absent",
+            checkedInAt: serverTimestamp()
+          });
+        }
+
+        showToast(`Removed excuse for ${m.fullName}`, "info");
+        await loadAllData();
+        openSetterWeekModal(nameKey, weekKey);
+      } catch (err) {
+        console.error("Remove excuse error:", err);
+        showToast("Error removing excuse", "error");
+      }
+    };
+
+    // ──────────────────────────────────────────────
+    // MODAL 9: MANAGE TEAMS & ROLES (SETTINGS PANEL)
+    // ──────────────────────────────────────────────
+    let rosterSettingsRoleFilter = "ALL"; // ALL, Comp, Setter, Rec
+
+    function renderRosterSettingsModal() {
+      const tbody = document.getElementById("rosterSettingsTableBody");
+      if (!tbody) return;
+      const search = (document.getElementById("rosterSettingsSearchInput") ? document.getElementById("rosterSettingsSearchInput").value : "").trim().toLowerCase();
+
+      const allKeys = Object.keys(membersMap);
+      allKeys.sort((a, b) => membersMap[a].fullName.localeCompare(membersMap[b].fullName));
+
+      const filteredKeys = allKeys.filter(k => {
+        const m = membersMap[k];
+        if (search && !m.fullName.toLowerCase().includes(search)) return false;
+        if (rosterSettingsRoleFilter === "Comp" && m.team !== "Comp Team") return false;
+        if (rosterSettingsRoleFilter === "Setter" && !m.isSettingTeam) return false;
+        if (rosterSettingsRoleFilter === "Rec" && m.team !== "Rec Team") return false;
+        return true;
+      });
+
+      if (filteredKeys.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" class="empty-state">No athletes matching filter.</td></tr>`;
+        return;
+      }
+
+      let html = "";
+      filteredKeys.forEach(k => {
+        const m = membersMap[k];
+        const isComp = m.team === "Comp Team";
+        const isSetter = Boolean(m.isSettingTeam);
+
+        html += `
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 10px 12px;">
+              <div style="font-weight: 600; color: #fff;">${escapeHtml(m.fullName)}</div>
+              <div style="display: flex; gap: 6px; align-items: center; margin-top: 3px;">
+                <span class="team-badge ${isComp ? 'comp' : 'rec'}" style="font-size: 0.68rem; padding: 1px 6px;">${escapeHtml(m.team)}</span>
+                ${isSetter ? `<span class="badge-setter" style="font-size: 0.68rem; padding: 1px 6px;">🧗 Setter</span>` : ''}
+              </div>
+            </td>
+            <td style="padding: 10px 12px; text-align: center;">
+              <label style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.84rem;">
+                <input type="checkbox" ${isComp ? 'checked' : ''} onchange="toggleAthleteCompTeam('${escapeHtml(k)}', this.checked)" style="width: 17px; height: 17px; accent-color: var(--scarlet); cursor: pointer;" />
+                <span style="color: ${isComp ? 'var(--scarlet)' : 'var(--text-muted)'}; font-weight: ${isComp ? '700' : 'normal'};">Comp Team</span>
+              </label>
+            </td>
+            <td style="padding: 10px 12px; text-align: center;">
+              <label style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.84rem;">
+                <input type="checkbox" ${isSetter ? 'checked' : ''} onchange="toggleAthleteSettingTeam('${escapeHtml(k)}', this.checked)" style="width: 17px; height: 17px; accent-color: #ce93d8; cursor: pointer;" />
+                <span style="color: ${isSetter ? '#ce93d8' : 'var(--text-muted)'}; font-weight: ${isSetter ? '700' : 'normal'};">Setting Team</span>
+              </label>
+            </td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    window.toggleAthleteCompTeam = async (nameKey, isComp) => {
+      const m = membersMap[nameKey];
+      if (!m) return;
+      const newTeam = isComp ? "Comp Team" : "Rec Team";
+      m.team = newTeam;
+
+      try {
+        const overrideDocId = `override_${safeIdKey(nameKey)}`;
+        await setDoc(doc(db, "submissions", overrideDocId), {
+          type: "attendance_override",
+          nameKey: nameKey,
+          fullName: m.fullName,
+          email: m.email || "",
+          team: newTeam,
+          isSettingTeam: Boolean(m.isSettingTeam),
+          lastUpdated: serverTimestamp()
+        }, { merge: true });
+
+        showToast(`Updated ${m.fullName} -> ${newTeam}`, "success");
+        renderRosterSettingsModal();
+        if (!tabDailyView.classList.contains("hidden")) renderDailyView();
+        if (!tabTrackerView.classList.contains("hidden")) renderTrackerView();
+        if (!tabSettersView.classList.contains("hidden")) renderSettersView();
+      } catch (err) {
+        console.error("Toggle comp team error:", err);
+        showToast("Error updating team", "error");
+      }
+    };
+
+    window.toggleAthleteSettingTeam = async (nameKey, isSetting) => {
+      const m = membersMap[nameKey];
+      if (!m) return;
+      m.isSettingTeam = Boolean(isSetting);
+
+      try {
+        const overrideDocId = `override_${safeIdKey(nameKey)}`;
+        await setDoc(doc(db, "submissions", overrideDocId), {
+          type: "attendance_override",
+          nameKey: nameKey,
+          fullName: m.fullName,
+          email: m.email || "",
+          team: m.team,
+          isSettingTeam: Boolean(isSetting),
+          lastUpdated: serverTimestamp()
+        }, { merge: true });
+
+        showToast(`Updated ${m.fullName} Setting Team -> ${isSetting ? 'Added' : 'Removed'}`, "success");
+        renderRosterSettingsModal();
+        if (!tabDailyView.classList.contains("hidden")) renderDailyView();
+        if (!tabTrackerView.classList.contains("hidden")) renderTrackerView();
+        if (!tabSettersView.classList.contains("hidden")) renderSettersView();
+      } catch (err) {
+        console.error("Toggle setting team error:", err);
+        showToast("Error updating setting team", "error");
+      }
+    };
+
+    // Manage Teams & Roles (Roster Settings) Event Listeners
+    const btnHeaderManageTeams = document.getElementById("btnHeaderManageTeams");
+    if (btnHeaderManageTeams) {
+      btnHeaderManageTeams.addEventListener("click", () => {
+        renderRosterSettingsModal();
+        openModal("rosterSettingsModal");
+      });
+    }
+
+    const btnOpenRosterSettingsFromSetters = document.getElementById("btnOpenRosterSettingsFromSetters");
+    if (btnOpenRosterSettingsFromSetters) {
+      btnOpenRosterSettingsFromSetters.addEventListener("click", () => {
+        renderRosterSettingsModal();
+        openModal("rosterSettingsModal");
+      });
+    }
+
+    const rosterSearchInput = document.getElementById("rosterSettingsSearchInput");
+    if (rosterSearchInput) {
+      rosterSearchInput.addEventListener("input", (e) => {
+        const clearBtn = document.getElementById("clearRosterSettingsSearchBtn");
+        if (clearBtn) clearBtn.classList.toggle("hidden", e.target.value.length === 0);
+        renderRosterSettingsModal();
+      });
+    }
+
+    const clearRosterBtn = document.getElementById("clearRosterSettingsSearchBtn");
+    if (clearRosterBtn) {
+      clearRosterBtn.addEventListener("click", () => {
+        if (rosterSearchInput) rosterSearchInput.value = "";
+        clearRosterBtn.classList.add("hidden");
+        renderRosterSettingsModal();
+      });
+    }
+
+    ["All", "Comp", "Setter", "Rec"].forEach(role => {
+      const pill = document.getElementById(`pillSettingsFilter${role}`);
+      if (pill) {
+        pill.addEventListener("click", () => {
+          document.querySelectorAll("[data-role-filter]").forEach(p => p.classList.remove("active"));
+          pill.classList.add("active");
+          rosterSettingsRoleFilter = pill.getAttribute("data-role-filter");
+          renderRosterSettingsModal();
+        });
+      }
+    });
+
+    const btnSettingsAddNewMember = document.getElementById("btnSettingsAddNewMember");
+    if (btnSettingsAddNewMember) {
+      btnSettingsAddNewMember.addEventListener("click", () => {
+        document.getElementById("addMemberForm").reset();
+        openModal("addMemberModal");
+      });
+    }
+
+    // Setters View Filters & Controls
+    const settersSearchInput = document.getElementById("settersSearchInput");
+    if (settersSearchInput) {
+      settersSearchInput.addEventListener("input", (e) => {
+        const clearBtn = document.getElementById("clearSettersSearchBtn");
+        if (clearBtn) clearBtn.classList.toggle("hidden", e.target.value.length === 0);
+        renderSettersView();
+      });
+    }
+
+    const clearSettersBtn = document.getElementById("clearSettersSearchBtn");
+    if (clearSettersBtn) {
+      clearSettersBtn.addEventListener("click", () => {
+        if (settersSearchInput) settersSearchInput.value = "";
+        clearSettersBtn.classList.add("hidden");
+        renderSettersView();
+      });
+    }
+
+    // Setters Team Filter Pills wiring (Comp Team, All Setters, Rec Team)
+    ["Comp", "All", "Rec"].forEach(teamKey => {
+      const pill = document.getElementById(`pillSetterTeam${teamKey}`);
+      if (pill) {
+        pill.addEventListener("click", () => {
+          document.querySelectorAll("[data-setter-team]").forEach(p => p.classList.remove("active", "comp", "rec"));
+          pill.classList.add("active");
+          if (pill.getAttribute("data-setter-team") === "Comp Team") pill.classList.add("comp");
+          if (pill.getAttribute("data-setter-team") === "Rec Team") pill.classList.add("rec");
+          setterTeamFilter = pill.getAttribute("data-setter-team");
+          localStorage.setItem("rutgers_att_setter_team", setterTeamFilter);
+          renderSettersView();
+        });
+      }
+    });
+
+    ["All", "Yellow", "Red"].forEach(st => {
+      const pill = document.getElementById(`pillSetter${st}`);
+      if (pill) {
+        pill.addEventListener("click", () => {
+          document.querySelectorAll("[data-setter-status]").forEach(p => p.classList.remove("active"));
+          pill.classList.add("active");
+          setterStatusFilter = pill.getAttribute("data-setter-status");
+          renderSettersView();
+        });
+      }
+    });
+
+    const btnRefreshSetters = document.getElementById("btnRefreshSetters");
+    if (btnRefreshSetters) {
+      btnRefreshSetters.addEventListener("click", async () => {
+        showToast("Refreshing setters attendance...", "info");
+        await loadAllData();
+        showToast("Setters refreshed", "success");
+      });
+    }
 
     function escapeHtml(str) {
       if (!str) return "";
